@@ -152,6 +152,17 @@
     return direction === 'asc' ? result : -result;
   }
 
+  function formatGenerationDate(baseDate, lastModifiedHeader) {
+    if (lastModifiedHeader) {
+      const d = new Date(lastModifiedHeader);
+      if (!Number.isNaN(d.getTime())) {
+        return d.toISOString().replace('T', ' ').replace('Z', ' UTC');
+      }
+    }
+    if (baseDate) return `${baseDate} 00:00:00 UTC`;
+    return 'n/a';
+  }
+
   function buildTable(columns, rows, options = {}) {
     const sortableColumns = options.sortableColumns || [];
     const tableRows = [...rows];
@@ -272,10 +283,14 @@
   }
 
   fetch('./summary.json')
-    .then((r) => r.json())
-    .then((s) => {
+    .then((r) => {
+      const lastModified = r.headers.get('last-modified');
+      return r.json().then((s) => ({ s, lastModified }));
+    })
+    .then(({ s, lastModified }) => {
+      const generationDate = formatGenerationDate(s.generated_utc_date, lastModified);
       document.getElementById('meta').textContent =
-        `Generated UTC date: ${s.generated_utc_date} | Spike count: ${s.spike_count}`;
+        `Generation Date: ${generationDate} | Spike count: ${s.spike_count}`;
 
       const root = document.getElementById('summary');
       root.className = '';
@@ -284,7 +299,7 @@
       const stats = document.createElement('div');
       stats.className = 'grid';
       const statData = [
-        { label: 'Generated UTC Date', value: s.generated_utc_date ?? 'n/a' },
+        { label: 'Generation Date', value: generationDate },
         { label: 'Tracked Projects', value: (s.projects || []).length },
         { label: 'Rows Captured Today', value: s.today_item_rows_count ?? 'n/a' },
         { label: 'Spike Count', value: s.spike_count ?? 'n/a' },
@@ -352,5 +367,6 @@
       root.textContent = 'Could not load summary.json.';
     });
 </script>
+<p class="muted" style="margin: 14px 2px 0 2px;">Run Log: <a href="./run.log">Open run.log</a></p>
 </body>
 </html>
