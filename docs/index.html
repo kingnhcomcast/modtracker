@@ -137,6 +137,27 @@
     container.appendChild(card);
   }
 
+  function combineTotalsAndDaily(labelKey, totalsRows, dailyRows) {
+    const byKey = new Map();
+
+    (totalsRows || []).forEach((row) => {
+      const key = String(row[labelKey] ?? '');
+      if (!key) return;
+      if (!byKey.has(key)) byKey.set(key, { [labelKey]: key, total: 0, yesterday: 'n/a' });
+      byKey.get(key).total = Number(row.total_downloads ?? 0);
+    });
+
+    (dailyRows || []).forEach((row) => {
+      const key = String(row[labelKey] ?? '');
+      if (!key) return;
+      if (!byKey.has(key)) byKey.set(key, { [labelKey]: key, total: 0, yesterday: 'n/a' });
+      const daily = row.daily_downloads;
+      byKey.get(key).yesterday = (daily === null || daily === undefined) ? 'n/a' : Number(daily);
+    });
+
+    return Array.from(byKey.values()).sort((a, b) => Number(b.total ?? 0) - Number(a.total ?? 0));
+  }
+
   function isSeparatorLine(line) {
     return /^[\-\s]+$/.test(line) && line.includes('-');
   }
@@ -293,14 +314,26 @@
       });
       root.appendChild(stats);
 
-      addSummaryTable(root, 'Latest Totals by Platform', s.latest_platform_totals || []);
-      addSummaryTable(root, 'Latest Totals by Loader', s.latest_loader_totals || []);
-      addSummaryTable(root, 'Latest Totals by Minecraft Version', s.latest_mc_totals || []);
-      addSummaryTable(root, 'Latest Totals by Mod Version', s.latest_mod_totals || []);
-      addSummaryTable(root, 'Latest Daily Platform Breakdown', s.latest_platform_breakdown || []);
-      addSummaryTable(root, 'Latest Daily Loader Breakdown', s.latest_loader_breakdown || []);
-      addSummaryTable(root, 'Latest Daily Minecraft Version Breakdown', s.latest_mc_breakdown || []);
-      addSummaryTable(root, 'Latest Daily Mod Version Breakdown', s.latest_mod_breakdown || []);
+      addSummaryTable(
+        root,
+        'Platform Downloads',
+        combineTotalsAndDaily('platform', s.latest_platform_totals, s.latest_platform_breakdown)
+      );
+      addSummaryTable(
+        root,
+        'Loader Downloads',
+        combineTotalsAndDaily('loader_group', s.latest_loader_totals, s.latest_loader_breakdown)
+      );
+      addSummaryTable(
+        root,
+        'Minecraft Version Downloads',
+        combineTotalsAndDaily('mc_version', s.latest_mc_totals, s.latest_mc_breakdown)
+      );
+      addSummaryTable(
+        root,
+        'Mod Version Downloads',
+        combineTotalsAndDaily('mod_version', s.latest_mod_totals, s.latest_mod_breakdown)
+      );
     })
     .catch(() => {
       document.getElementById('meta').textContent = 'summary.json not found yet.';
