@@ -145,6 +145,49 @@
       color: #ffffff;
       border-color: #14532d;
     }
+    .pie-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(260px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .pie-card {
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      padding: 10px;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+    .pie-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .pie-card canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .trend-card {
+      margin-top: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      padding: 10px;
+      background: #ffffff;
+    }
+    .trend-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+    @media (max-width: 1000px) {
+      .pie-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
@@ -413,6 +456,8 @@
       loader: './charts/downloads_by_loader.png',
       mc: './charts/downloads_by_mc_version_top8.png',
       mod: './charts/downloads_by_mod_version_top8.png',
+      totalDaily: './charts/total_daily_downloads.png',
+      totalDailyBar: './charts/total_daily_downloads_bar.png',
     };
 
     addSummaryTable(
@@ -467,6 +512,144 @@
         }
       );
     }
+  }
+
+  function drawPieChart(canvas, rows, labelKey) {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const width = canvas.width;
+    const height = canvas.height;
+    const cx = 92;
+    const cy = height / 2;
+    const r = 66;
+
+    ctx.clearRect(0, 0, width, height);
+
+    const values = rows.map((r0) => Number(r0.total || 0)).filter((v) => Number.isFinite(v) && v > 0);
+    const total = values.reduce((a, b) => a + b, 0);
+    if (!total) {
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '13px Segoe UI';
+      ctx.fillText('No data', 18, cy);
+      return;
+    }
+
+    const palette = ['#0ea5a4', '#f97316', '#2563eb', '#16a34a', '#7c3aed', '#e11d48', '#0891b2', '#84cc16'];
+    let start = -Math.PI / 2;
+    rows.forEach((row, i) => {
+      const v = Number(row.total || 0);
+      if (!Number.isFinite(v) || v <= 0) return;
+      const angle = (v / total) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, start, start + angle);
+      ctx.closePath();
+      ctx.fillStyle = palette[i % palette.length];
+      ctx.fill();
+      start += angle;
+    });
+
+    ctx.fillStyle = '#111827';
+    ctx.font = '12px Segoe UI';
+    let ly = 28;
+    rows.forEach((row, i) => {
+      const v = Number(row.total || 0);
+      if (!Number.isFinite(v) || v <= 0) return;
+      const label = String(row[labelKey] ?? '');
+      const pct = ((v / total) * 100).toFixed(1);
+      ctx.fillStyle = palette[i % palette.length];
+      ctx.fillRect(176, ly - 8, 10, 10);
+      ctx.fillStyle = '#111827';
+      ctx.fillText(`${label} (${pct}%)`, 192, ly);
+      ly += 18;
+    });
+  }
+
+  function renderPieCharts(container, datasets) {
+    const section = document.createElement('div');
+    section.className = 'section-card';
+    const title = document.createElement('h3');
+    title.textContent = 'Charts';
+    section.appendChild(title);
+
+    const grid = document.createElement('div');
+    grid.className = 'pie-grid';
+    section.appendChild(grid);
+
+    const defs = [
+      { title: 'Platform Distribution', rows: datasets.platformRows, labelKey: 'platform' },
+      { title: 'Loader Distribution', rows: datasets.loaderRows, labelKey: 'loader_group' },
+      { title: 'Minecraft Version Distribution', rows: datasets.mcRows, labelKey: 'mc_version' },
+    ];
+    if (datasets.modRows) {
+      defs.push({ title: 'Mod Version Distribution', rows: datasets.modRows, labelKey: 'mod_version' });
+    }
+
+    defs.forEach((def) => {
+      const card = document.createElement('div');
+      card.className = 'pie-card';
+      const t = document.createElement('div');
+      t.className = 'pie-title';
+      t.textContent = def.title;
+      card.appendChild(t);
+      const canvas = document.createElement('canvas');
+      canvas.width = 420;
+      canvas.height = 210;
+      card.appendChild(canvas);
+      grid.appendChild(card);
+      drawPieChart(canvas, def.rows || [], def.labelKey);
+    });
+
+    container.appendChild(section);
+  }
+
+  function renderTrendChart(container, datasets) {
+    const lineLink = datasets.chartLinks && datasets.chartLinks.totalDaily;
+    const barLink = datasets.chartLinks && datasets.chartLinks.totalDailyBar;
+    if (!lineLink && !barLink) return;
+
+    const card = document.createElement('div');
+    card.className = 'trend-card';
+    const title = document.createElement('h3');
+    title.textContent = 'Total Daily Downloads';
+    card.appendChild(title);
+
+    const linksLine = document.createElement('p');
+    linksLine.className = 'muted';
+    linksLine.style.margin = '2px 0 8px 0';
+    linksLine.textContent = 'Open chart files: ';
+    if (lineLink) {
+      const a1 = document.createElement('a');
+      a1.href = lineLink;
+      a1.textContent = 'line';
+      linksLine.appendChild(a1);
+    }
+    if (lineLink && barLink) {
+      linksLine.appendChild(document.createTextNode(' | '));
+    }
+    if (barLink) {
+      const a2 = document.createElement('a');
+      a2.href = barLink;
+      a2.textContent = 'bar';
+      linksLine.appendChild(a2);
+    }
+    card.appendChild(linksLine);
+
+    if (lineLink) {
+      const imgLine = document.createElement('img');
+      imgLine.alt = 'Total daily downloads line chart';
+      imgLine.src = `${lineLink}?v=${Date.now()}`;
+      card.appendChild(imgLine);
+    }
+    if (barLink) {
+      const imgBar = document.createElement('img');
+      imgBar.alt = 'Total daily downloads bar chart';
+      imgBar.src = `${barLink}?v=${Date.now()}`;
+      imgBar.style.marginTop = '10px';
+      card.appendChild(imgBar);
+    }
+
+    container.appendChild(card);
   }
 
   function combineTotalsAndDaily(labelKey, totalsRows, dailyRows) {
@@ -551,21 +734,25 @@
       });
       const discovered = Array.from(discoveredSet);
 
+      const cumulativeDatasets = {
+        platformRows: combineTotalsAndDaily('platform', s.latest_platform_totals, s.latest_platform_breakdown),
+        loaderRows: combineTotalsAndDaily('loader_group', s.latest_loader_totals, s.latest_loader_breakdown),
+        mcRows: combineTotalsAndDaily('mc_version', s.latest_mc_totals, s.latest_mc_breakdown),
+        modRows: null,
+        chartLinks: {
+          platform: './charts/downloads_by_platform.png',
+          loader: './charts/downloads_by_loader.png',
+          mc: './charts/downloads_by_mc_version_top8.png',
+          totalDaily: './charts/total_daily_downloads.png',
+          totalDailyBar: './charts/total_daily_downloads_bar.png',
+        },
+      };
+
       const views = [
         {
           key: '__all__',
           label: 'Cumulative (All Projects)',
-          datasets: {
-            platformRows: combineTotalsAndDaily('platform', s.latest_platform_totals, s.latest_platform_breakdown),
-            loaderRows: combineTotalsAndDaily('loader_group', s.latest_loader_totals, s.latest_loader_breakdown),
-            mcRows: combineTotalsAndDaily('mc_version', s.latest_mc_totals, s.latest_mc_breakdown),
-            modRows: null,
-            chartLinks: {
-              platform: './charts/downloads_by_platform.png',
-              loader: './charts/downloads_by_loader.png',
-              mc: './charts/downloads_by_mc_version_top8.png',
-            },
-          },
+          datasets: cumulativeDatasets,
         },
         ...discovered.map((projectName) => ({
           key: projectName,
@@ -580,6 +767,8 @@
               loader: `./charts/projects/${slugifyProjectName(projectName)}/downloads_by_loader.png`,
               mc: `./charts/projects/${slugifyProjectName(projectName)}/downloads_by_mc_version_top8.png`,
               mod: `./charts/projects/${slugifyProjectName(projectName)}/downloads_by_mod_version_top8.png`,
+              totalDaily: `./charts/projects/${slugifyProjectName(projectName)}/total_daily_downloads.png`,
+              totalDailyBar: `./charts/projects/${slugifyProjectName(projectName)}/total_daily_downloads_bar.png`,
             },
           },
         })),
@@ -588,6 +777,8 @@
       function renderView(view) {
         viewPanel.textContent = '';
         renderDownloadsGrid(viewPanel, view.datasets);
+        renderPieCharts(viewPanel, view.datasets);
+        renderTrendChart(viewPanel, view.datasets);
       }
 
       let activeKey = '__all__';

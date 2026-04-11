@@ -1192,6 +1192,35 @@ def plot_line_chart(
     return True
 
 
+def plot_bar_chart(
+    records: Sequence[dict[str, Any]],
+    *,
+    x_key: str,
+    y_key: str,
+    title: str,
+    output_path: Path,
+    dpi: int,
+) -> bool:
+    if not records:
+        return False
+
+    rows = sorted(records, key=lambda r: r[x_key])
+    xs = [r[x_key] for r in rows]
+    ys = [safe_int(r.get(y_key, 0), 0) for r in rows]
+
+    plt.figure(figsize=(11, 6), dpi=dpi)
+    plt.bar(xs, ys)
+    plt.title(title)
+    plt.xlabel("Date")
+    plt.ylabel(y_key.replace("_", " ").title())
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(output_path)
+    plt.close()
+    return True
+
+
 def build_charts(
     output_dir: Path,
     daily_project_records: Sequence[dict[str, Any]],
@@ -1226,6 +1255,59 @@ def build_charts(
             dpi=dpi,
         ):
             chart_paths.append(path)
+
+    def cumulative_records(
+        records: Sequence[dict[str, Any]],
+        *,
+        x_key: str,
+        y_key: str,
+        out_key: str,
+    ) -> list[dict[str, Any]]:
+        running = 0
+        out: list[dict[str, Any]] = []
+        for rec in sorted(records, key=lambda r: r[x_key]):
+            running += safe_int(rec.get(y_key, 0), 0)
+            out.append({
+                x_key: rec[x_key],
+                out_key: running,
+            })
+        return out
+
+    by_total_map: dict[str, int] = defaultdict(int)
+    for rec in daily_project_records:
+        by_total_map[rec["snapshot_date"]] += safe_int(rec["daily_downloads"], 0)
+
+    by_total: list[dict[str, Any]] = []
+    for snapshot_date, daily_downloads in sorted(by_total_map.items()):
+        by_total.append({
+            "snapshot_date": snapshot_date,
+            "daily_downloads": daily_downloads,
+            "series": "all",
+        })
+
+    add_chart(
+        by_total,
+        x_key="snapshot_date",
+        y_key="daily_downloads",
+        series_key="series",
+        title="Total Daily Downloads",
+        path=output_dir / "charts" / "total_daily_downloads.png",
+    )
+    by_total_cumulative = cumulative_records(
+        by_total,
+        x_key="snapshot_date",
+        y_key="daily_downloads",
+        out_key="cumulative_downloads",
+    )
+    if plot_bar_chart(
+        by_total_cumulative,
+        x_key="snapshot_date",
+        y_key="cumulative_downloads",
+        title="Total Downloads (Cumulative by Day)",
+        output_path=output_dir / "charts" / "total_daily_downloads_bar.png",
+        dpi=dpi,
+    ):
+        chart_paths.append(output_dir / "charts" / "total_daily_downloads_bar.png")
 
     by_platform_map: dict[tuple[str, str], int] = defaultdict(int)
     for rec in daily_project_records:
@@ -1353,6 +1435,43 @@ def build_charts(
     for project_name in project_names:
         project_slug = project_slug_map[project_name]
         project_dir = output_dir / "charts" / "projects" / project_slug
+
+        project_total_map: dict[str, int] = defaultdict(int)
+        for rec in daily_project_records:
+            if str(rec.get("project_name")) != project_name:
+                continue
+            project_total_map[rec["snapshot_date"]] += safe_int(rec["daily_downloads"], 0)
+
+        project_total_rows: list[dict[str, Any]] = []
+        for snapshot_date, daily_downloads in sorted(project_total_map.items()):
+            project_total_rows.append({
+                "snapshot_date": snapshot_date,
+                "daily_downloads": daily_downloads,
+                "series": project_name,
+            })
+        add_chart(
+            project_total_rows,
+            x_key="snapshot_date",
+            y_key="daily_downloads",
+            series_key="series",
+            title=f"{project_name}: Total Daily Downloads",
+            path=project_dir / "total_daily_downloads.png",
+        )
+        project_total_cumulative = cumulative_records(
+            project_total_rows,
+            x_key="snapshot_date",
+            y_key="daily_downloads",
+            out_key="cumulative_downloads",
+        )
+        if plot_bar_chart(
+            project_total_cumulative,
+            x_key="snapshot_date",
+            y_key="cumulative_downloads",
+            title=f"{project_name}: Total Downloads (Cumulative by Day)",
+            output_path=project_dir / "total_daily_downloads_bar.png",
+            dpi=dpi,
+        ):
+            chart_paths.append(project_dir / "total_daily_downloads_bar.png")
 
         project_platform_map: dict[tuple[str, str], int] = defaultdict(int)
         for rec in daily_project_records:
