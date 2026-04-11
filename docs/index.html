@@ -857,7 +857,16 @@
         ...discovered.map((projectName) => ({
           key: projectName,
           label: projectName,
-          projectMeta: projectMetaByName.get(projectName) || null,
+          projectMeta: (() => {
+            const existing = projectMetaByName.get(projectName);
+            if (existing) return existing;
+            const slug = slugifyProjectName(projectName);
+            return {
+              project_name: projectName,
+              modrinth_url: `https://modrinth.com/mod/${slug}`,
+              curseforge_url: `https://www.curseforge.com/minecraft/mc-mods/${slug}`,
+            };
+          })(),
           datasets: {
             platformRows: aggregateRows(itemRowsToday, projectName, 'platform', (r) => r.platform),
             loaderRows: aggregateRows(itemRowsToday, projectName, 'loader_group', (r) => r.loader_group || 'unknown'),
