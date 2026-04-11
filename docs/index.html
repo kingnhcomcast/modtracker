@@ -113,6 +113,9 @@
       color: #0f766e;
       font-size: 12px;
     }
+    .brand-cell {
+      font-weight: 600;
+    }
     .shell {
       border: 1px solid #d7e2da;
       border-radius: 8px;
@@ -161,8 +164,19 @@
     return 'n/a';
   }
 
+  function hexToRgba(hex, alpha) {
+    if (!hex) return null;
+    const h = String(hex).replace('#', '').trim();
+    if (!/^[0-9a-fA-F]{6}$/.test(h)) return null;
+    const r = parseInt(h.slice(0, 2), 16);
+    const g = parseInt(h.slice(2, 4), 16);
+    const b = parseInt(h.slice(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
   function buildTable(columns, rows, options = {}) {
     const sortableColumns = options.sortableColumns || [];
+    const rowColorBy = options.rowColorBy || null;
     const tableRows = [...rows];
     const sortState = {
       column: sortableColumns[0] || null,
@@ -185,7 +199,18 @@
         const tr = document.createElement('tr');
         columns.forEach((col) => {
           const td = document.createElement('td');
-          td.textContent = row[col] ?? '';
+          const value = row[col] ?? '';
+          td.textContent = value;
+
+          if (rowColorBy && col === rowColorBy.column) {
+            const key = String(value).toLowerCase();
+            const color = rowColorBy.map[key];
+            if (color) {
+              td.classList.add('brand-cell');
+              td.style.backgroundColor = hexToRgba(color, 0.14);
+              td.style.borderLeft = `4px solid ${color}`;
+            }
+          }
           tr.appendChild(td);
         });
         tbody.appendChild(tr);
@@ -326,6 +351,13 @@
         {
           sortableColumns: ['total', 'yesterday'],
           titleLink: './charts/daily_downloads_by_platform.png',
+          rowColorBy: {
+            column: 'platform',
+            map: {
+              modrinth: '#00AF5C',
+              curseforge: '#F16436',
+            },
+          },
         }
       );
       addSummaryTable(
@@ -335,6 +367,13 @@
         {
           sortableColumns: ['total', 'yesterday'],
           titleLink: './charts/daily_downloads_by_loader.png',
+          rowColorBy: {
+            column: 'loader_group',
+            map: {
+              fabric: '#2D46B9',
+              neoforge: '#18A650',
+            },
+          },
         }
       );
       addSummaryTable(
