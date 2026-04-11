@@ -1,0 +1,95 @@
+
+2026-04-11 item-level report
+----------------------------
+HearthGuard      curseforge  fabric    HearthGuard 1.21.1-1.0.0 (Fabric)                total=52       daily=n/a
+HearthGuard      curseforge  fabric    HearthGuard 1.21.1-1.0.1 (Fabric)                total=75       daily=n/a
+HearthGuard      curseforge  neoforge  HearthGuard 1.21.1-1.0.1 (NeoForge)              total=91       daily=n/a
+HearthGuard      curseforge  fabric    HearthGuard 1.21.1-1.0.3 (Fabric)                total=8        daily=n/a
+HearthGuard      curseforge  neoforge  HearthGuard 1.21.1-1.0.3 (NeoForge)              total=12       daily=n/a
+HearthGuard      curseforge  fabric    HearthGuard 1.21.11-1.0.0 (Fabric)               total=154      daily=n/a
+HearthGuard      curseforge  neoforge  HearthGuard 1.21.11-1.0.0 (NeoForge)             total=55       daily=n/a
+HearthGuard      curseforge  fabric    HearthGuard 1.21.11-1.0.1 (Fabric)               total=213      daily=n/a
+HearthGuard      curseforge  neoforge  HearthGuard 1.21.11-1.0.1 (NeoForge)             total=58       daily=n/a
+HearthGuard      curseforge  fabric    HearthGuard 1.21.11-1.0.3 (Fabric)               total=18       daily=n/a
+HearthGuard      curseforge  neoforge  HearthGuard 1.21.11-1.0.3 (NeoForge)             total=5        daily=n/a
+HearthGuard      curseforge  fabric    HearthGuard 26.1-1.0.1 (Fabric)                  total=72       daily=n/a
+HearthGuard      curseforge  neoforge  HearthGuard 26.1-1.0.1 (NeoForge)                total=22       daily=n/a
+HearthGuard      curseforge  fabric    HearthGuard 26.1.1-1.0.2 (Fabric)                total=109      daily=n/a
+HearthGuard      curseforge  neoforge  HearthGuard 26.1.1-1.0.2 (NeoForge)              total=99       daily=n/a
+HearthGuard      curseforge  fabric    HearthGuard 26.1.2-1.0.3 (Fabric)                total=21       daily=n/a
+HearthGuard      curseforge  neoforge  HearthGuard 26.1.2-1.0.3 (NeoForge)              total=14       daily=n/a
+HearthGuard      modrinth    fabric    hearthguard-1.21.11-1.0.0.jar                    total=6        daily=n/a
+HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.1-1.0.0.jar              total=5        daily=n/a
+HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.1-1.0.1.jar              total=33       daily=n/a
+HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.1-1.0.3.jar              total=4        daily=n/a
+HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.11-1.0.1.jar             total=68       daily=n/a
+HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.11-1.0.3.jar             total=9        daily=n/a
+HearthGuard      modrinth    fabric    hearthguard-fabric-26.1-1.0.1.jar                total=36       daily=n/a
+HearthGuard      modrinth    fabric    hearthguard-fabric-26.1.1-1.0.2.jar              total=76       daily=n/a
+HearthGuard      modrinth    fabric    hearthguard-fabric-26.1.2-1.0.3.jar              total=16       daily=n/a
+HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.1-1.0.1.jar            total=31       daily=n/a
+HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.1-1.0.3.jar            total=6        daily=n/a
+HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.11-1.0.0.jar           total=5        daily=n/a
+HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.11-1.0.1.jar           total=8        daily=n/a
+HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.11-1.0.3.jar           total=4        daily=n/a
+HearthGuard      modrinth    neoforge  hearthguard-neoforge-26.1-1.0.1.jar              total=13       daily=n/a
+HearthGuard      modrinth    neoforge  hearthguard-neoforge-26.1.1-1.0.2.jar            total=15       daily=n/a
+HearthGuard      modrinth    neoforge  hearthguard-neoforge-26.1.2-1.0.3.jar            total=6        daily=n/a
+
+Today totals by platform
+------------------------
+platform    total_downloads
+----------  ---------------
+curseforge  1078           
+modrinth    341            
+
+Today totals by loader
+----------------------
+loader_group  total_downloads
+------------  ---------------
+fabric        975            
+neoforge      444            
+
+Today totals by Minecraft version
+---------------------------------
+mc_version  total_downloads
+----------  ---------------
+1.21.11     603            
+1.21.1      317            
+26.1.1      299            
+26.1        143            
+26.1.2      57             
+
+Today totals by mod version
+---------------------------
+mod_version  total_downloads
+-----------  ---------------
+1.0.1        720            
+1.0.2        299            
+1.0.0        277            
+1.0.3        123            
+
+Today daily platform breakdown
+------------------------------
+No data.
+
+Today daily loader breakdown
+----------------------------
+No data.
+
+Today daily Minecraft version breakdown
+---------------------------------------
+No data.
+
+Today daily mod version breakdown
+---------------------------------
+No data.
+
+Detected spikes
+---------------
+No data.
+
+Files written
+-------------
+Database: hearthguard_downloads.sqlite3
+Output directory: tracker_output
