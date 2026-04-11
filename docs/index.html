@@ -289,8 +289,6 @@
     })
     .then(({ s, lastModified }) => {
       const generationDate = formatGenerationDate(s.generated_utc_date, lastModified);
-      document.getElementById('meta').textContent =
-        `Generation Date: ${generationDate} | Spike count: ${s.spike_count}`;
 
       const root = document.getElementById('summary');
       root.className = '';
@@ -367,6 +365,6 @@
       root.textContent = 'Could not load summary.json.';
     });
 </script>
-<p class="muted" style="margin: 14px 2px 0 2px;">Run Log: <a href="./run.log">Open run.log</a></p>
+<p class="muted" style="margin: 14px 2px 0 2px;"><a href="./run.log">Run Log</a></p>
 </body>
 </html>
