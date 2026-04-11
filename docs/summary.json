@@ -65,10 +65,66 @@
       "total_downloads": 123
     }
   ],
-  "latest_platform_breakdown": [],
-  "latest_loader_breakdown": [],
-  "latest_mc_breakdown": [],
-  "latest_mod_breakdown": [],
+  "latest_platform_breakdown": [
+    {
+      "platform": "curseforge",
+      "daily_downloads": 51
+    },
+    {
+      "platform": "modrinth",
+      "daily_downloads": 27
+    }
+  ],
+  "latest_loader_breakdown": [
+    {
+      "loader_group": "fabric",
+      "daily_downloads": 51
+    },
+    {
+      "loader_group": "neoforge",
+      "daily_downloads": 27
+    }
+  ],
+  "latest_mc_breakdown": [
+    {
+      "mc_version": "1.21.1",
+      "daily_downloads": 16
+    },
+    {
+      "mc_version": "1.21.11",
+      "daily_downloads": 22
+    },
+    {
+      "mc_version": "26.1",
+      "daily_downloads": 0
+    },
+    {
+      "mc_version": "26.1.1",
+      "daily_downloads": 3
+    },
+    {
+      "mc_version": "26.1.2",
+      "daily_downloads": 37
+    }
+  ],
+  "latest_mod_breakdown": [
+    {
+      "mod_version": "1.0.0",
+      "daily_downloads": 1
+    },
+    {
+      "mod_version": "1.0.1",
+      "daily_downloads": 2
+    },
+    {
+      "mod_version": "1.0.2",
+      "daily_downloads": 3
+    },
+    {
+      "mod_version": "1.0.3",
+      "daily_downloads": 72
+    }
+  ],
   "release_tags": [
     {
       "release_date": "2026-04-11",
