@@ -1,0 +1,21 @@
+# Python cache/build artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# IDE/project-local files
+.idea/
+
+# Local runtime data
+tracker_output/
+*.sqlite3
+
+# Generated dashboard artifacts (keep docs/index.html tracked)
+docs/charts/
+docs/*.csv
+docs/*.json
+!docs/index.html
