@@ -5,13 +5,27 @@
   <title>Mod Tracker</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 24px;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+      margin: 24px auto;
+      max-width: 1200px;
       line-height: 1.4;
       color: #1f2937;
+      background: #f7f9f8;
     }
     h1, h2, h3 {
       margin: 0 0 10px 0;
+    }
+    h1 {
+      color: #14532d;
+    }
+    h2 {
+      color: #9a3412;
+    }
+    a {
+      color: #0f766e;
+    }
+    a:hover {
+      color: #115e59;
     }
     section {
       margin-top: 24px;
@@ -29,7 +43,8 @@
       vertical-align: top;
     }
     th {
-      background: #f3f4f6;
+      background: #e8f5e9;
+      color: #14532d;
     }
     .muted {
       color: #6b7280;
@@ -48,7 +63,7 @@
       border: 1px solid #d1d5db;
       border-radius: 6px;
       padding: 10px;
-      background: #fafafa;
+      background: #ffffff;
     }
     .stat .label {
       font-size: 12px;
@@ -65,6 +80,7 @@
       padding: 12px;
       margin-top: 12px;
       background: #fff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
     }
     .downloads-grid {
       display: grid;
@@ -88,9 +104,26 @@
         width: 100%;
       }
     }
+    .sortable {
+      cursor: pointer;
+      user-select: none;
+    }
+    .sort-indicator {
+      margin-left: 6px;
+      color: #0f766e;
+      font-size: 12px;
+    }
+    .shell {
+      border: 1px solid #d7e2da;
+      border-radius: 8px;
+      padding: 16px;
+      background: #ffffff;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+    }
   </style>
 </head>
 <body>
+<div class="shell">
 <h1>Mod Tracker</h1>
 <p id="meta">Loading summary...</p>
 
@@ -105,35 +138,100 @@
 
 <h2>Summary</h2>
 <div id="summary" class="muted">Loading summary...</div>
+</div>
 
 <script>
-  function buildTable(columns, rows) {
+  function isNumericCell(value) {
+    if (value === null || value === undefined) return false;
+    if (typeof value === 'number') return Number.isFinite(value);
+    if (typeof value === 'string' && value.trim().toLowerCase() === 'n/a') return false;
+    return Number.isFinite(Number(value));
+  }
+
+  function compareValues(a, b, direction) {
+    const aNum = isNumericCell(a) ? Number(a) : null;
+    const bNum = isNumericCell(b) ? Number(b) : null;
+
+    let result = 0;
+    if (aNum !== null && bNum !== null) {
+      result = aNum - bNum;
+    } else {
+      result = String(a ?? '').localeCompare(String(b ?? ''), undefined, { sensitivity: 'base' });
+    }
+    return direction === 'asc' ? result : -result;
+  }
+
+  function buildTable(columns, rows, options = {}) {
+    const sortableColumns = options.sortableColumns || [];
+    const tableRows = [...rows];
+    const sortState = {
+      column: sortableColumns[0] || null,
+      direction: 'desc',
+    };
+
+    if (sortState.column) {
+      tableRows.sort((a, b) => compareValues(a[sortState.column], b[sortState.column], sortState.direction));
+    }
+
     const table = document.createElement('table');
     const thead = document.createElement('thead');
     const headerRow = document.createElement('tr');
+
+    const tbody = document.createElement('tbody');
+
+    function renderBody() {
+      tbody.textContent = '';
+      tableRows.forEach((row) => {
+        const tr = document.createElement('tr');
+        columns.forEach((col) => {
+          const td = document.createElement('td');
+          td.textContent = row[col] ?? '';
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    }
+
     columns.forEach((col) => {
       const th = document.createElement('th');
       th.textContent = col;
+
+      if (sortableColumns.includes(col)) {
+        th.className = 'sortable';
+        const indicator = document.createElement('span');
+        indicator.className = 'sort-indicator';
+        indicator.textContent = sortState.column === col ? (sortState.direction === 'asc' ? '▲' : '▼') : '';
+        th.appendChild(indicator);
+
+        th.addEventListener('click', () => {
+          if (sortState.column === col) {
+            sortState.direction = sortState.direction === 'asc' ? 'desc' : 'asc';
+          } else {
+            sortState.column = col;
+            sortState.direction = 'desc';
+          }
+
+          tableRows.sort((a, b) => compareValues(a[sortState.column], b[sortState.column], sortState.direction));
+
+          Array.from(headerRow.children).forEach((headerCell, idx) => {
+            const headerCol = columns[idx];
+            const span = headerCell.querySelector('.sort-indicator');
+            if (!span) return;
+            span.textContent = sortState.column === headerCol ? (sortState.direction === 'asc' ? '▲' : '▼') : '';
+          });
+          renderBody();
+        });
+      }
       headerRow.appendChild(th);
     });
     thead.appendChild(headerRow);
     table.appendChild(thead);
-
-    const tbody = document.createElement('tbody');
-    rows.forEach((row) => {
-      const tr = document.createElement('tr');
-      columns.forEach((col) => {
-        const td = document.createElement('td');
-        td.textContent = row[col] ?? '';
-        tr.appendChild(td);
-      });
-      tbody.appendChild(tr);
-    });
+    renderBody();
     table.appendChild(tbody);
     return table;
   }
 
-  function addSummaryTable(container, title, rows) {
+  function addSummaryTable(container, title, rows, options = {}) {
     const card = document.createElement('div');
     card.className = 'section-card';
     const h3 = document.createElement('h3');
@@ -150,7 +248,7 @@
     }
 
     const columns = Object.keys(rows[0]);
-    card.appendChild(buildTable(columns, rows));
+    card.appendChild(buildTable(columns, rows, options));
     container.appendChild(card);
   }
 
@@ -215,22 +313,26 @@
       addSummaryTable(
         downloadsGrid,
         'Platform Downloads',
-        combineTotalsAndDaily('platform', s.latest_platform_totals, s.latest_platform_breakdown)
+        combineTotalsAndDaily('platform', s.latest_platform_totals, s.latest_platform_breakdown),
+        { sortableColumns: ['total', 'yesterday'] }
       );
       addSummaryTable(
         downloadsGrid,
         'Loader Downloads',
-        combineTotalsAndDaily('loader_group', s.latest_loader_totals, s.latest_loader_breakdown)
+        combineTotalsAndDaily('loader_group', s.latest_loader_totals, s.latest_loader_breakdown),
+        { sortableColumns: ['total', 'yesterday'] }
       );
       addSummaryTable(
         downloadsGrid,
         'Minecraft Version Downloads',
-        combineTotalsAndDaily('mc_version', s.latest_mc_totals, s.latest_mc_breakdown)
+        combineTotalsAndDaily('mc_version', s.latest_mc_totals, s.latest_mc_breakdown),
+        { sortableColumns: ['total', 'yesterday'] }
       );
       addSummaryTable(
         downloadsGrid,
         'Mod Version Downloads',
-        combineTotalsAndDaily('mod_version', s.latest_mod_totals, s.latest_mod_breakdown)
+        combineTotalsAndDaily('mod_version', s.latest_mod_totals, s.latest_mod_breakdown),
+        { sortableColumns: ['total', 'yesterday'] }
       );
     })
     .catch(() => {
@@ -240,9 +342,5 @@
       root.textContent = 'Could not load summary.json.';
     });
 </script>
-<section>
-  <h2>Run Log Tables</h2>
-  <p class="muted">Use the raw log instead of inline tables: <a href="./run.log">Open run.log</a></p>
-</section>
 </body>
 </html>
