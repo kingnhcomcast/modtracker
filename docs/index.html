@@ -1,8 +1,72 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>Mod Tracker</title>
+  <meta charset="utf-8" />
+  <title>Mod Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 24px;
+      line-height: 1.4;
+      color: #1f2937;
+    }
+    h1, h2, h3 {
+      margin: 0 0 10px 0;
+    }
+    section {
+      margin-top: 24px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 10px 0 18px 0;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid #d1d5db;
+      padding: 6px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #f3f4f6;
+    }
+    .muted {
+      color: #6b7280;
+    }
+    .error {
+      color: #b91c1c;
+      font-weight: 600;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .stat {
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      padding: 10px;
+      background: #fafafa;
+    }
+    .stat .label {
+      font-size: 12px;
+      color: #6b7280;
+    }
+    .stat .value {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+    .section-card {
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      padding: 12px;
+      margin-top: 12px;
+      background: #fff;
+    }
+  </style>
 </head>
 <body>
 <h1>Mod Tracker</h1>
@@ -18,15 +82,240 @@
 </ul>
 
 <h2>Summary</h2>
-<pre id="summary"></pre>
+<div id="summary" class="muted">Loading summary...</div>
+
+<section>
+  <h2>Run Log Tables</h2>
+  <div id="runlog" class="muted">Loading run log...</div>
+</section>
 
 <script>
-    fetch('./summary.json').then(r => r.json()).then(s => {
-        document.getElementById('meta').textContent =
-            `Generated UTC date: ${s.generated_utc_date} | Spike count: ${s.spike_count}`;
-        document.getElementById('summary').textContent = JSON.stringify(s, null, 2);
-    }).catch(() => {
-        document.getElementById('meta').textContent = 'summary.json not found yet.';
+  function buildTable(columns, rows) {
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    columns.forEach((col) => {
+      const th = document.createElement('th');
+      th.textContent = col;
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    rows.forEach((row) => {
+      const tr = document.createElement('tr');
+      columns.forEach((col) => {
+        const td = document.createElement('td');
+        td.textContent = row[col] ?? '';
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    return table;
+  }
+
+  function addSummaryTable(container, title, rows) {
+    const card = document.createElement('div');
+    card.className = 'section-card';
+    const h3 = document.createElement('h3');
+    h3.textContent = title;
+    card.appendChild(h3);
+
+    if (!rows || rows.length === 0) {
+      const p = document.createElement('p');
+      p.className = 'muted';
+      p.textContent = 'No data.';
+      card.appendChild(p);
+      container.appendChild(card);
+      return;
+    }
+
+    const columns = Object.keys(rows[0]);
+    card.appendChild(buildTable(columns, rows));
+    container.appendChild(card);
+  }
+
+  function isSeparatorLine(line) {
+    return /^[\-\s]+$/.test(line) && line.includes('-');
+  }
+
+  function parseSimpleTable(blockLines) {
+    if (blockLines.length < 3) return null;
+    if (!isSeparatorLine(blockLines[1])) return null;
+
+    const columns = blockLines[0].trim().split(/\s{2,}/);
+    if (columns.length < 2) return null;
+
+    const rows = [];
+    for (let i = 2; i < blockLines.length; i += 1) {
+      const raw = blockLines[i].trim();
+      if (!raw || raw === 'No data.') continue;
+      const parts = raw.split(/\s{2,}/);
+      if (parts.length > columns.length) {
+        const fixed = parts.slice(0, columns.length - 1);
+        fixed.push(parts.slice(columns.length - 1).join(' '));
+        parts.length = 0;
+        fixed.forEach((v) => parts.push(v));
+      }
+      while (parts.length < columns.length) parts.push('');
+      const row = {};
+      columns.forEach((c, idx) => { row[c] = parts[idx]; });
+      rows.push(row);
+    }
+
+    return { columns, rows };
+  }
+
+  function parseItemReport(lines) {
+    const columns = ['project_name', 'platform', 'loader_group', 'item_name', 'total_downloads', 'daily_downloads'];
+    const rows = [];
+    const rx = /^(.+?)\s{2,}(\S+)\s{2,}(\S+)\s{2,}(.+?)\s{2,}total=(\S+)\s+daily=(\S+)$/;
+    lines.forEach((line) => {
+      const m = line.match(rx);
+      if (!m) return;
+      rows.push({
+        project_name: m[1].trim(),
+        platform: m[2].trim(),
+        loader_group: m[3].trim(),
+        item_name: m[4].trim(),
+        total_downloads: m[5].trim(),
+        daily_downloads: m[6].trim(),
+      });
+    });
+    return { columns, rows };
+  }
+
+  function parseRunLogSections(text) {
+    const lines = text.split(/\r?\n/);
+    const sections = [];
+
+    let i = 0;
+    while (i < lines.length - 1) {
+      const title = (lines[i] || '').trim();
+      const underline = (lines[i + 1] || '').trim();
+      if (!title || !isSeparatorLine(underline)) {
+        i += 1;
+        continue;
+      }
+
+      i += 2;
+      const block = [];
+      while (i < lines.length) {
+        const maybeTitle = (lines[i] || '').trim();
+        const maybeUnderline = (lines[i + 1] || '').trim();
+        if (maybeTitle && isSeparatorLine(maybeUnderline)) break;
+        if ((lines[i] || '').trim()) block.push(lines[i].trimEnd());
+        i += 1;
+      }
+      sections.push({ title, block });
+    }
+    return sections;
+  }
+
+  function renderRunLog(text) {
+    const container = document.getElementById('runlog');
+    container.textContent = '';
+
+    const sections = parseRunLogSections(text);
+    if (sections.length === 0) {
+      container.className = 'error';
+      container.textContent = 'Could not parse run.log sections.';
+      return;
+    }
+
+    sections.forEach((section) => {
+      const card = document.createElement('div');
+      card.className = 'section-card';
+      const h3 = document.createElement('h3');
+      h3.textContent = section.title;
+      card.appendChild(h3);
+
+      if (section.block.length === 0 || section.block[0] === 'No data.') {
+        const p = document.createElement('p');
+        p.className = 'muted';
+        p.textContent = 'No data.';
+        card.appendChild(p);
+        container.appendChild(card);
+        return;
+      }
+
+      let parsed = null;
+      if (section.title.includes('item-level report')) {
+        parsed = parseItemReport(section.block);
+      } else {
+        parsed = parseSimpleTable(section.block);
+      }
+
+      if (parsed && parsed.rows.length > 0) {
+        card.appendChild(buildTable(parsed.columns, parsed.rows));
+      } else {
+        const pre = document.createElement('pre');
+        pre.textContent = section.block.join('\n');
+        card.appendChild(pre);
+      }
+
+      container.appendChild(card);
+    });
+  }
+
+  fetch('./summary.json')
+    .then((r) => r.json())
+    .then((s) => {
+      document.getElementById('meta').textContent =
+        `Generated UTC date: ${s.generated_utc_date} | Spike count: ${s.spike_count}`;
+
+      const root = document.getElementById('summary');
+      root.className = '';
+      root.textContent = '';
+
+      const stats = document.createElement('div');
+      stats.className = 'grid';
+      const statData = [
+        { label: 'Generated UTC Date', value: s.generated_utc_date ?? 'n/a' },
+        { label: 'Tracked Projects', value: (s.projects || []).length },
+        { label: 'Rows Captured Today', value: s.today_item_rows_count ?? 'n/a' },
+        { label: 'Spike Count', value: s.spike_count ?? 'n/a' },
+      ];
+      statData.forEach((x) => {
+        const box = document.createElement('div');
+        box.className = 'stat';
+        const label = document.createElement('div');
+        label.className = 'label';
+        label.textContent = x.label;
+        const value = document.createElement('div');
+        value.className = 'value';
+        value.textContent = String(x.value);
+        box.appendChild(label);
+        box.appendChild(value);
+        stats.appendChild(box);
+      });
+      root.appendChild(stats);
+
+      addSummaryTable(root, 'Latest Totals by Platform', s.latest_platform_totals || []);
+      addSummaryTable(root, 'Latest Totals by Loader', s.latest_loader_totals || []);
+      addSummaryTable(root, 'Latest Totals by Minecraft Version', s.latest_mc_totals || []);
+      addSummaryTable(root, 'Latest Totals by Mod Version', s.latest_mod_totals || []);
+      addSummaryTable(root, 'Latest Daily Platform Breakdown', s.latest_platform_breakdown || []);
+      addSummaryTable(root, 'Latest Daily Loader Breakdown', s.latest_loader_breakdown || []);
+      addSummaryTable(root, 'Latest Daily Minecraft Version Breakdown', s.latest_mc_breakdown || []);
+      addSummaryTable(root, 'Latest Daily Mod Version Breakdown', s.latest_mod_breakdown || []);
+    })
+    .catch(() => {
+      document.getElementById('meta').textContent = 'summary.json not found yet.';
+      const root = document.getElementById('summary');
+      root.className = 'error';
+      root.textContent = 'Could not load summary.json.';
+    });
+
+  fetch('./run.log')
+    .then((r) => r.text())
+    .then((text) => renderRunLog(text))
+    .catch(() => {
+      const container = document.getElementById('runlog');
+      container.className = 'error';
+      container.textContent = 'Could not load run.log.';
     });
 </script>
 </body>
