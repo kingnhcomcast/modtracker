@@ -305,7 +305,8 @@
     return Array.from(byKey.values()).sort((a, b) => Number(b.total ?? 0) - Number(a.total ?? 0));
   }
 
-  fetch('./summary.json')
+  const summaryUrl = `./summary.json?v=${Date.now()}`;
+  fetch(summaryUrl, { cache: 'no-store' })
     .then((r) => {
       const lastModified = r.headers.get('last-modified');
       return r.json().then((s) => ({ s, lastModified }));
