@@ -1202,6 +1202,31 @@ def build_charts(
 ) -> list[Path]:
     chart_paths: list[Path] = []
 
+    def slugify_project_name(name: str) -> str:
+        slug = re.sub(r"[^a-z0-9]+", "-", str(name).strip().lower())
+        slug = re.sub(r"-{2,}", "-", slug).strip("-")
+        return slug or "project"
+
+    def add_chart(
+        records: Sequence[dict[str, Any]],
+        *,
+        x_key: str,
+        y_key: str,
+        series_key: str,
+        title: str,
+        path: Path,
+    ) -> None:
+        if plot_line_chart(
+            records,
+            x_key=x_key,
+            y_key=y_key,
+            series_key=series_key,
+            title=title,
+            output_path=path,
+            dpi=dpi,
+        ):
+            chart_paths.append(path)
+
     by_platform_map: dict[tuple[str, str], int] = defaultdict(int)
     for rec in daily_project_records:
         key = (rec["snapshot_date"], rec["platform"])
@@ -1216,17 +1241,15 @@ def build_charts(
             "series": platform,
         })
 
-    path = output_dir / "charts" / "daily_downloads_by_platform.png"
-    if plot_line_chart(
+    path = output_dir / "charts" / "downloads_by_platform.png"
+    add_chart(
         by_platform,
         x_key="snapshot_date",
         y_key="daily_downloads",
         series_key="series",
         title="Daily Downloads by Platform",
-        output_path=path,
-        dpi=dpi,
-    ):
-        chart_paths.append(path)
+        path=path,
+    )
 
     by_loader_map: dict[tuple[str, str], int] = defaultdict(int)
     for rec in daily_loader_records:
@@ -1242,17 +1265,15 @@ def build_charts(
             "series": loader_group,
         })
 
-    path = output_dir / "charts" / "daily_downloads_by_loader.png"
-    if plot_line_chart(
+    path = output_dir / "charts" / "downloads_by_loader.png"
+    add_chart(
         by_loader,
         x_key="snapshot_date",
         y_key="daily_downloads",
         series_key="series",
         title="Daily Downloads by Loader",
-        output_path=path,
-        dpi=dpi,
-    ):
-        chart_paths.append(path)
+        path=path,
+    )
 
     by_mc_map: dict[tuple[str, str], int] = defaultdict(int)
     for rec in daily_mc_records:
@@ -1275,17 +1296,15 @@ def build_charts(
     top_series = set(sorted(version_totals, key=version_totals.get, reverse=True)[:8])
     by_mc = [rec for rec in by_mc if rec["series"] in top_series]
 
-    path = output_dir / "charts" / "daily_downloads_by_mc_version_top8.png"
-    if plot_line_chart(
+    path = output_dir / "charts" / "downloads_by_mc_version_top8.png"
+    add_chart(
         by_mc,
         x_key="snapshot_date",
         y_key="daily_downloads",
         series_key="series",
         title="Daily Downloads by Minecraft Version (Top 8)",
-        output_path=path,
-        dpi=dpi,
-    ):
-        chart_paths.append(path)
+        path=path,
+    )
 
     by_mod_map: dict[tuple[str, str], int] = defaultdict(int)
     for rec in daily_mod_records:
@@ -1308,17 +1327,138 @@ def build_charts(
     top_mod_series = set(sorted(mod_totals, key=mod_totals.get, reverse=True)[:8])
     by_mod = [rec for rec in by_mod if rec["series"] in top_mod_series]
 
-    path = output_dir / "charts" / "daily_downloads_by_mod_version_top8.png"
-    if plot_line_chart(
+    path = output_dir / "charts" / "downloads_by_mod_version_top8.png"
+    add_chart(
         by_mod,
         x_key="snapshot_date",
         y_key="daily_downloads",
         series_key="series",
         title="Daily Downloads by Mod Version (Top 8)",
-        output_path=path,
-        dpi=dpi,
-    ):
-        chart_paths.append(path)
+        path=path,
+    )
+
+    project_names = sorted({str(rec.get("project_name", "")).strip() for rec in daily_project_records if str(rec.get("project_name", "")).strip()})
+    used_slugs: set[str] = set()
+    project_slug_map: dict[str, str] = {}
+    for project_name in project_names:
+        base = slugify_project_name(project_name)
+        slug = base
+        idx = 2
+        while slug in used_slugs:
+            slug = f"{base}-{idx}"
+            idx += 1
+        used_slugs.add(slug)
+        project_slug_map[project_name] = slug
+
+    for project_name in project_names:
+        project_slug = project_slug_map[project_name]
+        project_dir = output_dir / "charts" / "projects" / project_slug
+
+        project_platform_map: dict[tuple[str, str], int] = defaultdict(int)
+        for rec in daily_project_records:
+            if str(rec.get("project_name")) != project_name:
+                continue
+            key = (rec["snapshot_date"], rec["platform"])
+            project_platform_map[key] += safe_int(rec["daily_downloads"], 0)
+
+        project_platform_rows: list[dict[str, Any]] = []
+        for (snapshot_date, platform), daily_downloads in sorted(project_platform_map.items()):
+            project_platform_rows.append({
+                "snapshot_date": snapshot_date,
+                "platform": platform,
+                "daily_downloads": daily_downloads,
+                "series": platform,
+            })
+        add_chart(
+            project_platform_rows,
+            x_key="snapshot_date",
+            y_key="daily_downloads",
+            series_key="series",
+            title=f"{project_name}: Daily Downloads by Platform",
+            path=project_dir / "downloads_by_platform.png",
+        )
+
+        project_loader_map: dict[tuple[str, str], int] = defaultdict(int)
+        for rec in daily_loader_records:
+            if str(rec.get("project_name")) != project_name:
+                continue
+            key = (rec["snapshot_date"], rec["loader_group"])
+            project_loader_map[key] += safe_int(rec["daily_downloads"], 0)
+
+        project_loader_rows: list[dict[str, Any]] = []
+        for (snapshot_date, loader_group), daily_downloads in sorted(project_loader_map.items()):
+            project_loader_rows.append({
+                "snapshot_date": snapshot_date,
+                "loader_group": loader_group,
+                "daily_downloads": daily_downloads,
+                "series": loader_group,
+            })
+        add_chart(
+            project_loader_rows,
+            x_key="snapshot_date",
+            y_key="daily_downloads",
+            series_key="series",
+            title=f"{project_name}: Daily Downloads by Loader",
+            path=project_dir / "downloads_by_loader.png",
+        )
+
+        project_mc_map: dict[tuple[str, str], int] = defaultdict(int)
+        for rec in daily_mc_records:
+            if str(rec.get("project_name")) != project_name:
+                continue
+            key = (rec["snapshot_date"], mc_chart_bucket(str(rec["mc_version"])))
+            project_mc_map[key] += safe_int(rec["daily_downloads"], 0)
+
+        project_mc_rows: list[dict[str, Any]] = []
+        for (snapshot_date, mc_version), daily_downloads in sorted(project_mc_map.items()):
+            project_mc_rows.append({
+                "snapshot_date": snapshot_date,
+                "mc_version": mc_version,
+                "daily_downloads": daily_downloads,
+                "series": mc_version,
+            })
+        project_mc_totals: dict[str, int] = defaultdict(int)
+        for rec in project_mc_rows:
+            project_mc_totals[rec["series"]] += safe_int(rec["daily_downloads"], 0)
+        project_mc_top = set(sorted(project_mc_totals, key=project_mc_totals.get, reverse=True)[:8])
+        project_mc_rows = [rec for rec in project_mc_rows if rec["series"] in project_mc_top]
+        add_chart(
+            project_mc_rows,
+            x_key="snapshot_date",
+            y_key="daily_downloads",
+            series_key="series",
+            title=f"{project_name}: Daily Downloads by Minecraft Version (Top 8)",
+            path=project_dir / "downloads_by_mc_version_top8.png",
+        )
+
+        project_mod_map: dict[tuple[str, str], int] = defaultdict(int)
+        for rec in daily_mod_records:
+            if str(rec.get("project_name")) != project_name:
+                continue
+            key = (rec["snapshot_date"], rec["mod_version"])
+            project_mod_map[key] += safe_int(rec["daily_downloads"], 0)
+
+        project_mod_rows: list[dict[str, Any]] = []
+        for (snapshot_date, mod_version), daily_downloads in sorted(project_mod_map.items()):
+            project_mod_rows.append({
+                "snapshot_date": snapshot_date,
+                "mod_version": mod_version,
+                "daily_downloads": daily_downloads,
+                "series": mod_version,
+            })
+        project_mod_totals: dict[str, int] = defaultdict(int)
+        for rec in project_mod_rows:
+            project_mod_totals[rec["series"]] += safe_int(rec["daily_downloads"], 0)
+        project_mod_top = set(sorted(project_mod_totals, key=project_mod_totals.get, reverse=True)[:8])
+        project_mod_rows = [rec for rec in project_mod_rows if rec["series"] in project_mod_top]
+        add_chart(
+            project_mod_rows,
+            x_key="snapshot_date",
+            y_key="daily_downloads",
+            series_key="series",
+            title=f"{project_name}: Daily Downloads by Mod Version (Top 8)",
+            path=project_dir / "downloads_by_mod_version_top8.png",
+        )
 
     return chart_paths
 
