@@ -487,14 +487,18 @@
     return slug || 'project';
   }
 
-  function renderProjectHeader(container, projectMeta) {
+  function renderProjectHeader(container, projectMeta, options = {}) {
     if (!projectMeta) return;
+    const useAuthorTitle = Boolean(options.useAuthorTitle);
+    const useAuthorLinks = Boolean(options.useAuthorLinks);
     const card = document.createElement('div');
     card.className = 'project-header';
 
     const title = document.createElement('h3');
     title.className = 'project-title';
-    title.textContent = projectMeta.project_name || 'Selected Mod';
+    title.textContent = useAuthorTitle
+      ? (projectMeta.author_name || projectMeta.project_name || 'Selected Mod')
+      : (projectMeta.project_name || projectMeta.author_name || 'Selected Mod');
     card.appendChild(title);
 
     const metaRow = document.createElement('div');
@@ -502,13 +506,21 @@
 
     const links = document.createElement('div');
     links.className = 'project-links';
-    if (projectMeta.modrinth_url) {
+    const modrinthTarget = useAuthorLinks
+      ? (projectMeta.modrinth_author_url || '')
+      : (projectMeta.modrinth_url || '');
+    const curseforgeTarget = useAuthorLinks
+      ? (projectMeta.curseforge_author_url || '')
+      : (projectMeta.curseforge_url || '');
+
+    if (modrinthTarget) {
       const a = document.createElement('a');
-      a.href = projectMeta.modrinth_url;
+      a.href = modrinthTarget;
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
-      a.title = 'Modrinth page';
-      a.setAttribute('aria-label', 'Modrinth page');
+      const modrinthIsAuthor = useAuthorLinks;
+      a.title = modrinthIsAuthor ? 'Modrinth author page' : 'Modrinth page';
+      a.setAttribute('aria-label', modrinthIsAuthor ? 'Modrinth author page' : 'Modrinth page');
       const img = document.createElement('img');
       img.className = 'project-link-icon';
       img.alt = 'Modrinth';
@@ -516,13 +528,14 @@
       a.appendChild(img);
       links.appendChild(a);
     }
-    if (projectMeta.curseforge_url) {
+    if (curseforgeTarget) {
       const a = document.createElement('a');
-      a.href = projectMeta.curseforge_url;
+      a.href = curseforgeTarget;
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
-      a.title = 'CurseForge page';
-      a.setAttribute('aria-label', 'CurseForge page');
+      const curseforgeIsAuthor = useAuthorLinks;
+      a.title = curseforgeIsAuthor ? 'CurseForge author page' : 'CurseForge page';
+      a.setAttribute('aria-label', curseforgeIsAuthor ? 'CurseForge author page' : 'CurseForge page');
       const img = document.createElement('img');
       img.className = 'project-link-icon';
       img.alt = 'CurseForge';
@@ -765,6 +778,48 @@
     return Array.from(byKey.values()).sort((a, b) => Number(b.total ?? 0) - Number(a.total ?? 0));
   }
 
+  function buildCumulativeSummaryMeta(projectCatalog, discoveredProjectNames) {
+    const normalizedCatalog = (projectCatalog || []).filter((meta) => meta && typeof meta === 'object');
+    if (normalizedCatalog.length > 0) {
+      if (normalizedCatalog.length === 1) {
+        const meta = normalizedCatalog[0];
+        const authorName = String(meta.author_name || meta.project_name || 'Author').trim();
+        const inferredCurseforgeAuthorUrl = authorName
+          ? `https://www.curseforge.com/members/${encodeURIComponent(authorName)}/projects`
+          : '';
+        return {
+          author_name: authorName,
+          modrinth_author_url: String(meta.modrinth_author_url || '').trim(),
+          curseforge_author_url: String(meta.curseforge_author_url || inferredCurseforgeAuthorUrl).trim(),
+        };
+      }
+      const authorNames = Array.from(new Set(
+        normalizedCatalog
+          .map((meta) => String(meta.author_name || '').trim())
+          .filter(Boolean)
+      ));
+      return {
+        author_name: authorNames.length > 0 ? authorNames.join(', ') : 'Multiple Authors',
+        modrinth_author_url: normalizedCatalog.find((m) => m.modrinth_author_url)?.modrinth_author_url || '',
+        curseforge_author_url:
+          normalizedCatalog.find((m) => m.curseforge_author_url)?.curseforge_author_url
+          || (() => {
+            const firstAuthor = authorNames[0] || '';
+            if (!firstAuthor) return '';
+            return `https://www.curseforge.com/members/${encodeURIComponent(firstAuthor)}/projects`;
+          })(),
+      };
+    }
+
+    if ((discoveredProjectNames || []).length === 1) {
+      const projectName = String(discoveredProjectNames[0] || '').trim();
+      return {
+        author_name: projectName,
+      };
+    }
+    return null;
+  }
+
   const fetchTag = Date.now();
   const summaryUrl = `./summary.json?v=${fetchTag}`;
   const itemRowsUrl = `./item_rows_today.csv?v=${fetchTag}`;
@@ -832,6 +887,7 @@
         if (!key) return;
         projectMetaByName.set(key, meta);
       });
+      const cumulativeSummaryMeta = buildCumulativeSummaryMeta(projectCatalog, discovered);
 
       const cumulativeDatasets = {
         platformRows: combineTotalsAndDaily('platform', s.latest_platform_totals, s.latest_platform_breakdown),
@@ -852,7 +908,7 @@
           key: '__all__',
           label: 'Cumulative (All Projects)',
           datasets: cumulativeDatasets,
-          projectMeta: null,
+          projectMeta: cumulativeSummaryMeta,
         },
         ...discovered.map((projectName) => ({
           key: projectName,
@@ -887,7 +943,10 @@
       function renderView(view) {
         viewPanel.textContent = '';
         if (view.projectMeta) {
-          renderProjectHeader(viewPanel, view.projectMeta);
+          renderProjectHeader(viewPanel, view.projectMeta, {
+            useAuthorTitle: view.key === '__all__',
+            useAuthorLinks: view.key === '__all__',
+          });
         }
         renderDownloadsGrid(viewPanel, view.datasets);
         renderPieCharts(viewPanel, view.datasets);

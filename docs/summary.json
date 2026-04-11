@@ -3,6 +3,17 @@
   "projects": [
     "HearthGuard"
   ],
+  "project_catalog": [
+    {
+      "project_name": "HearthGuard",
+      "modrinth_url": "https://modrinth.com/mod/hearthguard",
+      "modrinth_author_name": "Drahlek",
+      "author_name": "Drahlek",
+      "modrinth_author_url": "https://modrinth.com/user/Drahlek",
+      "curseforge_url": "https://www.curseforge.com/minecraft/mc-mods/hearthguard",
+      "icon_url": "https://cdn.modrinth.com/data/QE9szL3C/b7c6629ea1f478149286eb779623612f79467ab5_96.webp"
+    }
+  ],
   "today_item_rows_count": 34,
   "spike_count": 0,
   "latest_platform_totals": [

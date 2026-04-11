@@ -35,6 +35,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable, Optional, Sequence
+from urllib.parse import urljoin
 
 import cloudscraper
 import matplotlib.pyplot as plt
@@ -486,6 +487,40 @@ def fetch_modrinth_project_metadata(
         out["slug"] = slug
     if icon_url:
         out["icon_url"] = icon_url
+
+    try:
+        members_payload = request_json(
+            session,
+            f"{MODRINTH_BASE}/project/{project_id_or_slug}/members",
+            timeout=timeout,
+            retries=retries,
+        )
+    except Exception:
+        members_payload = []
+
+    if isinstance(members_payload, list):
+        preferred: Optional[dict[str, Any]] = None
+        fallback: Optional[dict[str, Any]] = None
+        for member in members_payload:
+            if not isinstance(member, dict):
+                continue
+            user_obj = member.get("user") if isinstance(member.get("user"), dict) else {}
+            username = str(user_obj.get("username") or member.get("username") or "").strip()
+            if not username:
+                continue
+            role = str(member.get("role") or "").strip().lower()
+            is_owner = bool(member.get("is_owner"))
+            candidate = {"username": username}
+            if fallback is None:
+                fallback = candidate
+            if is_owner or "owner" in role:
+                preferred = candidate
+                break
+        chosen = preferred or fallback
+        if chosen:
+            out["author_name"] = chosen["username"]
+            out["author_url"] = f"https://modrinth.com/user/{chosen['username']}"
+
     return out
 
 
@@ -731,13 +766,13 @@ def fetch_curseforge_files_by_scrape(
     return all_rows
 
 
-def fetch_curseforge_project_icon(
+def fetch_curseforge_project_metadata(
     session,
     *,
     project_url: str,
     timeout: int,
     retries: int,
-) -> str:
+) -> dict[str, str]:
     try:
         html = request_text(
             session,
@@ -746,15 +781,47 @@ def fetch_curseforge_project_icon(
             retries=retries,
         )
     except Exception:
-        return ""
+        return {}
 
     soup = BeautifulSoup(html, "html.parser")
+    out: dict[str, str] = {}
+
     og_img = soup.find("meta", attrs={"property": "og:image"})
     if og_img:
         content = str(og_img.get("content") or "").strip()
         if content:
-            return content
-    return ""
+            out["icon_url"] = content
+
+    author_link = soup.select_one('a[href*="/members/"][href*="/projects"]')
+    if author_link and author_link.get("href"):
+        href = str(author_link.get("href") or "").strip()
+        if href:
+            out["author_url"] = urljoin(project_url, href)
+        author_name = str(author_link.get_text(strip=True) or "").strip()
+        if author_name:
+            out["author_name"] = author_name
+
+    # Fallback: extract author path from embedded JSON/HTML if the anchor selector misses.
+    if not out.get("author_url"):
+        escaped_match = re.search(
+            r"members\\\\?/([^/\"\\]+)\\\\?/projects",
+            html,
+            flags=re.IGNORECASE,
+        )
+        plain_match = re.search(
+            r"/members/([^/\"\\]+)/projects",
+            html,
+            flags=re.IGNORECASE,
+        )
+        chosen = escaped_match or plain_match
+        if chosen:
+            member_slug = str(chosen.group(1)).strip()
+            if member_slug:
+                out["author_url"] = f"https://www.curseforge.com/members/{member_slug}/projects"
+                if not out.get("author_name"):
+                    out["author_name"] = member_slug
+
+    return out
 
 
 def build_project_catalog(
@@ -786,6 +853,11 @@ def build_project_catalog(
                 )
                 modrinth_slug = mr_meta.get("slug", modrinth_id)
                 entry["modrinth_url"] = f"https://modrinth.com/mod/{modrinth_slug}"
+                if mr_meta.get("author_name"):
+                    entry["modrinth_author_name"] = mr_meta["author_name"]
+                    entry["author_name"] = mr_meta["author_name"]
+                if mr_meta.get("author_url"):
+                    entry["modrinth_author_url"] = mr_meta["author_url"]
                 icon_url = mr_meta.get("icon_url", "")
 
         curseforge_cfg = project.get("curseforge") or {}
@@ -794,13 +866,21 @@ def build_project_catalog(
             if curseforge_slug:
                 entry["curseforge_url"] = f"https://www.curseforge.com/minecraft/mc-mods/{curseforge_slug}"
 
-        if not icon_url and entry.get("curseforge_url"):
-            icon_url = fetch_curseforge_project_icon(
+        if entry.get("curseforge_url"):
+            cf_meta = fetch_curseforge_project_metadata(
                 session,
                 project_url=entry["curseforge_url"],
                 timeout=timeout,
                 retries=retries,
             )
+            if cf_meta.get("author_name"):
+                entry["curseforge_author_name"] = cf_meta["author_name"]
+                if not entry.get("author_name"):
+                    entry["author_name"] = cf_meta["author_name"]
+            if cf_meta.get("author_url"):
+                entry["curseforge_author_url"] = cf_meta["author_url"]
+            if not icon_url:
+                icon_url = cf_meta.get("icon_url", "")
 
         if icon_url:
             entry["icon_url"] = icon_url
