@@ -31,7 +31,8 @@ jobs:
 
       - name: Run tracker
         run: |
-          python mod_download_tracker.py | tee tracker_output/run.log
+          mkdir -p tracker_output
+          python mod_download_tracker.py 2>&1 | tee tracker_output/run.log
 
       - name: Copy tracker_output to docs
         run: |
