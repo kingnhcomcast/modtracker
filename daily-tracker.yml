@@ -1,0 +1,48 @@
+name: Daily Mod Tracker
+
+on:
+  schedule:
+    - cron: "0 4,5 * * *" # handles DST for America/New_York midnight
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install cloudscraper matplotlib requests beautifulsoup4
+
+      - name: Run only at midnight ET
+        run: |
+          HOUR=$(TZ=America/New_York date +%H)
+          if [ "$HOUR" != "00" ]; then
+            echo "Not midnight ET; exiting."
+            exit 0
+          fi
+
+      - name: Run tracker
+        run: |
+          python mod_download_tracker.py | tee tracker_output/run.log
+
+      - name: Copy tracker_output to docs
+        run: |
+          mkdir -p docs
+          cp -r tracker_output/* docs/
+
+      - name: Commit and push generated files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs hearthguard_downloads.sqlite3
+          git diff --cached --quiet || git commit -m "Daily tracker update"
+          git push
+          

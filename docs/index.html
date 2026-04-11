@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Mod Tracker</title>
+</head>
+<body>
+<h1>Mod Tracker</h1>
+<p id="meta">Loading summary...</p>
+
+<h2>Charts</h2>
+<ul>
+    <li><a href="./charts/daily_downloads_by_platform.png">Daily Downloads by Platform</a></li>
+    <li><a href="./charts/daily_downloads_by_loader.png">Daily Downloads by Loader</a></li>
+    <li><a href="./charts/daily_downloads_by_mc_version_top8.png">Daily Downloads by MC Version</a></li>
+    <li><a href="./charts/daily_downloads_by_mod_version_top8.png">Daily Downloads by Mod Version</a></li>
+    <li><a href="./run.log">Latest Run Log</a></li>
+</ul>
+
+<h2>Summary</h2>
+<pre id="summary"></pre>
+
+<script>
+    fetch('./summary.json').then(r => r.json()).then(s => {
+        document.getElementById('meta').textContent =
+            `Generated UTC date: ${s.generated_utc_date} | Spike count: ${s.spike_count}`;
+        document.getElementById('summary').textContent = JSON.stringify(s, null, 2);
+    }).catch(() => {
+        document.getElementById('meta').textContent = 'summary.json not found yet.';
+    });
+</script>
+</body>
+</html>
