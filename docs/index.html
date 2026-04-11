@@ -127,15 +127,6 @@
 <h1>Mod Tracker</h1>
 <p id="meta">Loading summary...</p>
 
-<h2>Charts</h2>
-<ul>
-    <li><a href="./charts/daily_downloads_by_platform.png">Daily Downloads by Platform</a></li>
-    <li><a href="./charts/daily_downloads_by_loader.png">Daily Downloads by Loader</a></li>
-    <li><a href="./charts/daily_downloads_by_mc_version_top8.png">Daily Downloads by MC Version</a></li>
-    <li><a href="./charts/daily_downloads_by_mod_version_top8.png">Daily Downloads by Mod Version</a></li>
-    <li><a href="./run.log">Latest Run Log</a></li>
-</ul>
-
 <h2>Summary</h2>
 <div id="summary" class="muted">Loading summary...</div>
 </div>
@@ -235,7 +226,14 @@
     const card = document.createElement('div');
     card.className = 'section-card';
     const h3 = document.createElement('h3');
-    h3.textContent = title;
+    if (options.titleLink) {
+      const link = document.createElement('a');
+      link.href = options.titleLink;
+      link.textContent = title;
+      h3.appendChild(link);
+    } else {
+      h3.textContent = title;
+    }
     card.appendChild(h3);
 
     if (!rows || rows.length === 0) {
@@ -314,25 +312,37 @@
         downloadsGrid,
         'Platform Downloads',
         combineTotalsAndDaily('platform', s.latest_platform_totals, s.latest_platform_breakdown),
-        { sortableColumns: ['total', 'yesterday'] }
+        {
+          sortableColumns: ['total', 'yesterday'],
+          titleLink: './charts/daily_downloads_by_platform.png',
+        }
       );
       addSummaryTable(
         downloadsGrid,
         'Loader Downloads',
         combineTotalsAndDaily('loader_group', s.latest_loader_totals, s.latest_loader_breakdown),
-        { sortableColumns: ['total', 'yesterday'] }
+        {
+          sortableColumns: ['total', 'yesterday'],
+          titleLink: './charts/daily_downloads_by_loader.png',
+        }
       );
       addSummaryTable(
         downloadsGrid,
         'Minecraft Version Downloads',
         combineTotalsAndDaily('mc_version', s.latest_mc_totals, s.latest_mc_breakdown),
-        { sortableColumns: ['total', 'yesterday'] }
+        {
+          sortableColumns: ['total', 'yesterday'],
+          titleLink: './charts/daily_downloads_by_mc_version_top8.png',
+        }
       );
       addSummaryTable(
         downloadsGrid,
         'Mod Version Downloads',
         combineTotalsAndDaily('mod_version', s.latest_mod_totals, s.latest_mod_breakdown),
-        { sortableColumns: ['total', 'yesterday'] }
+        {
+          sortableColumns: ['total', 'yesterday'],
+          titleLink: './charts/daily_downloads_by_mod_version_top8.png',
+        }
       );
     })
     .catch(() => {
