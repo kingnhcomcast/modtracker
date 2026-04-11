@@ -5,6 +5,10 @@ on:
     - cron: "0 4,5 * * *" # handles DST for America/New_York midnight
   workflow_dispatch:
 
+concurrency:
+  group: daily-tracker-main
+  cancel-in-progress: false
+
 permissions:
   contents: write
 
@@ -13,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v5
         with:
@@ -51,19 +57,15 @@ jobs:
 
           git commit -m "Daily tracker update"
 
-          # Rebase on top of latest remote to avoid non-fast-forward failures.
-          git fetch origin main
-          git pull --rebase origin main
-
-          # Push with a few retries in case another run lands at the same time.
+          # Rebase on top of latest remote, then push; retry on races.
           for i in 1 2 3; do
-            if git push origin main; then
+            git fetch origin main
+            if git rebase origin/main && git push origin HEAD:main; then
               exit 0
             fi
-            echo "Push attempt $i failed; rebasing and retrying..."
-            git fetch origin main
-            git pull --rebase origin main
-            sleep 2
+            echo "Attempt $i failed; retrying..."
+            git rebase --abort || true
+            sleep 5
           done
 
           echo "Push failed after retries."
