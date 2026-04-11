@@ -459,6 +459,36 @@ def fetch_modrinth_versions(
     return rows
 
 
+def fetch_modrinth_project_metadata(
+    session,
+    *,
+    project_id_or_slug: str,
+    timeout: int,
+    retries: int,
+) -> dict[str, str]:
+    try:
+        payload = request_json(
+            session,
+            f"{MODRINTH_BASE}/project/{project_id_or_slug}",
+            timeout=timeout,
+            retries=retries,
+        )
+    except Exception:
+        return {}
+
+    if not isinstance(payload, dict):
+        return {}
+
+    slug = str(payload.get("slug") or "").strip()
+    icon_url = str(payload.get("icon_url") or "").strip()
+    out: dict[str, str] = {}
+    if slug:
+        out["slug"] = slug
+    if icon_url:
+        out["icon_url"] = icon_url
+    return out
+
+
 # ============================================================================
 # CURSEFORGE SCRAPING
 # ============================================================================
@@ -699,6 +729,85 @@ def fetch_curseforge_files_by_scrape(
             break
 
     return all_rows
+
+
+def fetch_curseforge_project_icon(
+    session,
+    *,
+    project_url: str,
+    timeout: int,
+    retries: int,
+) -> str:
+    try:
+        html = request_text(
+            session,
+            project_url,
+            timeout=timeout,
+            retries=retries,
+        )
+    except Exception:
+        return ""
+
+    soup = BeautifulSoup(html, "html.parser")
+    og_img = soup.find("meta", attrs={"property": "og:image"})
+    if og_img:
+        content = str(og_img.get("content") or "").strip()
+        if content:
+            return content
+    return ""
+
+
+def build_project_catalog(
+    session,
+    *,
+    projects: Sequence[dict[str, Any]],
+    timeout: int,
+    retries: int,
+) -> list[dict[str, str]]:
+    catalog: list[dict[str, str]] = []
+
+    for project in projects:
+        project_name = str(project.get("name") or "").strip()
+        if not project_name:
+            continue
+
+        entry: dict[str, str] = {"project_name": project_name}
+        icon_url = ""
+
+        modrinth_cfg = project.get("modrinth") or {}
+        if isinstance(modrinth_cfg, dict):
+            modrinth_id = str(modrinth_cfg.get("id") or "").strip()
+            if modrinth_id:
+                mr_meta = fetch_modrinth_project_metadata(
+                    session,
+                    project_id_or_slug=modrinth_id,
+                    timeout=timeout,
+                    retries=retries,
+                )
+                modrinth_slug = mr_meta.get("slug", modrinth_id)
+                entry["modrinth_url"] = f"https://modrinth.com/mod/{modrinth_slug}"
+                icon_url = mr_meta.get("icon_url", "")
+
+        curseforge_cfg = project.get("curseforge") or {}
+        if isinstance(curseforge_cfg, dict):
+            curseforge_slug = str(curseforge_cfg.get("slug") or "").strip()
+            if curseforge_slug:
+                entry["curseforge_url"] = f"https://www.curseforge.com/minecraft/mc-mods/{curseforge_slug}"
+
+        if not icon_url and entry.get("curseforge_url"):
+            icon_url = fetch_curseforge_project_icon(
+                session,
+                project_url=entry["curseforge_url"],
+                timeout=timeout,
+                retries=retries,
+            )
+
+        if icon_url:
+            entry["icon_url"] = icon_url
+
+        catalog.append(entry)
+
+    return catalog
 
 
 # ============================================================================
@@ -1664,8 +1773,16 @@ def run_fetch(conn: sqlite3.Connection, config: dict[str, Any]) -> list[Snapshot
 
     session = create_session()
     rows: list[SnapshotRow] = []
+    project_catalog: list[dict[str, str]] = []
 
     try:
+        project_catalog = build_project_catalog(
+            session,
+            projects=projects,
+            timeout=timeout,
+            retries=retries,
+        )
+
         for project in projects:
             project_name = str(project["name"])
 
@@ -1692,6 +1809,7 @@ def run_fetch(conn: sqlite3.Connection, config: dict[str, Any]) -> list[Snapshot
     finally:
         session.close()
 
+    config["_project_catalog"] = project_catalog
     upsert_snapshots(conn, rows)
     return rows
 
@@ -1777,6 +1895,7 @@ def build_analytics(conn: sqlite3.Connection, config: dict[str, Any]) -> dict[st
     summary_payload = {
         "generated_utc_date": today,
         "projects": [p["name"] for p in config["projects"]],
+        "project_catalog": config.get("_project_catalog", []),
         "today_item_rows_count": len(item_rows_today),
         "spike_count": len(spikes),
         "latest_platform_totals": latest_platform_totals,

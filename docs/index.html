@@ -136,9 +136,21 @@
       background: #eef8f3;
       color: #14532d;
       border-radius: 6px;
-      padding: 6px 10px;
-      font-size: 13px;
+      padding: 16px 20px;
+      min-width: 84px;
+      min-height: 84px;
+      font-size: 14px;
       cursor: pointer;
+    }
+    .tab-btn.icon-tab {
+      padding: 0;
+      overflow: hidden;
+    }
+    .tab-btn img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
     }
     .tab-btn.active {
       background: #14532d;
@@ -183,6 +195,34 @@
       border: 1px solid #e5e7eb;
       border-radius: 4px;
       margin-top: 8px;
+    }
+    .project-header {
+      margin-top: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      padding: 10px;
+      background: #ffffff;
+    }
+    .project-title {
+      margin: 0 0 10px 0;
+    }
+    .project-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .project-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+    .project-link-icon {
+      width: 48px;
+      height: 48px;
+      display: block;
+      border-radius: 6px;
     }
     @media (max-width: 1000px) {
       .pie-grid {
@@ -445,6 +485,57 @@
     let slug = String(name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
     slug = slug.replace(/-+/g, '-').replace(/^-+|-+$/g, '');
     return slug || 'project';
+  }
+
+  function renderProjectHeader(container, projectMeta) {
+    if (!projectMeta) return;
+    const card = document.createElement('div');
+    card.className = 'project-header';
+
+    const title = document.createElement('h3');
+    title.className = 'project-title';
+    title.textContent = projectMeta.project_name || 'Selected Mod';
+    card.appendChild(title);
+
+    const metaRow = document.createElement('div');
+    metaRow.className = 'project-meta-row';
+
+    const links = document.createElement('div');
+    links.className = 'project-links';
+    if (projectMeta.modrinth_url) {
+      const a = document.createElement('a');
+      a.href = projectMeta.modrinth_url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.title = 'Modrinth page';
+      a.setAttribute('aria-label', 'Modrinth page');
+      const img = document.createElement('img');
+      img.className = 'project-link-icon';
+      img.alt = 'Modrinth';
+      img.src = 'https://cdn.simpleicons.org/modrinth/00AF5C';
+      a.appendChild(img);
+      links.appendChild(a);
+    }
+    if (projectMeta.curseforge_url) {
+      const a = document.createElement('a');
+      a.href = projectMeta.curseforge_url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.title = 'CurseForge page';
+      a.setAttribute('aria-label', 'CurseForge page');
+      const img = document.createElement('img');
+      img.className = 'project-link-icon';
+      img.alt = 'CurseForge';
+      img.src = 'https://cdn.simpleicons.org/curseforge/F16436';
+      a.appendChild(img);
+      links.appendChild(a);
+    }
+
+    if (links.children.length > 0) {
+      metaRow.appendChild(links);
+    }
+    card.appendChild(metaRow);
+    container.appendChild(card);
   }
 
   function renderDownloadsGrid(container, datasets) {
@@ -734,6 +825,13 @@
         if (n) discoveredSet.add(n);
       });
       const discovered = Array.from(discoveredSet);
+      const projectCatalog = Array.isArray(s.project_catalog) ? s.project_catalog : [];
+      const projectMetaByName = new Map();
+      projectCatalog.forEach((meta) => {
+        const key = normalizeName(meta.project_name);
+        if (!key) return;
+        projectMetaByName.set(key, meta);
+      });
 
       const cumulativeDatasets = {
         platformRows: combineTotalsAndDaily('platform', s.latest_platform_totals, s.latest_platform_breakdown),
@@ -754,10 +852,12 @@
           key: '__all__',
           label: 'Cumulative (All Projects)',
           datasets: cumulativeDatasets,
+          projectMeta: null,
         },
         ...discovered.map((projectName) => ({
           key: projectName,
           label: projectName,
+          projectMeta: projectMetaByName.get(projectName) || null,
           datasets: {
             platformRows: aggregateRows(itemRowsToday, projectName, 'platform', (r) => r.platform),
             loaderRows: aggregateRows(itemRowsToday, projectName, 'loader_group', (r) => r.loader_group || 'unknown'),
@@ -777,6 +877,9 @@
 
       function renderView(view) {
         viewPanel.textContent = '';
+        if (view.projectMeta) {
+          renderProjectHeader(viewPanel, view.projectMeta);
+        }
         renderDownloadsGrid(viewPanel, view.datasets);
         renderPieCharts(viewPanel, view.datasets);
         renderTrendChart(viewPanel, view.datasets);
@@ -787,7 +890,18 @@
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = `tab-btn${view.key === activeKey ? ' active' : ''}`;
-        btn.textContent = view.label;
+        if (view.projectMeta && view.projectMeta.icon_url) {
+          btn.classList.add('icon-tab');
+          const img = document.createElement('img');
+          img.src = view.projectMeta.icon_url;
+          img.alt = view.label;
+          img.loading = 'lazy';
+          btn.title = view.label;
+          btn.setAttribute('aria-label', view.label);
+          btn.appendChild(img);
+        } else {
+          btn.textContent = view.label;
+        }
         btn.addEventListener('click', () => {
           activeKey = view.key;
           Array.from(tabs.children).forEach((x) => x.classList.remove('active'));
