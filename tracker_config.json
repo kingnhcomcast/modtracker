@@ -4,7 +4,10 @@
   "enable_modrinth": true,
   "enable_curseforge": true,
   "projects": [
-    "hearthguard"
+    {
+      "slug": "hearthguard",
+      "name": "HearthGuard"
+    }
   ],
   "release_tags": [
     {
