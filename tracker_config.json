@@ -1,0 +1,24 @@
+{
+  "db_path": "mod_downloads.sqlite3",
+  "output_dir": "tracker_output",
+  "enable_modrinth": true,
+  "enable_curseforge": true,
+  "projects": [
+    "hearthguard"
+  ],
+  "release_tags": [
+    {
+      "date": "2026-04-11",
+      "project": "hearthguard",
+      "tag": "1.0.3-release"
+    }
+  ],
+  "spike_window_days": 7,
+  "spike_min_multiplier": 2.0,
+  "spike_min_absolute_increase": 10,
+  "http_timeout_seconds": 30,
+  "http_retries": 4,
+  "snapshot_day_offset_days": 1,
+  "chart_dpi": 140,
+  "verbose_console": true
+}

@@ -24,10 +24,12 @@ Features
 
 from __future__ import annotations
 
+import argparse
 import csv
 import datetime as dt
 import json
 import re
+import shutil
 import sqlite3
 import sys
 import time
@@ -36,6 +38,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable, Optional, Sequence
 from urllib.parse import urljoin
+from zoneinfo import ZoneInfo
+from zoneinfo import ZoneInfoNotFoundError
 
 import cloudscraper
 import matplotlib.pyplot as plt
@@ -47,23 +51,14 @@ from bs4 import BeautifulSoup
 # CONFIGURATION
 # ============================================================================
 
-CONFIG: dict[str, Any] = {
-    "db_path": "hearthguard_downloads.sqlite3",
+DEFAULT_CONFIG: dict[str, Any] = {
+    "db_path": "mod_downloads.sqlite3",
     "output_dir": "tracker_output",
 
     "enable_modrinth": True,
     "enable_curseforge": True,
 
-    "projects": [
-        {
-            "name": "HearthGuard",
-            "modrinth": {"id": "hearthguard"},
-            "curseforge": {
-                "slug": "hearthguard",
-                "base_url": "https://www.curseforge.com/minecraft/mc-mods/hearthguard/files/all",
-            },
-        },
-    ],
+    "projects": ["hearthguard"],
 
     "release_tags": [
         {"date": "2026-04-11", "project": "HearthGuard", "tag": "1.0.3-release"},
@@ -75,13 +70,21 @@ CONFIG: dict[str, Any] = {
 
     "http_timeout_seconds": 30,
     "http_retries": 4,
+    "snapshot_day_offset_days": 1,
 
     "chart_dpi": 140,
     "verbose_console": True,
 }
+CONFIG_PATH = Path(__file__).with_name("tracker_config.json")
 
 
 MODRINTH_BASE = "https://api.modrinth.com/v2"
+try:
+    ET_TZ = ZoneInfo("America/New_York")
+    ET_TZ_FALLBACK = False
+except ZoneInfoNotFoundError:
+    ET_TZ = None
+    ET_TZ_FALLBACK = True
 
 
 # ============================================================================
@@ -122,8 +125,160 @@ class SnapshotRow:
 # UTILS
 # ============================================================================
 
-def utc_today() -> str:
-    return dt.datetime.now(dt.UTC).date().isoformat()
+def fallback_eastern_now() -> dt.datetime:
+    utc_now = dt.datetime.now(dt.UTC)
+    year = utc_now.year
+
+    march_1 = dt.date(year, 3, 1)
+    march_first_sunday = 1 + ((6 - march_1.weekday()) % 7)
+    second_sunday_march = march_first_sunday + 7
+    dst_start_utc = dt.datetime(year, 3, second_sunday_march, 7, 0, tzinfo=dt.UTC)
+
+    nov_1 = dt.date(year, 11, 1)
+    nov_first_sunday = 1 + ((6 - nov_1.weekday()) % 7)
+    dst_end_utc = dt.datetime(year, 11, nov_first_sunday, 6, 0, tzinfo=dt.UTC)
+
+    if dst_start_utc <= utc_now < dst_end_utc:
+        tz = dt.timezone(dt.timedelta(hours=-4), "EDT")
+    else:
+        tz = dt.timezone(dt.timedelta(hours=-5), "EST")
+    return utc_now.astimezone(tz)
+
+
+def et_now() -> dt.datetime:
+    if ET_TZ_FALLBACK:
+        return fallback_eastern_now()
+    return dt.datetime.now(ET_TZ)
+
+
+def et_today() -> str:
+    return et_now().date().isoformat()
+
+
+def et_now_timestamp() -> str:
+    now = et_now()
+    tz_name = str(now.tzname() or "ET")
+    return now.strftime("%Y-%m-%d %H:%M:%S.%f")[:-3] + f" {tz_name}"
+
+
+def snapshot_date_for_run(config: Optional[dict[str, Any]] = None) -> str:
+    offset_days = 1
+    if config is not None:
+        offset_days = safe_int(config.get("snapshot_day_offset_days", 1), 1)
+    return (et_now().date() - dt.timedelta(days=offset_days)).isoformat()
+
+
+def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Minecraft mod download tracker")
+    parser.add_argument(
+        "snapshot_day_offset_days",
+        nargs="?",
+        type=int,
+        choices=(0, 1),
+        default=None,
+        help="Snapshot day offset override (default from config is 1; use 0 for same-day).",
+    )
+    return parser.parse_args(argv)
+
+
+def curseforge_files_url(slug: str) -> str:
+    return f"https://www.curseforge.com/minecraft/mc-mods/{slug}/files/all"
+
+
+def default_project_name_from_slug(slug: str) -> str:
+    return slug.strip()
+
+
+def normalize_project_entry(raw: Any) -> dict[str, Any]:
+    if isinstance(raw, str):
+        slug = raw.strip()
+        if not slug:
+            raise RuntimeError("Project slug entries must be non-empty strings.")
+        return {
+            "name": default_project_name_from_slug(slug),
+            "modrinth": {"id": slug},
+            "curseforge": {
+                "slug": slug,
+                "base_url": curseforge_files_url(slug),
+            },
+        }
+
+    if not isinstance(raw, dict):
+        raise RuntimeError("Each project entry must be a string slug or object.")
+
+    shorthand_slug = str(raw.get("slug") or "").strip()
+    if shorthand_slug:
+        name = str(raw.get("name") or default_project_name_from_slug(shorthand_slug)).strip()
+        project: dict[str, Any] = {"name": name}
+
+        modrinth_cfg = raw.get("modrinth")
+        if modrinth_cfg is None:
+            project["modrinth"] = {"id": shorthand_slug}
+        elif isinstance(modrinth_cfg, dict):
+            modrinth_id = str(modrinth_cfg.get("id") or shorthand_slug).strip()
+            if modrinth_id:
+                project["modrinth"] = {"id": modrinth_id}
+        else:
+            raise RuntimeError("Project modrinth config must be an object when provided.")
+
+        curseforge_cfg = raw.get("curseforge")
+        if curseforge_cfg is None:
+            project["curseforge"] = {
+                "slug": shorthand_slug,
+                "base_url": curseforge_files_url(shorthand_slug),
+            }
+        elif isinstance(curseforge_cfg, dict):
+            cf_slug = str(curseforge_cfg.get("slug") or shorthand_slug).strip()
+            if cf_slug:
+                project["curseforge"] = {
+                    "slug": cf_slug,
+                    "base_url": str(curseforge_cfg.get("base_url") or curseforge_files_url(cf_slug)).strip(),
+                }
+        else:
+            raise RuntimeError("Project curseforge config must be an object when provided.")
+
+        return project
+
+    name = str(raw.get("name") or "").strip()
+    if not name:
+        raise RuntimeError("Project object entries must include 'name' or 'slug'.")
+
+    project = {"name": name}
+    modrinth_cfg = raw.get("modrinth")
+    if isinstance(modrinth_cfg, dict):
+        modrinth_id = str(modrinth_cfg.get("id") or "").strip()
+        if modrinth_id:
+            project["modrinth"] = {"id": modrinth_id}
+
+    curseforge_cfg = raw.get("curseforge")
+    if isinstance(curseforge_cfg, dict):
+        cf_slug = str(curseforge_cfg.get("slug") or "").strip()
+        if cf_slug:
+            project["curseforge"] = {
+                "slug": cf_slug,
+                "base_url": str(curseforge_cfg.get("base_url") or curseforge_files_url(cf_slug)).strip(),
+            }
+
+    return project
+
+
+def normalize_projects(raw_projects: Any) -> list[dict[str, Any]]:
+    if not isinstance(raw_projects, list):
+        raise RuntimeError("Config 'projects' must be a JSON array.")
+    return [normalize_project_entry(x) for x in raw_projects]
+
+
+def load_config(config_path: Path = CONFIG_PATH) -> dict[str, Any]:
+    with config_path.open("r", encoding="utf-8") as f:
+        loaded = json.load(f)
+
+    if not isinstance(loaded, dict):
+        raise RuntimeError(f"Config file must contain a JSON object: {config_path}")
+
+    config = dict(DEFAULT_CONFIG)
+    config.update(loaded)
+    config["projects"] = normalize_projects(config.get("projects"))
+    return config
 
 
 def ensure_dir(path: str | Path) -> Path:
@@ -372,12 +527,15 @@ def upsert_snapshots(conn: sqlite3.Connection, rows: Sequence[SnapshotRow]) -> N
     if not rows:
         return
 
+    created_at = et_now_timestamp()
+    db_rows = [row.as_db_tuple() + (created_at,) for row in rows]
+
     with conn:
         conn.executemany("""
             INSERT INTO snapshots (
                 snapshot_date, platform, project_name, project_platform_id, item_id,
-                item_name, version_label, mod_version, loader, game_versions, total_downloads
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                item_name, version_label, mod_version, loader, game_versions, total_downloads, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(snapshot_date, platform, item_id) DO UPDATE SET
                 project_name = excluded.project_name,
                 project_platform_id = excluded.project_platform_id,
@@ -386,8 +544,9 @@ def upsert_snapshots(conn: sqlite3.Connection, rows: Sequence[SnapshotRow]) -> N
                 mod_version = excluded.mod_version,
                 loader = excluded.loader,
                 game_versions = excluded.game_versions,
-                total_downloads = excluded.total_downloads
-        """, [row.as_db_tuple() for row in rows])
+                total_downloads = excluded.total_downloads,
+                created_at = excluded.created_at
+        """, db_rows)
 
 
 # ============================================================================
@@ -399,6 +558,7 @@ def fetch_modrinth_versions(
     *,
     project_name: str,
     project_id_or_slug: str,
+    snapshot_date: str,
     timeout: int,
     retries: int,
 ) -> list[SnapshotRow]:
@@ -413,7 +573,6 @@ def fetch_modrinth_versions(
     if not isinstance(payload, list):
         raise RuntimeError(f"Unexpected Modrinth response for {project_id_or_slug}")
 
-    today = utc_today()
     rows: list[SnapshotRow] = []
 
     for version in payload:
@@ -444,7 +603,7 @@ def fetch_modrinth_versions(
         )
 
         rows.append(SnapshotRow(
-            snapshot_date=today,
+            snapshot_date=snapshot_date,
             platform="modrinth",
             project_name=project_name,
             project_platform_id=project_id_or_slug,
@@ -620,8 +779,6 @@ def scrape_curseforge_file_rows_from_html(html: str, project_slug: str) -> list[
             name = str(file_obj.get("displayName") or file_obj.get("fileName") or "").strip()
             if not name:
                 continue
-            if project_slug.lower() not in name.lower():
-                continue
 
             downloads = safe_int(file_obj.get("totalDownloads"), 0)
             versions = [str(x) for x in (file_obj.get("gameVersions") or [])]
@@ -669,8 +826,6 @@ def scrape_curseforge_file_rows_from_html(html: str, project_slug: str) -> list[
             continue
 
         name = m.group("name").strip()
-        if project_slug.lower() not in name.lower():
-            continue
 
         rest = m.group("rest").strip()
         downloads = safe_int(m.group("downloads").replace(",", ""), 0)
@@ -709,10 +864,10 @@ def fetch_curseforge_files_by_scrape(
     project_name: str,
     project_slug: str,
     base_url: str,
+    snapshot_date: str,
     timeout: int,
     retries: int,
 ) -> list[SnapshotRow]:
-    today = utc_today()
     page = 1
     page_size = 50
     all_rows: list[SnapshotRow] = []
@@ -743,7 +898,7 @@ def fetch_curseforge_files_by_scrape(
             item_id = f"{project_slug}:{source_name}"
 
             all_rows.append(SnapshotRow(
-                snapshot_date=today,
+                snapshot_date=snapshot_date,
                 platform="curseforge",
                 project_name=project_name,
                 project_platform_id=project_slug,
@@ -896,6 +1051,8 @@ def build_project_catalog(
 
 def compute_item_report_for_date(conn: sqlite3.Connection, snapshot_date: str) -> list[dict[str, Any]]:
     cur = conn.cursor()
+    first_snapshot_date = cur.execute("SELECT MIN(snapshot_date) FROM snapshots").fetchone()[0]
+    is_initial_snapshot_day = (snapshot_date == first_snapshot_date)
     cur.execute("""
         SELECT
             s.snapshot_date,
@@ -927,7 +1084,8 @@ def compute_item_report_for_date(conn: sqlite3.Connection, snapshot_date: str) -
     for r in cur.fetchall():
         prev = r[11]
         total = safe_int(r[10], 0)
-        daily = None if prev is None else total - safe_int(prev, 0)
+        prev_total = safe_int(prev, 0)
+        daily = None if is_initial_snapshot_day else (total - prev_total)
 
         rows.append({
             "snapshot_date": r[0],
@@ -941,7 +1099,7 @@ def compute_item_report_for_date(conn: sqlite3.Connection, snapshot_date: str) -
             "loader": r[8],
             "game_versions": r[9],
             "total_downloads": total,
-            "previous_total": prev,
+            "previous_total": prev_total,
             "daily_downloads": daily,
             "loader_group": canonical_loader_group(r[8]),
         })
@@ -950,6 +1108,7 @@ def compute_item_report_for_date(conn: sqlite3.Connection, snapshot_date: str) -
 
 def load_all_daily_item_rows(conn: sqlite3.Connection) -> list[dict[str, Any]]:
     cur = conn.cursor()
+    first_snapshot_date = cur.execute("SELECT MIN(snapshot_date) FROM snapshots").fetchone()[0]
     cur.execute("""
         SELECT
             s.snapshot_date,
@@ -980,7 +1139,8 @@ def load_all_daily_item_rows(conn: sqlite3.Connection) -> list[dict[str, Any]]:
     for r in cur.fetchall():
         prev = r[11]
         total = safe_int(r[10], 0)
-        daily = None if prev is None else total - safe_int(prev, 0)
+        prev_total = safe_int(prev, 0)
+        daily = None if (r[0] == first_snapshot_date) else (total - prev_total)
         rows.append({
             "snapshot_date": r[0],
             "platform": r[1],
@@ -993,7 +1153,7 @@ def load_all_daily_item_rows(conn: sqlite3.Connection) -> list[dict[str, Any]]:
             "loader": r[8],
             "game_versions": r[9],
             "total_downloads": total,
-            "previous_total": prev,
+            "previous_total": prev_total,
             "daily_downloads": daily,
             "loader_group": canonical_loader_group(r[8]),
         })
@@ -1416,6 +1576,7 @@ def build_charts(
     daily_loader_records: Sequence[dict[str, Any]],
     daily_mc_records: Sequence[dict[str, Any]],
     daily_mod_records: Sequence[dict[str, Any]],
+    configured_project_names: Sequence[str],
     dpi: int,
 ) -> list[Path]:
     chart_paths: list[Path] = []
@@ -1608,26 +1769,30 @@ def build_charts(
         path=path,
     )
 
-    project_names = sorted({str(rec.get("project_name", "")).strip() for rec in daily_project_records if str(rec.get("project_name", "")).strip()})
-    used_slugs: set[str] = set()
-    project_slug_map: dict[str, str] = {}
-    for project_name in project_names:
-        base = slugify_project_name(project_name)
-        slug = base
-        idx = 2
-        while slug in used_slugs:
-            slug = f"{base}-{idx}"
-            idx += 1
-        used_slugs.add(slug)
-        project_slug_map[project_name] = slug
+    project_keys = sorted({
+        str(rec.get("project_name", "")).strip().lower()
+        for rec in daily_project_records
+        if str(rec.get("project_name", "")).strip()
+    } | {
+        str(name).strip().lower()
+        for name in configured_project_names
+        if str(name).strip()
+    })
+    projects_root = output_dir / "charts" / "projects"
+    expected_slugs = {slugify_project_name(name) for name in project_keys}
+    if projects_root.exists():
+        for child in projects_root.iterdir():
+            if child.is_dir() and child.name not in expected_slugs:
+                shutil.rmtree(child, ignore_errors=True)
 
-    for project_name in project_names:
-        project_slug = project_slug_map[project_name]
-        project_dir = output_dir / "charts" / "projects" / project_slug
+    for project_name in project_keys:
+        project_slug = slugify_project_name(project_name)
+        project_dir = projects_root / project_slug
+        project_dir.mkdir(parents=True, exist_ok=True)
 
         project_total_map: dict[str, int] = defaultdict(int)
         for rec in daily_project_records:
-            if str(rec.get("project_name")) != project_name:
+            if str(rec.get("project_name", "")).strip().lower() != project_name:
                 continue
             project_total_map[rec["snapshot_date"]] += safe_int(rec["daily_downloads"], 0)
 
@@ -1664,7 +1829,7 @@ def build_charts(
 
         project_platform_map: dict[tuple[str, str], int] = defaultdict(int)
         for rec in daily_project_records:
-            if str(rec.get("project_name")) != project_name:
+            if str(rec.get("project_name", "")).strip().lower() != project_name:
                 continue
             key = (rec["snapshot_date"], rec["platform"])
             project_platform_map[key] += safe_int(rec["daily_downloads"], 0)
@@ -1688,7 +1853,7 @@ def build_charts(
 
         project_loader_map: dict[tuple[str, str], int] = defaultdict(int)
         for rec in daily_loader_records:
-            if str(rec.get("project_name")) != project_name:
+            if str(rec.get("project_name", "")).strip().lower() != project_name:
                 continue
             key = (rec["snapshot_date"], rec["loader_group"])
             project_loader_map[key] += safe_int(rec["daily_downloads"], 0)
@@ -1712,7 +1877,7 @@ def build_charts(
 
         project_mc_map: dict[tuple[str, str], int] = defaultdict(int)
         for rec in daily_mc_records:
-            if str(rec.get("project_name")) != project_name:
+            if str(rec.get("project_name", "")).strip().lower() != project_name:
                 continue
             key = (rec["snapshot_date"], mc_chart_bucket(str(rec["mc_version"])))
             project_mc_map[key] += safe_int(rec["daily_downloads"], 0)
@@ -1741,7 +1906,7 @@ def build_charts(
 
         project_mod_map: dict[tuple[str, str], int] = defaultdict(int)
         for rec in daily_mod_records:
-            if str(rec.get("project_name")) != project_name:
+            if str(rec.get("project_name", "")).strip().lower() != project_name:
                 continue
             key = (rec["snapshot_date"], rec["mod_version"])
             project_mod_map[key] += safe_int(rec["daily_downloads"], 0)
@@ -1781,8 +1946,8 @@ def print_header(title: str) -> None:
     print("-" * len(title))
 
 
-def print_today_item_report(item_rows_today: Sequence[dict[str, Any]]) -> None:
-    print_header(f"{utc_today()} item-level report")
+def print_today_item_report(item_rows_today: Sequence[dict[str, Any]], snapshot_date: str) -> None:
+    print_header(f"{snapshot_date} item-level report")
     if not item_rows_today:
         print("No rows found.")
         return
@@ -1850,6 +2015,7 @@ def run_fetch(conn: sqlite3.Connection, config: dict[str, Any]) -> list[Snapshot
     enable_curseforge = bool(config.get("enable_curseforge", True))
     timeout = int(config.get("http_timeout_seconds", 30))
     retries = int(config.get("http_retries", 4))
+    snapshot_date = snapshot_date_for_run(config)
 
     session = create_session()
     rows: list[SnapshotRow] = []
@@ -1872,6 +2038,7 @@ def run_fetch(conn: sqlite3.Connection, config: dict[str, Any]) -> list[Snapshot
                     session,
                     project_name=project_name,
                     project_id_or_slug=modrinth_id,
+                    snapshot_date=snapshot_date,
                     timeout=timeout,
                     retries=retries,
                 ))
@@ -1883,6 +2050,7 @@ def run_fetch(conn: sqlite3.Connection, config: dict[str, Any]) -> list[Snapshot
                     project_name=project_name,
                     project_slug=str(cf["slug"]),
                     base_url=str(cf["base_url"]),
+                    snapshot_date=snapshot_date,
                     timeout=timeout,
                     retries=retries,
                 ))
@@ -1890,13 +2058,21 @@ def run_fetch(conn: sqlite3.Connection, config: dict[str, Any]) -> list[Snapshot
         session.close()
 
     config["_project_catalog"] = project_catalog
+    config["_snapshot_date"] = snapshot_date
+    fetch_counts: dict[tuple[str, str], int] = defaultdict(int)
+    for row in rows:
+        fetch_counts[(row.project_name, row.platform)] += 1
+    config["_fetch_counts"] = [
+        {"project_name": project_name, "platform": platform, "rows_fetched": count}
+        for (project_name, platform), count in sorted(fetch_counts.items())
+    ]
     upsert_snapshots(conn, rows)
     return rows
 
 
 def build_analytics(conn: sqlite3.Connection, config: dict[str, Any]) -> dict[str, Any]:
     output_dir = ensure_dir(config.get("output_dir", "tracker_output"))
-    today = utc_today()
+    today = str(config.get("_snapshot_date") or snapshot_date_for_run(config))
 
     item_rows_today = compute_item_report_for_date(conn, today)
     item_rows_all = load_all_daily_item_rows(conn)
@@ -1973,7 +2149,9 @@ def build_analytics(conn: sqlite3.Connection, config: dict[str, Any]) -> dict[st
     write_csv(output_dir / "latest_mod_totals.csv", latest_mod_totals)
 
     summary_payload = {
-        "generated_utc_date": today,
+        "generated_et_date": today,
+        "generated_est_date": today,
+        "snapshot_date": today,
         "projects": [p["name"] for p in config["projects"]],
         "project_catalog": config.get("_project_catalog", []),
         "today_item_rows_count": len(item_rows_today),
@@ -1996,6 +2174,7 @@ def build_analytics(conn: sqlite3.Connection, config: dict[str, Any]) -> dict[st
         daily_loader_records=daily_loader,
         daily_mc_records=daily_mc,
         daily_mod_records=daily_mod,
+        configured_project_names=[str(p.get("name", "")) for p in config.get("projects", [])],
         dpi=int(config.get("chart_dpi", 140)),
     )
 
@@ -2023,17 +2202,27 @@ def build_analytics(conn: sqlite3.Connection, config: dict[str, Any]) -> dict[st
 
 
 def main() -> int:
-    db_path = str(CONFIG.get("db_path", "hearthguard_downloads.sqlite3"))
+    args = parse_args()
+    config = load_config()
+    if args.snapshot_day_offset_days is not None:
+        config["snapshot_day_offset_days"] = int(args.snapshot_day_offset_days)
+    db_path = str(config.get("db_path", "mod_downloads.sqlite3"))
     conn = sqlite3.connect(db_path)
 
     try:
         create_db(conn)
-        sync_release_tags(conn, CONFIG.get("release_tags", []))
-        run_fetch(conn, CONFIG)
-        analytics = build_analytics(conn, CONFIG)
+        sync_release_tags(conn, config.get("release_tags", []))
+        run_fetch(conn, config)
+        analytics = build_analytics(conn, config)
 
-        if CONFIG.get("verbose_console", True):
-            print_today_item_report(analytics["item_rows_today"])
+        if config.get("verbose_console", True):
+            print_simple_table(
+                "Fetched rows by project/platform",
+                config.get("_fetch_counts", []),
+                columns=("project_name", "platform", "rows_fetched"),
+                sort_key="rows_fetched",
+            )
+            print_today_item_report(analytics["item_rows_today"], analytics["today"])
 
             print_simple_table(
                 "Today totals by platform",

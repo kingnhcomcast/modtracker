@@ -49,7 +49,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs hearthguard_downloads.sqlite3
+          git add docs mod_downloads.sqlite3
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0

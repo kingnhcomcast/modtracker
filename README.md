@@ -82,11 +82,17 @@ On macOS/Linux, if `python` is not available:
 python3 mod_download_tracker.py
 ```
 
+Use same-day snapshot attribution (override default prior-day offset):
+
+```bash
+python mod_download_tracker.py 0
+```
+
 ## Output
 
 After a successful run:
 
-- SQLite database: `hearthguard_downloads.sqlite3`
+- SQLite database: `mod_downloads.sqlite3`
 - Analytics folder: `tracker_output/`
   - CSV exports (daily totals and breakdowns)
   - `summary.json`
@@ -94,9 +100,43 @@ After a successful run:
 
 ## Optional: edit tracker configuration
 
-The script configuration is in `mod_download_tracker.py` under the `CONFIG` dictionary. You can adjust:
+The tracker configuration is in `tracker_config.json`. You can adjust:
 
 - tracked projects
 - output directory
 - spike detection thresholds
 - HTTP timeout/retry settings
+
+### Where to set the mods to track
+
+The list of mods is defined in `projects` inside `tracker_config.json`.
+
+Simplest form (recommended):
+
+```json
+"projects": [
+  "hearthguard",
+  "another-mod-slug"
+]
+```
+
+Each string slug auto-populates:
+- `name` (defaults to slug)
+- `modrinth.id`
+- `curseforge.slug`
+- `curseforge.base_url`
+
+Advanced form (optional) for custom naming/overrides:
+
+```json
+"projects": [
+  {
+    "slug": "hearthguard",
+    "name": "HearthGuard"
+  }
+]
+```
+
+Global platform switches are also in `tracker_config.json`:
+- `enable_modrinth`
+- `enable_curseforge`

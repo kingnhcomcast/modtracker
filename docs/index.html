@@ -263,10 +263,22 @@
     if (lastModifiedHeader) {
       const d = new Date(lastModifiedHeader);
       if (!Number.isNaN(d.getTime())) {
-        return d.toISOString().replace('T', ' ').replace('Z', ' UTC');
+        const parts = new Intl.DateTimeFormat('en-US', {
+          timeZone: 'America/New_York',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: 'numeric',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: true,
+          timeZoneName: 'short',
+        }).formatToParts(d);
+        const map = Object.fromEntries(parts.map((p) => [p.type, p.value]));
+        return `${map.year}-${map.month}-${map.day} ${map.hour}:${map.minute}:${map.second} ${map.dayPeriod} ${map.timeZoneName}`;
       }
     }
-    if (baseDate) return `${baseDate} 00:00:00 UTC`;
+    if (baseDate) return `${baseDate} 12:00:00 AM ET`;
     return 'n/a';
   }
 
@@ -833,7 +845,8 @@
   ])
     .then(([summaryData, itemRowsToday]) => {
       const { s, lastModified } = summaryData;
-      const generationDate = formatGenerationDate(s.generated_utc_date, lastModified);
+      const generationBaseDate = s.generated_et_date || s.generated_est_date || s.generated_utc_date;
+      const generationDate = formatGenerationDate(generationBaseDate, lastModified);
 
       const root = document.getElementById('summary');
       root.className = '';
