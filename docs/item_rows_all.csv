@@ -344,14 +344,14 @@ snapshot_date,platform,project_name,project_platform_id,item_id,item_name,versio
 2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.0 (NeoForge),HearthGuard 1.21.11-1.0.0 (NeoForge),HearthGuard 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,55,55,0,neoforge
 2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.1 (Fabric),HearthGuard 1.21.11-1.0.1 (Fabric),HearthGuard 1.21.11-1.0.1 (Fabric),1.0.1,Fabric,1.21.11,213,211,2,fabric
 2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.1 (NeoForge),HearthGuard 1.21.11-1.0.1 (NeoForge),HearthGuard 1.21.11-1.0.1 (NeoForge),1.0.1,NeoForge,1.21.11,58,58,0,neoforge
-2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.3 (Fabric),HearthGuard 1.21.11-1.0.3 (Fabric),HearthGuard 1.21.11-1.0.3 (Fabric),1.0.3,Fabric,1.21.11,25,6,19,fabric
+2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.3 (Fabric),HearthGuard 1.21.11-1.0.3 (Fabric),HearthGuard 1.21.11-1.0.3 (Fabric),1.0.3,Fabric,1.21.11,28,6,22,fabric
 2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.3 (NeoForge),HearthGuard 1.21.11-1.0.3 (NeoForge),HearthGuard 1.21.11-1.0.3 (NeoForge),1.0.3,NeoForge,1.21.11,8,5,3,neoforge
 2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1-1.0.1 (Fabric),HearthGuard 26.1-1.0.1 (Fabric),HearthGuard 26.1-1.0.1 (Fabric),1.0.1,Fabric,26.1,72,72,0,fabric
 2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1-1.0.1 (NeoForge),HearthGuard 26.1-1.0.1 (NeoForge),HearthGuard 26.1-1.0.1 (NeoForge),1.0.1,NeoForge,26.1,22,22,0,neoforge
 2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1-1.0.2 (Fabric),HearthGuard 26.1.1-1.0.2 (Fabric),HearthGuard 26.1.1-1.0.2 (Fabric),1.0.2,Fabric,26.1.1,109,108,1,fabric
 2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1-1.0.2 (NeoForge),HearthGuard 26.1.1-1.0.2 (NeoForge),HearthGuard 26.1.1-1.0.2 (NeoForge),1.0.2,NeoForge,26.1.1,99,98,1,neoforge
-2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1.2-1.0.3 (Fabric),HearthGuard 26.1.2-1.0.3 (Fabric),HearthGuard 26.1.2-1.0.3 (Fabric),1.0.3,Fabric,"26.1.2,26.1.1,26.1",26,8,18,fabric
-2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1.2-1.0.3 (NeoForge),HearthGuard 26.1.2-1.0.3 (NeoForge),HearthGuard 26.1.2-1.0.3 (NeoForge),1.0.3,NeoForge,"26.1.2,26.1.1,26.1",24,3,21,neoforge
+2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1.2-1.0.3 (Fabric),HearthGuard 26.1.2-1.0.3 (Fabric),HearthGuard 26.1.2-1.0.3 (Fabric),1.0.3,Fabric,"26.1.2,26.1.1,26.1",27,8,19,fabric
+2026-04-11,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1.2-1.0.3 (NeoForge),HearthGuard 26.1.2-1.0.3 (NeoForge),HearthGuard 26.1.2-1.0.3 (NeoForge),1.0.3,NeoForge,"26.1.2,26.1.1,26.1",27,3,24,neoforge
 2026-04-11,modrinth,HearthGuard,hearthguard,3Qr0FvWY,hearthguard-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,fabric,1.21.11,6,6,0,fabric
 2026-04-11,modrinth,HearthGuard,hearthguard,uV8Oy26t,hearthguard-fabric-1.21.1-1.0.0.jar,1.21.1-1.0.0,1.0.0,fabric,1.21.1,5,5,0,fabric
 2026-04-11,modrinth,HearthGuard,hearthguard,nRpsspT3,hearthguard-fabric-1.21.1-1.0.1.jar,1.21.1-1.0.1,1.0.1,fabric,1.21.1,33,33,0,fabric
