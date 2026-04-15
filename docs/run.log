@@ -1,95 +1,102 @@
 
-2026-04-11 item-level report
+Fetched rows by project/platform
+--------------------------------
+project_name  platform    rows_fetched
+------------  ----------  ------------
+HearthGuard   curseforge  17          
+HearthGuard   modrinth    17          
+
+2026-04-14 item-level report
 ----------------------------
-HearthGuard      curseforge  fabric    HearthGuard 1.21.1-1.0.0 (Fabric)                total=52       daily=1
+HearthGuard      curseforge  fabric    HearthGuard 1.21.1-1.0.0 (Fabric)                total=52       daily=0
 HearthGuard      curseforge  fabric    HearthGuard 1.21.1-1.0.1 (Fabric)                total=75       daily=0
-HearthGuard      curseforge  neoforge  HearthGuard 1.21.1-1.0.1 (NeoForge)              total=91       daily=0
-HearthGuard      curseforge  fabric    HearthGuard 1.21.1-1.0.3 (Fabric)                total=8        daily=4
-HearthGuard      curseforge  neoforge  HearthGuard 1.21.1-1.0.3 (NeoForge)              total=12       daily=6
+HearthGuard      curseforge  neoforge  HearthGuard 1.21.1-1.0.1 (NeoForge)              total=93       daily=0
+HearthGuard      curseforge  fabric    HearthGuard 1.21.1-1.0.3 (Fabric)                total=34       daily=6
+HearthGuard      curseforge  neoforge  HearthGuard 1.21.1-1.0.3 (NeoForge)              total=28       daily=5
 HearthGuard      curseforge  fabric    HearthGuard 1.21.11-1.0.0 (Fabric)               total=154      daily=0
 HearthGuard      curseforge  neoforge  HearthGuard 1.21.11-1.0.0 (NeoForge)             total=55       daily=0
-HearthGuard      curseforge  fabric    HearthGuard 1.21.11-1.0.1 (Fabric)               total=213      daily=2
+HearthGuard      curseforge  fabric    HearthGuard 1.21.11-1.0.1 (Fabric)               total=215      daily=2
 HearthGuard      curseforge  neoforge  HearthGuard 1.21.11-1.0.1 (NeoForge)             total=58       daily=0
-HearthGuard      curseforge  fabric    HearthGuard 1.21.11-1.0.3 (Fabric)               total=21       daily=15
-HearthGuard      curseforge  neoforge  HearthGuard 1.21.11-1.0.3 (NeoForge)             total=5        daily=0
-HearthGuard      curseforge  fabric    HearthGuard 26.1-1.0.1 (Fabric)                  total=72       daily=0
+HearthGuard      curseforge  fabric    HearthGuard 1.21.11-1.0.3 (Fabric)               total=75       daily=14
+HearthGuard      curseforge  neoforge  HearthGuard 1.21.11-1.0.3 (NeoForge)             total=12       daily=1
+HearthGuard      curseforge  fabric    HearthGuard 26.1-1.0.1 (Fabric)                  total=77       daily=0
 HearthGuard      curseforge  neoforge  HearthGuard 26.1-1.0.1 (NeoForge)                total=22       daily=0
-HearthGuard      curseforge  fabric    HearthGuard 26.1.1-1.0.2 (Fabric)                total=109      daily=1
-HearthGuard      curseforge  neoforge  HearthGuard 26.1.1-1.0.2 (NeoForge)              total=99       daily=1
-HearthGuard      curseforge  fabric    HearthGuard 26.1.2-1.0.3 (Fabric)                total=21       daily=13
-HearthGuard      curseforge  neoforge  HearthGuard 26.1.2-1.0.3 (NeoForge)              total=16       daily=13
+HearthGuard      curseforge  fabric    HearthGuard 26.1.1-1.0.2 (Fabric)                total=113      daily=2
+HearthGuard      curseforge  neoforge  HearthGuard 26.1.1-1.0.2 (NeoForge)              total=100      daily=1
+HearthGuard      curseforge  fabric    HearthGuard 26.1.2-1.0.3 (Fabric)                total=63       daily=7
+HearthGuard      curseforge  neoforge  HearthGuard 26.1.2-1.0.3 (NeoForge)              total=40       daily=2
 HearthGuard      modrinth    fabric    hearthguard-1.21.11-1.0.0.jar                    total=6        daily=0
 HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.1-1.0.0.jar              total=5        daily=0
 HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.1-1.0.1.jar              total=33       daily=0
-HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.1-1.0.3.jar              total=4        daily=2
-HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.11-1.0.1.jar             total=68       daily=0
-HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.11-1.0.3.jar             total=9        daily=6
+HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.1-1.0.3.jar              total=6        daily=1
+HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.11-1.0.1.jar             total=69       daily=0
+HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.11-1.0.3.jar             total=16       daily=2
 HearthGuard      modrinth    fabric    hearthguard-fabric-26.1-1.0.1.jar                total=36       daily=0
-HearthGuard      modrinth    fabric    hearthguard-fabric-26.1.1-1.0.2.jar              total=76       daily=1
-HearthGuard      modrinth    fabric    hearthguard-fabric-26.1.2-1.0.3.jar              total=16       daily=9
-HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.1-1.0.1.jar            total=31       daily=0
-HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.1-1.0.3.jar            total=6        daily=3
+HearthGuard      modrinth    fabric    hearthguard-fabric-26.1.1-1.0.2.jar              total=78       daily=0
+HearthGuard      modrinth    fabric    hearthguard-fabric-26.1.2-1.0.3.jar              total=31       daily=3
+HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.1-1.0.1.jar            total=35       daily=0
+HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.1-1.0.3.jar            total=9        daily=0
 HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.11-1.0.0.jar           total=5        daily=0
 HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.11-1.0.1.jar           total=8        daily=0
-HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.11-1.0.3.jar           total=4        daily=2
+HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.11-1.0.3.jar           total=4        daily=0
 HearthGuard      modrinth    neoforge  hearthguard-neoforge-26.1-1.0.1.jar              total=13       daily=0
 HearthGuard      modrinth    neoforge  hearthguard-neoforge-26.1.1-1.0.2.jar            total=15       daily=0
-HearthGuard      modrinth    neoforge  hearthguard-neoforge-26.1.2-1.0.3.jar            total=7        daily=5
+HearthGuard      modrinth    neoforge  hearthguard-neoforge-26.1.2-1.0.3.jar            total=8        daily=0
 
 Today totals by platform
 ------------------------
 platform    total_downloads
 ----------  ---------------
-curseforge  1083           
-modrinth    342            
+curseforge  1266           
+modrinth    377            
 
 Today totals by loader
 ----------------------
 loader_group  total_downloads
 ------------  ---------------
-fabric        978            
-neoforge      447            
+fabric        1138           
+neoforge      505            
 
 Today totals by Minecraft version
 ---------------------------------
 mc_version  total_downloads
 ----------  ---------------
-1.21.11     606            
-1.21.1      317            
-26.1.1      299            
-26.1        143            
-26.1.2      60             
+1.21.11     677            
+1.21.1      370            
+26.1.1      306            
+26.1        148            
+26.1.2      142            
 
 Today totals by mod version
 ---------------------------
 mod_version  total_downloads
 -----------  ---------------
-1.0.1        720            
-1.0.2        299            
+1.0.1        734            
+1.0.3        326            
+1.0.2        306            
 1.0.0        277            
-1.0.3        129            
 
 Today daily platform breakdown
 ------------------------------
 platform    daily_downloads
 ----------  ---------------
-curseforge  56             
-modrinth    28             
+curseforge  40             
+modrinth    6              
 
 Today daily loader breakdown
 ----------------------------
 loader_group  daily_downloads
 ------------  ---------------
-fabric        54             
-neoforge      30             
+fabric        37             
+neoforge      9              
 
 Today daily Minecraft version breakdown
 ---------------------------------------
 mc_version  daily_downloads
 ----------  ---------------
-26.1.2      40             
-1.21.11     25             
-1.21.1      16             
+1.21.11     19             
+1.21.1      12             
+26.1.2      12             
 26.1.1      3              
 26.1        0              
 
@@ -97,10 +104,10 @@ Today daily mod version breakdown
 ---------------------------------
 mod_version  daily_downloads
 -----------  ---------------
-1.0.3        78             
+1.0.3        41             
 1.0.2        3              
 1.0.1        2              
-1.0.0        1              
+1.0.0        0              
 
 Detected spikes
 ---------------
@@ -108,7 +115,7 @@ No data.
 
 Files written
 -------------
-Database: hearthguard_downloads.sqlite3
+Database: mod_downloads.sqlite3
 Output directory: tracker_output
 Chart: tracker_output/charts/total_daily_downloads.png
 Chart: tracker_output/charts/total_daily_downloads_bar.png
