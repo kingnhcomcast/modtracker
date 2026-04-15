@@ -503,18 +503,23 @@ def create_db(conn: sqlite3.Connection) -> None:
 
 
 def sync_release_tags(conn: sqlite3.Connection, tags: Sequence[dict[str, Any]]) -> None:
-    if not tags:
-        return
-
-    rows = []
+    rows: list[tuple[str, str, str, str]] = []
+    seen: set[tuple[str, str, str]] = set()
     for tag in tags:
         release_date = str(tag["date"])
         project_name = str(tag["project"])
         label = str(tag["tag"])
         notes = str(tag.get("notes", ""))
+        key = (release_date, project_name, label)
+        if key in seen:
+            continue
+        seen.add(key)
         rows.append((release_date, project_name, label, notes))
 
     with conn:
+        conn.execute("DELETE FROM release_tags")
+        if not rows:
+            return
         conn.executemany("""
             INSERT INTO release_tags (release_date, project_name, tag, notes)
             VALUES (?, ?, ?, ?)
@@ -1513,6 +1518,7 @@ def plot_line_chart(
     title: str,
     output_path: Path,
     dpi: int,
+    release_markers: Optional[dict[str, list[str]]] = None,
 ) -> bool:
     if not records:
         return False
@@ -1527,6 +1533,34 @@ def plot_line_chart(
         xs = [r[x_key] for r in series]
         ys = [r.get(y_key, 0) or 0 for r in series]
         plt.plot(xs, ys, marker="o", label=label)
+
+    if release_markers:
+        x_values = sorted({str(r.get(x_key, "")) for r in records if str(r.get(x_key, ""))})
+        has_any_markers = any(release_markers.get(x) for x in x_values)
+        if has_any_markers:
+            y_min, y_max = plt.ylim()
+            y_span = max(y_max - y_min, 1.0)
+            label_y = y_max - y_span * 0.02
+            for x in x_values:
+                labels = [lbl for lbl in release_markers.get(x, []) if str(lbl).strip()]
+                labels = list(dict.fromkeys(labels))
+                if not labels:
+                    continue
+                plt.axvline(x=x, color="#b91c1c", linestyle="--", linewidth=1, alpha=0.4)
+                label_text = " | ".join(labels[:2])
+                if len(labels) > 2:
+                    label_text += f" (+{len(labels) - 2})"
+                plt.text(
+                    x,
+                    label_y,
+                    label_text,
+                    rotation=90,
+                    va="top",
+                    ha="center",
+                    fontsize=8,
+                    color="#7f1d1d",
+                    clip_on=True,
+                )
 
     plt.title(title)
     plt.xlabel("Date")
@@ -1549,6 +1583,7 @@ def plot_bar_chart(
     title: str,
     output_path: Path,
     dpi: int,
+    release_markers: Optional[dict[str, list[str]]] = None,
 ) -> bool:
     if not records:
         return False
@@ -1559,6 +1594,32 @@ def plot_bar_chart(
 
     plt.figure(figsize=(11, 6), dpi=dpi)
     plt.bar(xs, ys)
+    if release_markers:
+        has_any_markers = any(release_markers.get(str(x)) for x in xs)
+        if has_any_markers:
+            y_min, y_max = plt.ylim()
+            y_span = max(y_max - y_min, 1.0)
+            label_y = y_max - y_span * 0.02
+            for x in xs:
+                labels = [lbl for lbl in release_markers.get(str(x), []) if str(lbl).strip()]
+                labels = list(dict.fromkeys(labels))
+                if not labels:
+                    continue
+                plt.axvline(x=x, color="#b91c1c", linestyle="--", linewidth=1, alpha=0.4)
+                label_text = " | ".join(labels[:2])
+                if len(labels) > 2:
+                    label_text += f" (+{len(labels) - 2})"
+                plt.text(
+                    x,
+                    label_y,
+                    label_text,
+                    rotation=90,
+                    va="top",
+                    ha="center",
+                    fontsize=8,
+                    color="#7f1d1d",
+                    clip_on=True,
+                )
     plt.title(title)
     plt.xlabel("Date")
     plt.ylabel(y_key.replace("_", " ").title())
@@ -1577,6 +1638,7 @@ def build_charts(
     daily_mc_records: Sequence[dict[str, Any]],
     daily_mod_records: Sequence[dict[str, Any]],
     configured_project_names: Sequence[str],
+    release_tags: Sequence[dict[str, Any]],
     dpi: int,
 ) -> list[Path]:
     chart_paths: list[Path] = []
@@ -1594,6 +1656,7 @@ def build_charts(
         series_key: str,
         title: str,
         path: Path,
+        project_name: Optional[str] = None,
     ) -> None:
         if plot_line_chart(
             records,
@@ -1603,8 +1666,28 @@ def build_charts(
             title=title,
             output_path=path,
             dpi=dpi,
+            release_markers=release_markers_for_project(project_name),
         ):
             chart_paths.append(path)
+
+    def release_markers_for_project(project_name: Optional[str] = None) -> dict[str, list[str]]:
+        project_key = str(project_name or "").strip().lower()
+        markers: dict[str, list[str]] = defaultdict(list)
+        for tag in release_tags:
+            release_date = str(tag.get("release_date", "")).strip()
+            raw_project = str(tag.get("project_name", "")).strip()
+            tag_text = str(tag.get("tag", "")).strip()
+            if not release_date or not tag_text:
+                continue
+            tag_project_key = raw_project.lower()
+            if project_key:
+                if tag_project_key != project_key:
+                    continue
+                label = tag_text
+            else:
+                label = f"{raw_project}:{tag_text}" if raw_project else tag_text
+            markers[release_date].append(label)
+        return markers
 
     def cumulative_records(
         records: Sequence[dict[str, Any]],
@@ -1642,6 +1725,7 @@ def build_charts(
         series_key="series",
         title="Total Daily Downloads",
         path=output_dir / "charts" / "total_daily_downloads.png",
+        project_name=None,
     )
     by_total_cumulative = cumulative_records(
         by_total,
@@ -1656,6 +1740,7 @@ def build_charts(
         title="Total Downloads (Cumulative by Day)",
         output_path=output_dir / "charts" / "total_daily_downloads_bar.png",
         dpi=dpi,
+        release_markers=release_markers_for_project(None),
     ):
         chart_paths.append(output_dir / "charts" / "total_daily_downloads_bar.png")
 
@@ -1681,6 +1766,7 @@ def build_charts(
         series_key="series",
         title="Daily Downloads by Platform",
         path=path,
+        project_name=None,
     )
 
     by_loader_map: dict[tuple[str, str], int] = defaultdict(int)
@@ -1705,6 +1791,7 @@ def build_charts(
         series_key="series",
         title="Daily Downloads by Loader",
         path=path,
+        project_name=None,
     )
 
     by_mc_map: dict[tuple[str, str], int] = defaultdict(int)
@@ -1736,6 +1823,7 @@ def build_charts(
         series_key="series",
         title="Daily Downloads by Minecraft Version (Top 8)",
         path=path,
+        project_name=None,
     )
 
     by_mod_map: dict[tuple[str, str], int] = defaultdict(int)
@@ -1767,6 +1855,7 @@ def build_charts(
         series_key="series",
         title="Daily Downloads by Mod Version (Top 8)",
         path=path,
+        project_name=None,
     )
 
     project_keys = sorted({
@@ -1810,6 +1899,7 @@ def build_charts(
             series_key="series",
             title=f"{project_name}: Total Daily Downloads",
             path=project_dir / "total_daily_downloads.png",
+            project_name=project_name,
         )
         project_total_cumulative = cumulative_records(
             project_total_rows,
@@ -1824,6 +1914,7 @@ def build_charts(
             title=f"{project_name}: Total Downloads (Cumulative by Day)",
             output_path=project_dir / "total_daily_downloads_bar.png",
             dpi=dpi,
+            release_markers=release_markers_for_project(project_name),
         ):
             chart_paths.append(project_dir / "total_daily_downloads_bar.png")
 
@@ -1849,6 +1940,7 @@ def build_charts(
             series_key="series",
             title=f"{project_name}: Daily Downloads by Platform",
             path=project_dir / "downloads_by_platform.png",
+            project_name=project_name,
         )
 
         project_loader_map: dict[tuple[str, str], int] = defaultdict(int)
@@ -1873,6 +1965,7 @@ def build_charts(
             series_key="series",
             title=f"{project_name}: Daily Downloads by Loader",
             path=project_dir / "downloads_by_loader.png",
+            project_name=project_name,
         )
 
         project_mc_map: dict[tuple[str, str], int] = defaultdict(int)
@@ -1902,6 +1995,7 @@ def build_charts(
             series_key="series",
             title=f"{project_name}: Daily Downloads by Minecraft Version (Top 8)",
             path=project_dir / "downloads_by_mc_version_top8.png",
+            project_name=project_name,
         )
 
         project_mod_map: dict[tuple[str, str], int] = defaultdict(int)
@@ -1931,6 +2025,7 @@ def build_charts(
             series_key="series",
             title=f"{project_name}: Daily Downloads by Mod Version (Top 8)",
             path=project_dir / "downloads_by_mod_version_top8.png",
+            project_name=project_name,
         )
 
     return chart_paths
@@ -2175,6 +2270,7 @@ def build_analytics(conn: sqlite3.Connection, config: dict[str, Any]) -> dict[st
         daily_mc_records=daily_mc,
         daily_mod_records=daily_mod,
         configured_project_names=[str(p.get("name", "")) for p in config.get("projects", [])],
+        release_tags=tags,
         dpi=int(config.get("chart_dpi", 140)),
     )
 

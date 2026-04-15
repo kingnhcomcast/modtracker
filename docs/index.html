@@ -480,8 +480,9 @@
 
   function aggregateRows(rows, projectName, labelKey, valueFn) {
     const map = new Map();
+    const projectKey = String(projectName || '').trim().toLowerCase();
     rows.forEach((row) => {
-      if (projectName && row.project_name !== projectName) return;
+      if (projectKey && String(row.project_name || '').trim().toLowerCase() !== projectKey) return;
       const key = String(valueFn(row) ?? '').trim();
       if (!key) return;
       if (!map.has(key)) map.set(key, { [labelKey]: key, total: 0, yesterday: 0 });
@@ -497,6 +498,47 @@
     let slug = String(name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
     slug = slug.replace(/-+/g, '-').replace(/^-+|-+$/g, '');
     return slug || 'project';
+  }
+
+  function buildChartDetailLink(imagePath, chartKey, projectName = '') {
+    const params = new URLSearchParams();
+    params.set('image', imagePath);
+    params.set('chart', chartKey);
+    if (projectName) params.set('project', projectName);
+    return `./chart.html?${params.toString()}`;
+  }
+
+  function buildChartPaths(projectName = '') {
+    const project = String(projectName || '').trim();
+    const chartImagePaths = project
+      ? {
+        platform: `./charts/projects/${slugifyProjectName(project)}/downloads_by_platform.png`,
+        loader: `./charts/projects/${slugifyProjectName(project)}/downloads_by_loader.png`,
+        mc: `./charts/projects/${slugifyProjectName(project)}/downloads_by_mc_version_top8.png`,
+        mod: `./charts/projects/${slugifyProjectName(project)}/downloads_by_mod_version_top8.png`,
+        totalDaily: `./charts/projects/${slugifyProjectName(project)}/total_daily_downloads.png`,
+        totalDailyBar: `./charts/projects/${slugifyProjectName(project)}/total_daily_downloads_bar.png`,
+      }
+      : {
+        platform: './charts/downloads_by_platform.png',
+        loader: './charts/downloads_by_loader.png',
+        mc: './charts/downloads_by_mc_version_top8.png',
+        mod: './charts/downloads_by_mod_version_top8.png',
+        totalDaily: './charts/total_daily_downloads.png',
+        totalDailyBar: './charts/total_daily_downloads_bar.png',
+      };
+
+    return {
+      chartImagePaths,
+      chartLinks: {
+        platform: buildChartDetailLink(chartImagePaths.platform, 'platform', project),
+        loader: buildChartDetailLink(chartImagePaths.loader, 'loader', project),
+        mc: buildChartDetailLink(chartImagePaths.mc, 'mc', project),
+        mod: buildChartDetailLink(chartImagePaths.mod, 'mod', project),
+        totalDaily: buildChartDetailLink(chartImagePaths.totalDaily, 'totalDaily', project),
+        totalDailyBar: buildChartDetailLink(chartImagePaths.totalDailyBar, 'totalDailyBar', project),
+      },
+    };
   }
 
   function renderProjectHeader(container, projectMeta, options = {}) {
@@ -568,14 +610,7 @@
     downloadsGrid.className = 'downloads-grid';
     container.appendChild(downloadsGrid);
 
-    const links = datasets.chartLinks || {
-      platform: './charts/downloads_by_platform.png',
-      loader: './charts/downloads_by_loader.png',
-      mc: './charts/downloads_by_mc_version_top8.png',
-      mod: './charts/downloads_by_mod_version_top8.png',
-      totalDaily: './charts/total_daily_downloads.png',
-      totalDailyBar: './charts/total_daily_downloads_bar.png',
-    };
+    const links = datasets.chartLinks || buildChartPaths().chartLinks;
 
     addSummaryTable(
       downloadsGrid,
@@ -723,6 +758,8 @@
   function renderTrendChart(container, datasets) {
     const lineLink = datasets.chartLinks && datasets.chartLinks.totalDaily;
     const barLink = datasets.chartLinks && datasets.chartLinks.totalDailyBar;
+    const lineImage = datasets.chartImagePaths && datasets.chartImagePaths.totalDaily;
+    const barImage = datasets.chartImagePaths && datasets.chartImagePaths.totalDailyBar;
     if (!lineLink && !barLink) return;
 
     const card = document.createElement('div');
@@ -734,7 +771,7 @@
     const linksLine = document.createElement('p');
     linksLine.className = 'muted';
     linksLine.style.margin = '2px 0 8px 0';
-    linksLine.textContent = 'Open chart files: ';
+    linksLine.textContent = 'Open chart details: ';
     if (lineLink) {
       const a1 = document.createElement('a');
       a1.href = lineLink;
@@ -752,16 +789,16 @@
     }
     card.appendChild(linksLine);
 
-    if (lineLink) {
+    if (lineImage) {
       const imgLine = document.createElement('img');
       imgLine.alt = 'Total daily downloads line chart';
-      imgLine.src = `${lineLink}?v=${Date.now()}`;
+      imgLine.src = `${lineImage}?v=${Date.now()}`;
       card.appendChild(imgLine);
     }
-    if (barLink) {
+    if (barImage) {
       const imgBar = document.createElement('img');
       imgBar.alt = 'Total daily downloads bar chart';
-      imgBar.src = `${barLink}?v=${Date.now()}`;
+      imgBar.src = `${barImage}?v=${Date.now()}`;
       imgBar.style.marginTop = '10px';
       card.appendChild(imgBar);
     }
@@ -882,38 +919,35 @@
       const viewPanel = document.createElement('div');
       root.appendChild(viewPanel);
 
-      const normalizeName = (v) => String(v ?? '').trim();
-      const discoveredSet = new Set();
-      (s.projects || []).forEach((p) => {
-        const n = normalizeName(p);
-        if (n) discoveredSet.add(n);
-      });
-      itemRowsToday.forEach((r) => {
-        const n = normalizeName(r.project_name);
-        if (n) discoveredSet.add(n);
-      });
-      const discovered = Array.from(discoveredSet);
+      const normalizeProjectKey = (v) => String(v ?? '').trim().toLowerCase();
+      const displayNameByKey = new Map();
+      const registerProject = (v) => {
+        const label = String(v ?? '').trim();
+        if (!label) return;
+        const key = normalizeProjectKey(label);
+        if (!displayNameByKey.has(key)) displayNameByKey.set(key, label);
+      };
+      (s.projects || []).forEach((p) => registerProject(p));
+      itemRowsToday.forEach((r) => registerProject(r.project_name));
+      const discovered = Array.from(displayNameByKey.entries()).map(([key, label]) => ({ key, label }));
       const projectCatalog = Array.isArray(s.project_catalog) ? s.project_catalog : [];
+      projectCatalog.forEach((meta) => registerProject(meta.project_name));
       const projectMetaByName = new Map();
       projectCatalog.forEach((meta) => {
-        const key = normalizeName(meta.project_name);
+        const key = normalizeProjectKey(meta.project_name);
         if (!key) return;
         projectMetaByName.set(key, meta);
       });
-      const cumulativeSummaryMeta = buildCumulativeSummaryMeta(projectCatalog, discovered);
+      const cumulativeSummaryMeta = buildCumulativeSummaryMeta(projectCatalog, discovered.map((x) => x.label));
 
+      const cumulativeChartPaths = buildChartPaths('');
       const cumulativeDatasets = {
         platformRows: combineTotalsAndDaily('platform', s.latest_platform_totals, s.latest_platform_breakdown),
         loaderRows: combineTotalsAndDaily('loader_group', s.latest_loader_totals, s.latest_loader_breakdown),
         mcRows: combineTotalsAndDaily('mc_version', s.latest_mc_totals, s.latest_mc_breakdown),
         modRows: null,
-        chartLinks: {
-          platform: './charts/downloads_by_platform.png',
-          loader: './charts/downloads_by_loader.png',
-          mc: './charts/downloads_by_mc_version_top8.png',
-          totalDaily: './charts/total_daily_downloads.png',
-          totalDailyBar: './charts/total_daily_downloads_bar.png',
-        },
+        chartLinks: cumulativeChartPaths.chartLinks,
+        chartImagePaths: cumulativeChartPaths.chartImagePaths,
       };
 
       const views = [
@@ -923,32 +957,26 @@
           datasets: cumulativeDatasets,
           projectMeta: cumulativeSummaryMeta,
         },
-        ...discovered.map((projectName) => ({
-          key: projectName,
-          label: projectName,
+        ...discovered.map((projectEntry) => ({
+          key: projectEntry.key,
+          label: projectEntry.label,
           projectMeta: (() => {
-            const existing = projectMetaByName.get(projectName);
+            const existing = projectMetaByName.get(projectEntry.key);
             if (existing) return existing;
-            const slug = slugifyProjectName(projectName);
+            const slug = slugifyProjectName(projectEntry.label);
             return {
-              project_name: projectName,
+              project_name: projectEntry.label,
               modrinth_url: `https://modrinth.com/mod/${slug}`,
               curseforge_url: `https://www.curseforge.com/minecraft/mc-mods/${slug}`,
             };
           })(),
           datasets: {
-            platformRows: aggregateRows(itemRowsToday, projectName, 'platform', (r) => r.platform),
-            loaderRows: aggregateRows(itemRowsToday, projectName, 'loader_group', (r) => r.loader_group || 'unknown'),
-            mcRows: aggregateRows(itemRowsToday, projectName, 'mc_version', (r) => rowPrimaryMcVersion(r)),
-            modRows: aggregateRows(itemRowsToday, projectName, 'mod_version', (r) => r.mod_version || 'unknown'),
-            chartLinks: {
-              platform: `./charts/projects/${slugifyProjectName(projectName)}/downloads_by_platform.png`,
-              loader: `./charts/projects/${slugifyProjectName(projectName)}/downloads_by_loader.png`,
-              mc: `./charts/projects/${slugifyProjectName(projectName)}/downloads_by_mc_version_top8.png`,
-              mod: `./charts/projects/${slugifyProjectName(projectName)}/downloads_by_mod_version_top8.png`,
-              totalDaily: `./charts/projects/${slugifyProjectName(projectName)}/total_daily_downloads.png`,
-              totalDailyBar: `./charts/projects/${slugifyProjectName(projectName)}/total_daily_downloads_bar.png`,
-            },
+            platformRows: aggregateRows(itemRowsToday, projectEntry.label, 'platform', (r) => r.platform),
+            loaderRows: aggregateRows(itemRowsToday, projectEntry.label, 'loader_group', (r) => r.loader_group || 'unknown'),
+            mcRows: aggregateRows(itemRowsToday, projectEntry.label, 'mc_version', (r) => rowPrimaryMcVersion(r)),
+            modRows: aggregateRows(itemRowsToday, projectEntry.label, 'mod_version', (r) => r.mod_version || 'unknown'),
+            chartLinks: buildChartPaths(projectEntry.label).chartLinks,
+            chartImagePaths: buildChartPaths(projectEntry.label).chartImagePaths,
           },
         })),
       ];
