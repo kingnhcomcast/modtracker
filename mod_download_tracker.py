@@ -1519,9 +1519,22 @@ def plot_line_chart(
     output_path: Path,
     dpi: int,
     release_markers: Optional[dict[str, list[str]]] = None,
+    moving_average_window_days: int = 7,
 ) -> bool:
     if not records:
         return False
+
+    def moving_average(values: Sequence[float], window_days: int) -> list[Optional[float]]:
+        averages: list[Optional[float]] = []
+        window: list[float] = []
+        running_total = 0.0
+        for value in values:
+            window.append(value)
+            running_total += value
+            if len(window) > window_days:
+                running_total -= window.pop(0)
+            averages.append(running_total / window_days if len(window) == window_days else None)
+        return averages
 
     series_map: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for rec in records:
@@ -1532,7 +1545,21 @@ def plot_line_chart(
         series = sorted(series, key=lambda r: r[x_key])
         xs = [r[x_key] for r in series]
         ys = [r.get(y_key, 0) or 0 for r in series]
-        plt.plot(xs, ys, marker="o", label=label)
+        (line,) = plt.plot(xs, ys, marker="o", label=label)
+        if moving_average_window_days > 1 and len(ys) >= moving_average_window_days:
+            avg_ys = moving_average([float(y) for y in ys], moving_average_window_days)
+            avg_points = [(x, y) for x, y in zip(xs, avg_ys) if y is not None]
+            avg_xs = [x for x, _ in avg_points]
+            avg_values = [y for _, y in avg_points]
+            plt.plot(
+                avg_xs,
+                avg_values,
+                color=line.get_color(),
+                linestyle="--",
+                linewidth=2,
+                alpha=0.85,
+                label=f"{label} {moving_average_window_days}-day avg",
+            )
 
     if release_markers:
         x_values = sorted({str(r.get(x_key, "")) for r in records if str(r.get(x_key, ""))})
@@ -1566,9 +1593,10 @@ def plot_line_chart(
     plt.xlabel("Date")
     plt.ylabel(y_key.replace("_", " ").title())
     plt.xticks(rotation=45, ha="right")
-    plt.tight_layout()
     if len(series_map) <= 12:
-        plt.legend()
+        legend_cols = 2 if len(series_map) > 4 else 1
+        plt.legend(fontsize=8, ncol=legend_cols)
+    plt.tight_layout()
     output_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_path)
     plt.close()
@@ -2313,43 +2341,6 @@ def main() -> int:
 
         if config.get("verbose_console", True):
             print_simple_table(
-                "Fetched rows by project/platform",
-                config.get("_fetch_counts", []),
-                columns=("project_name", "platform", "rows_fetched"),
-                sort_key="rows_fetched",
-            )
-            print_today_item_report(analytics["item_rows_today"], analytics["today"])
-
-            print_simple_table(
-                "Today totals by platform",
-                analytics["latest_platform_totals"],
-                columns=("platform", "total_downloads"),
-                sort_key="total_downloads",
-            )
-
-            print_simple_table(
-                "Today totals by loader",
-                analytics["latest_loader_totals"],
-                columns=("loader_group", "total_downloads"),
-                sort_key="total_downloads",
-            )
-
-            print_simple_table(
-                "Today totals by Minecraft version",
-                analytics["latest_mc_totals"],
-                columns=("mc_version", "total_downloads"),
-                sort_key="total_downloads",
-                max_rows=15,
-            )
-            print_simple_table(
-                "Today totals by mod version",
-                analytics["latest_mod_totals"],
-                columns=("mod_version", "total_downloads"),
-                sort_key="total_downloads",
-                max_rows=15,
-            )
-
-            print_simple_table(
                 "Today daily platform breakdown",
                 analytics["latest_platform_breakdown"],
                 columns=("platform", "daily_downloads"),
@@ -2377,20 +2368,6 @@ def main() -> int:
                 sort_key="daily_downloads",
                 max_rows=15,
             )
-
-            print_simple_table(
-                "Detected spikes",
-                analytics["spikes"],
-                columns=("snapshot_date", "project_name", "platform", "daily_downloads", "rolling_avg_7d", "spike_multiplier", "release_tags"),
-                sort_key="spike_multiplier",
-                max_rows=15,
-            )
-
-            print_header("Files written")
-            print(f"Database: {db_path}")
-            print(f"Output directory: {analytics['output_dir']}")
-            for chart in analytics["chart_paths"]:
-                print(f"Chart: {chart}")
 
         return 0
 
