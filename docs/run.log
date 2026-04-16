@@ -1,131 +1,33 @@
 
-Fetched rows by project/platform
---------------------------------
-project_name  platform    rows_fetched
-------------  ----------  ------------
-HearthGuard   curseforge  17          
-HearthGuard   modrinth    17          
-
-2026-04-14 item-level report
-----------------------------
-HearthGuard      curseforge  fabric    HearthGuard 1.21.1-1.0.0 (Fabric)                total=52       daily=0
-HearthGuard      curseforge  fabric    HearthGuard 1.21.1-1.0.1 (Fabric)                total=75       daily=0
-HearthGuard      curseforge  neoforge  HearthGuard 1.21.1-1.0.1 (NeoForge)              total=93       daily=0
-HearthGuard      curseforge  fabric    HearthGuard 1.21.1-1.0.3 (Fabric)                total=34       daily=6
-HearthGuard      curseforge  neoforge  HearthGuard 1.21.1-1.0.3 (NeoForge)              total=28       daily=5
-HearthGuard      curseforge  fabric    HearthGuard 1.21.11-1.0.0 (Fabric)               total=154      daily=0
-HearthGuard      curseforge  neoforge  HearthGuard 1.21.11-1.0.0 (NeoForge)             total=55       daily=0
-HearthGuard      curseforge  fabric    HearthGuard 1.21.11-1.0.1 (Fabric)               total=215      daily=2
-HearthGuard      curseforge  neoforge  HearthGuard 1.21.11-1.0.1 (NeoForge)             total=58       daily=0
-HearthGuard      curseforge  fabric    HearthGuard 1.21.11-1.0.3 (Fabric)               total=75       daily=14
-HearthGuard      curseforge  neoforge  HearthGuard 1.21.11-1.0.3 (NeoForge)             total=12       daily=1
-HearthGuard      curseforge  fabric    HearthGuard 26.1-1.0.1 (Fabric)                  total=77       daily=0
-HearthGuard      curseforge  neoforge  HearthGuard 26.1-1.0.1 (NeoForge)                total=22       daily=0
-HearthGuard      curseforge  fabric    HearthGuard 26.1.1-1.0.2 (Fabric)                total=113      daily=2
-HearthGuard      curseforge  neoforge  HearthGuard 26.1.1-1.0.2 (NeoForge)              total=100      daily=1
-HearthGuard      curseforge  fabric    HearthGuard 26.1.2-1.0.3 (Fabric)                total=63       daily=7
-HearthGuard      curseforge  neoforge  HearthGuard 26.1.2-1.0.3 (NeoForge)              total=40       daily=2
-HearthGuard      modrinth    fabric    hearthguard-1.21.11-1.0.0.jar                    total=6        daily=0
-HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.1-1.0.0.jar              total=5        daily=0
-HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.1-1.0.1.jar              total=33       daily=0
-HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.1-1.0.3.jar              total=6        daily=1
-HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.11-1.0.1.jar             total=69       daily=0
-HearthGuard      modrinth    fabric    hearthguard-fabric-1.21.11-1.0.3.jar             total=16       daily=2
-HearthGuard      modrinth    fabric    hearthguard-fabric-26.1-1.0.1.jar                total=36       daily=0
-HearthGuard      modrinth    fabric    hearthguard-fabric-26.1.1-1.0.2.jar              total=78       daily=0
-HearthGuard      modrinth    fabric    hearthguard-fabric-26.1.2-1.0.3.jar              total=31       daily=3
-HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.1-1.0.1.jar            total=35       daily=0
-HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.1-1.0.3.jar            total=9        daily=0
-HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.11-1.0.0.jar           total=5        daily=0
-HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.11-1.0.1.jar           total=8        daily=0
-HearthGuard      modrinth    neoforge  hearthguard-neoforge-1.21.11-1.0.3.jar           total=4        daily=0
-HearthGuard      modrinth    neoforge  hearthguard-neoforge-26.1-1.0.1.jar              total=13       daily=0
-HearthGuard      modrinth    neoforge  hearthguard-neoforge-26.1.1-1.0.2.jar            total=15       daily=0
-HearthGuard      modrinth    neoforge  hearthguard-neoforge-26.1.2-1.0.3.jar            total=8        daily=0
-
-Today totals by platform
-------------------------
-platform    total_downloads
-----------  ---------------
-curseforge  1266           
-modrinth    377            
-
-Today totals by loader
-----------------------
-loader_group  total_downloads
-------------  ---------------
-fabric        1138           
-neoforge      505            
-
-Today totals by Minecraft version
----------------------------------
-mc_version  total_downloads
-----------  ---------------
-1.21.11     677            
-1.21.1      370            
-26.1.1      306            
-26.1        148            
-26.1.2      142            
-
-Today totals by mod version
----------------------------
-mod_version  total_downloads
------------  ---------------
-1.0.1        734            
-1.0.3        326            
-1.0.2        306            
-1.0.0        277            
-
 Today daily platform breakdown
 ------------------------------
 platform    daily_downloads
 ----------  ---------------
-curseforge  40             
-modrinth    6              
+curseforge  28             
+modrinth    13             
 
 Today daily loader breakdown
 ----------------------------
 loader_group  daily_downloads
 ------------  ---------------
-fabric        37             
-neoforge      9              
+fabric        27             
+neoforge      14             
 
 Today daily Minecraft version breakdown
 ---------------------------------------
 mc_version  daily_downloads
 ----------  ---------------
-1.21.11     19             
-1.21.1      12             
-26.1.2      12             
-26.1.1      3              
-26.1        0              
+1.21.1      13             
+26.1.2      13             
+1.21.11     11             
+26.1        3              
+26.1.1      1              
 
 Today daily mod version breakdown
 ---------------------------------
 mod_version  daily_downloads
 -----------  ---------------
-1.0.3        41             
-1.0.2        3              
-1.0.1        2              
+1.0.3        36             
+1.0.1        4              
+1.0.2        1              
 1.0.0        0              
-
-Detected spikes
----------------
-No data.
-
-Files written
--------------
-Database: mod_downloads.sqlite3
-Output directory: tracker_output
-Chart: tracker_output/charts/total_daily_downloads.png
-Chart: tracker_output/charts/total_daily_downloads_bar.png
-Chart: tracker_output/charts/downloads_by_platform.png
-Chart: tracker_output/charts/downloads_by_loader.png
-Chart: tracker_output/charts/downloads_by_mc_version_top8.png
-Chart: tracker_output/charts/downloads_by_mod_version_top8.png
-Chart: tracker_output/charts/projects/hearthguard/total_daily_downloads.png
-Chart: tracker_output/charts/projects/hearthguard/total_daily_downloads_bar.png
-Chart: tracker_output/charts/projects/hearthguard/downloads_by_platform.png
-Chart: tracker_output/charts/projects/hearthguard/downloads_by_loader.png
-Chart: tracker_output/charts/projects/hearthguard/downloads_by_mc_version_top8.png
-Chart: tracker_output/charts/projects/hearthguard/downloads_by_mod_version_top8.png
