@@ -4,11 +4,13 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-04-13,HearthGuard,curseforge,51,74.0,
 2026-04-14,HearthGuard,curseforge,40,66.33333333333333,
 2026-04-15,HearthGuard,curseforge,28,59.75,
+2026-04-16,HearthGuard,curseforge,34,53.4,
 2026-04-11,HearthGuard,modrinth,30,,
 2026-04-12,HearthGuard,modrinth,13,30.0,
 2026-04-13,HearthGuard,modrinth,14,21.5,
 2026-04-14,HearthGuard,modrinth,6,19.0,
 2026-04-15,HearthGuard,modrinth,13,15.75,
+2026-04-16,HearthGuard,modrinth,13,15.2,
 2026-03-27,hearthguard,curseforge,69,,1.0.1
 2026-03-28,hearthguard,curseforge,60,69.0,
 2026-03-29,hearthguard,curseforge,41,64.5,

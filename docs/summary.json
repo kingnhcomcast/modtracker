@@ -1,9 +1,11 @@
 {
-  "generated_et_date": "2026-04-15",
-  "generated_est_date": "2026-04-15",
-  "snapshot_date": "2026-04-15",
+  "generated_et_date": "2026-04-16",
+  "generated_est_date": "2026-04-16",
+  "snapshot_date": "2026-04-16",
   "projects": [
-    "HearthGuard"
+    "HearthGuard",
+    "CinderStride",
+    "Dirigo"
   ],
   "project_catalog": [
     {
@@ -14,6 +16,16 @@
       "modrinth_author_url": "https://modrinth.com/user/Drahlek",
       "curseforge_url": "https://www.curseforge.com/minecraft/mc-mods/hearthguard",
       "icon_url": "https://cdn.modrinth.com/data/QE9szL3C/b7c6629ea1f478149286eb779623612f79467ab5_96.webp"
+    },
+    {
+      "project_name": "CinderStride",
+      "modrinth_url": "https://modrinth.com/mod/cinderstride",
+      "curseforge_url": "https://www.curseforge.com/minecraft/mc-mods/cinderstride"
+    },
+    {
+      "project_name": "Dirigo",
+      "modrinth_url": "https://modrinth.com/mod/dirigo",
+      "curseforge_url": "https://www.curseforge.com/minecraft/mc-mods/dirigo"
     }
   ],
   "today_item_rows_count": 34,
@@ -21,31 +33,31 @@
   "latest_platform_totals": [
     {
       "platform": "curseforge",
-      "total_downloads": 1294
+      "total_downloads": 1328
     },
     {
       "platform": "modrinth",
-      "total_downloads": 390
+      "total_downloads": 403
     }
   ],
   "latest_loader_totals": [
     {
       "loader_group": "fabric",
-      "total_downloads": 1165
+      "total_downloads": 1198
     },
     {
       "loader_group": "neoforge",
-      "total_downloads": 519
+      "total_downloads": 533
     }
   ],
   "latest_mc_totals": [
     {
       "mc_version": "1.21.11",
-      "total_downloads": 688
+      "total_downloads": 703
     },
     {
       "mc_version": "1.21.1",
-      "total_downloads": 383
+      "total_downloads": 393
     },
     {
       "mc_version": "26.1.1",
@@ -53,7 +65,7 @@
     },
     {
       "mc_version": "26.1.2",
-      "total_downloads": 155
+      "total_downloads": 177
     },
     {
       "mc_version": "26.1",
@@ -63,11 +75,11 @@
   "latest_mod_totals": [
     {
       "mod_version": "1.0.1",
-      "total_downloads": 738
+      "total_downloads": 739
     },
     {
       "mod_version": "1.0.3",
-      "total_downloads": 362
+      "total_downloads": 408
     },
     {
       "mod_version": "1.0.2",
@@ -81,7 +93,7 @@
   "latest_platform_breakdown": [
     {
       "platform": "curseforge",
-      "daily_downloads": 28
+      "daily_downloads": 34
     },
     {
       "platform": "modrinth",
@@ -91,7 +103,7 @@
   "latest_loader_breakdown": [
     {
       "loader_group": "fabric",
-      "daily_downloads": 27
+      "daily_downloads": 33
     },
     {
       "loader_group": "neoforge",
@@ -101,23 +113,23 @@
   "latest_mc_breakdown": [
     {
       "mc_version": "1.21.1",
-      "daily_downloads": 13
+      "daily_downloads": 10
     },
     {
       "mc_version": "1.21.11",
-      "daily_downloads": 11
+      "daily_downloads": 15
     },
     {
       "mc_version": "26.1",
-      "daily_downloads": 3
+      "daily_downloads": 0
     },
     {
       "mc_version": "26.1.1",
-      "daily_downloads": 1
+      "daily_downloads": 0
     },
     {
       "mc_version": "26.1.2",
-      "daily_downloads": 13
+      "daily_downloads": 22
     }
   ],
   "latest_mod_breakdown": [
@@ -127,15 +139,15 @@
     },
     {
       "mod_version": "1.0.1",
-      "daily_downloads": 4
-    },
-    {
-      "mod_version": "1.0.2",
       "daily_downloads": 1
     },
     {
+      "mod_version": "1.0.2",
+      "daily_downloads": 0
+    },
+    {
       "mod_version": "1.0.3",
-      "daily_downloads": 36
+      "daily_downloads": 46
     }
   ],
   "release_tags": [
