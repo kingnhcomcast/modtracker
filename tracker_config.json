@@ -7,6 +7,14 @@
     {
       "slug": "hearthguard",
       "name": "HearthGuard"
+    },
+    {
+      "slug": "cinderstride",
+      "name": "CinderStride"
+    },
+    {
+      "slug": "dirigo",
+      "name": "Dirigo"
     }
   ],
   "release_tags": [

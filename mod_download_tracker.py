@@ -121,9 +121,21 @@ class SnapshotRow:
         )
 
 
+class RequestFailedError(RuntimeError):
+    def __init__(self, url: str, last_exc: Exception, status_code: Optional[int] = None) -> None:
+        self.url = url
+        self.status_code = status_code
+        self.last_exc = last_exc
+        super().__init__(f"Request failed for {url}: {last_exc}")
+
+
 # ============================================================================
 # UTILS
 # ============================================================================
+
+def warn(message: str) -> None:
+    print(f"WARNING: {message}", file=sys.stderr)
+
 
 def fallback_eastern_now() -> dt.datetime:
     utc_now = dt.datetime.now(dt.UTC)
@@ -417,6 +429,7 @@ def request_text(
     retries: int = 4,
 ) -> str:
     last_exc: Optional[Exception] = None
+    last_status_code: Optional[int] = None
 
     for attempt in range(1, retries + 1):
         try:
@@ -427,13 +440,22 @@ def request_text(
                     continue
             resp.raise_for_status()
             return resp.text
+        except requests.HTTPError as exc:
+            last_exc = exc
+            response = getattr(exc, "response", None)
+            status_code = getattr(response, "status_code", None)
+            last_status_code = status_code if isinstance(status_code, int) else None
+            if last_status_code in (429, 500, 502, 503, 504) and attempt < retries:
+                time.sleep(min(2 ** attempt, 12))
+                continue
+            break
         except Exception as exc:
             last_exc = exc
             if attempt < retries:
                 time.sleep(min(2 ** attempt, 12))
                 continue
 
-    raise RuntimeError(f"Request failed for {url}: {last_exc}") from last_exc
+    raise RequestFailedError(url, last_exc or RuntimeError("unknown error"), last_status_code) from last_exc
 
 
 def request_json(
@@ -567,13 +589,22 @@ def fetch_modrinth_versions(
     timeout: int,
     retries: int,
 ) -> list[SnapshotRow]:
-    payload = request_json(
-        session,
-        f"{MODRINTH_BASE}/project/{project_id_or_slug}/version",
-        params={"include_changelog": "false"},
-        timeout=timeout,
-        retries=retries,
-    )
+    try:
+        payload = request_json(
+            session,
+            f"{MODRINTH_BASE}/project/{project_id_or_slug}/version",
+            params={"include_changelog": "false"},
+            timeout=timeout,
+            retries=retries,
+        )
+    except RequestFailedError as exc:
+        if exc.status_code == 404:
+            warn(
+                "Skipping Modrinth data for "
+                f"{project_name} ({project_id_or_slug}): project is not available via the Modrinth API."
+            )
+            return []
+        raise
 
     if not isinstance(payload, list):
         raise RuntimeError(f"Unexpected Modrinth response for {project_id_or_slug}")
@@ -879,13 +910,21 @@ def fetch_curseforge_files_by_scrape(
     seen_names: set[str] = set()
 
     while True:
-        html = request_text(
-            session,
-            base_url,
-            params={"page": page, "pageSize": page_size, "showAlphaFiles": "hide"},
-            timeout=timeout,
-            retries=retries,
-        )
+        try:
+            html = request_text(
+                session,
+                base_url,
+                params={"page": page, "pageSize": page_size, "showAlphaFiles": "hide"},
+                timeout=timeout,
+                retries=retries,
+            )
+        except RequestFailedError as exc:
+            status_text = f"HTTP {exc.status_code}" if exc.status_code is not None else "request failed"
+            warn(
+                "Skipping CurseForge data for "
+                f"{project_name} ({project_slug}): files page {page} failed to load ({status_text})."
+            )
+            return []
 
         parsed_rows = scrape_curseforge_file_rows_from_html(html, project_slug)
         if not parsed_rows:
