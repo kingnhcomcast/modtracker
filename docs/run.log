@@ -1,37 +1,35 @@
 WARNING: Skipping Modrinth data for CinderStride (cinderstride): project is not available via the Modrinth API.
-WARNING: Skipping CurseForge data for CinderStride (cinderstride): files page 1 failed to load (HTTP 404).
 WARNING: Skipping Modrinth data for Dirigo (dirigo): project is not available via the Modrinth API.
-WARNING: Skipping CurseForge data for Dirigo (dirigo): files page 1 failed to load (HTTP 404).
 
 Today daily platform breakdown
 ------------------------------
-platform    daily_downloads
-----------  ---------------
-curseforge  34             
-modrinth    13             
+platform    HearthGuard  CinderStride  Dirigo
+----------  -----------  ------------  ------
+curseforge  29           54            51    
+modrinth    26           0             0     
 
 Today daily loader breakdown
 ----------------------------
-loader_group  daily_downloads
-------------  ---------------
-fabric        33             
-neoforge      14             
+loader_group  HearthGuard  CinderStride  Dirigo
+------------  -----------  ------------  ------
+fabric        38           29            27    
+neoforge      17           25            24    
 
 Today daily Minecraft version breakdown
 ---------------------------------------
-mc_version  daily_downloads
-----------  ---------------
-26.1.2      22             
-1.21.11     15             
-1.21.1      10             
-26.1        0              
-26.1.1      0              
+mc_version  HearthGuard  CinderStride  Dirigo
+----------  -----------  ------------  ------
+26.1        5            27            24    
+1.21.11     12           16            13    
+1.21.1      15           11            14    
+26.1.2      20           0             0     
+26.1.1      3            0             0     
 
 Today daily mod version breakdown
 ---------------------------------
-mod_version  daily_downloads
------------  ---------------
-1.0.3        46             
-1.0.1        1              
-1.0.0        0              
-1.0.2        0              
+mod_version  HearthGuard  CinderStride  Dirigo
+-----------  -----------  ------------  ------
+1.0.0        0            54            51    
+1.0.3        46           0             0     
+1.0.1        6            0             0     
+1.0.2        3            0             0     
