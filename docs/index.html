@@ -7,7 +7,7 @@
     body {
       font-family: "Segoe UI", Tahoma, Arial, sans-serif;
       margin: 24px auto;
-      max-width: 1200px;
+      max-width: 1400px;
       line-height: 1.4;
       color: #1f2937;
       background: #f7f9f8;
@@ -84,16 +84,17 @@
     }
     .downloads-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(320px, 460px));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 540px), 1fr));
       gap: 12px;
       align-items: start;
       margin-top: 12px;
     }
     .downloads-grid .section-card {
       margin-top: 0;
+      overflow-x: auto;
     }
     .downloads-grid table {
-      width: auto;
+      width: 100%;
       min-width: 300px;
     }
     @media (max-width: 900px) {
@@ -127,6 +128,7 @@
     .tabs {
       display: flex;
       flex-wrap: wrap;
+      align-items: center;
       gap: 8px;
       margin-top: 16px;
       margin-bottom: 10px;
@@ -136,21 +138,31 @@
       background: #eef8f3;
       color: #14532d;
       border-radius: 6px;
-      padding: 16px 20px;
-      min-width: 84px;
-      min-height: 84px;
+      padding: 8px 12px;
+      width: 112px;
+      height: 112px;
+      min-width: 112px;
+      min-height: 112px;
       font-size: 14px;
       cursor: pointer;
+      box-sizing: border-box;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      line-height: 1.2;
+      white-space: pre-line;
     }
     .tab-btn.icon-tab {
       padding: 0;
       overflow: hidden;
     }
-    .tab-btn img {
+    .tab-btn.icon-tab img {
       width: 100%;
       height: 100%;
       display: block;
       object-fit: cover;
+      border-radius: 5px;
     }
     .tab-btn.active {
       background: #14532d;
@@ -494,6 +506,12 @@
     return Array.from(map.values()).sort((a, b) => Number(b.total) - Number(a.total));
   }
 
+  function sortableColumnsForRows(rows) {
+    if (!rows || rows.length === 0) return ['total', 'yesterday'];
+    const labelColumns = new Set(['platform', 'loader_group', 'mc_version', 'mod_version']);
+    return Object.keys(rows[0]).filter((col) => !labelColumns.has(col));
+  }
+
   function slugifyProjectName(name) {
     let slug = String(name || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
     slug = slug.replace(/-+/g, '-').replace(/^-+|-+$/g, '');
@@ -617,13 +635,13 @@
       'Platform Downloads',
       datasets.platformRows,
       {
-        sortableColumns: ['total', 'yesterday'],
+        sortableColumns: sortableColumnsForRows(datasets.platformRows),
         titleLink: links.platform,
         rowColorBy: {
           column: 'platform',
           map: {
-            modrinth: '#00AF5C',
-            curseforge: '#F16436',
+            modrinth: '#0072B2',
+            curseforge: '#D62728',
           },
         },
       }
@@ -633,13 +651,13 @@
       'Loader Downloads',
       datasets.loaderRows,
       {
-        sortableColumns: ['total', 'yesterday'],
+        sortableColumns: sortableColumnsForRows(datasets.loaderRows),
         titleLink: links.loader,
         rowColorBy: {
           column: 'loader_group',
           map: {
             fabric: '#2D46B9',
-            neoforge: '#18A650',
+            neoforge: '#CC79A7',
           },
         },
       }
@@ -649,7 +667,7 @@
       'Minecraft Version Downloads',
       datasets.mcRows,
       {
-        sortableColumns: ['total', 'yesterday'],
+        sortableColumns: sortableColumnsForRows(datasets.mcRows),
         titleLink: links.mc,
       }
     );
@@ -659,14 +677,14 @@
         'Mod Version Downloads',
         datasets.modRows,
         {
-          sortableColumns: ['total', 'yesterday'],
+          sortableColumns: sortableColumnsForRows(datasets.modRows),
           titleLink: links.mod,
         }
       );
     }
   }
 
-  function drawPieChart(canvas, rows, labelKey) {
+  function drawPieChart(canvas, rows, labelKey, valueKey = 'total') {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     const width = canvas.width;
@@ -677,7 +695,7 @@
 
     ctx.clearRect(0, 0, width, height);
 
-    const values = rows.map((r0) => Number(r0.total || 0)).filter((v) => Number.isFinite(v) && v > 0);
+    const values = rows.map((r0) => Number(r0[valueKey] || 0)).filter((v) => Number.isFinite(v) && v > 0);
     const total = values.reduce((a, b) => a + b, 0);
     if (!total) {
       ctx.fillStyle = '#6b7280';
@@ -686,10 +704,10 @@
       return;
     }
 
-    const palette = ['#0ea5a4', '#f97316', '#2563eb', '#16a34a', '#7c3aed', '#e11d48', '#0891b2', '#84cc16'];
+    const palette = ['#0072B2', '#D62728', '#CC79A7', '#E69F00', '#56B4E9', '#F0E442', '#332288', '#AA4499'];
     let start = -Math.PI / 2;
     rows.forEach((row, i) => {
-      const v = Number(row.total || 0);
+      const v = Number(row[valueKey] || 0);
       if (!Number.isFinite(v) || v <= 0) return;
       const angle = (v / total) * Math.PI * 2;
       ctx.beginPath();
@@ -705,7 +723,7 @@
     ctx.font = '12px Segoe UI';
     let ly = 28;
     rows.forEach((row, i) => {
-      const v = Number(row.total || 0);
+      const v = Number(row[valueKey] || 0);
       if (!Number.isFinite(v) || v <= 0) return;
       const label = String(row[labelKey] ?? '');
       const pct = ((v / total) * 100).toFixed(1);
@@ -749,7 +767,7 @@
       canvas.height = 210;
       card.appendChild(canvas);
       grid.appendChild(card);
-      drawPieChart(canvas, def.rows || [], def.labelKey);
+      drawPieChart(canvas, def.rows || [], def.labelKey, datasets.pieValueKey || 'total');
     });
 
     container.appendChild(section);
@@ -806,6 +824,57 @@
     container.appendChild(card);
   }
 
+  function formatDecimal(value, digits = 1) {
+    if (value === null || value === undefined || value === '') return 'n/a';
+    const n = Number(value);
+    if (!Number.isFinite(n)) return 'n/a';
+    return n.toFixed(digits);
+  }
+
+  function renderSpikeDetails(container, spikeRows) {
+    const section = document.createElement('div');
+    section.className = 'section-card';
+    const title = document.createElement('h3');
+    title.textContent = 'Spike Details';
+    section.appendChild(title);
+
+    const help = document.createElement('p');
+    help.className = 'muted';
+    help.textContent = 'Daily is downloads gained on that snapshot date. Baseline is the trailing rolling average used for spike detection. Multiplier is daily divided by baseline. Increase is daily minus baseline. Releases are release tags for the same project on the same date.';
+    section.appendChild(help);
+
+    const rows = (spikeRows || []).map((row) => {
+      const multiplier = Number(row.spike_multiplier);
+      const increase = Number(row.spike_absolute_increase);
+      return {
+        date: row.snapshot_date || '',
+        project: row.project_name || '',
+        platform: row.platform || '',
+        daily: formatDecimal(row.daily_downloads, 0),
+        baseline: formatDecimal(row.rolling_avg_7d, 1),
+        multiplier: Number.isFinite(multiplier) ? `${multiplier.toFixed(2)}x` : 'n/a',
+        increase: Number.isFinite(increase) ? `+${increase.toFixed(1)}` : 'n/a',
+        releases: row.release_tags || '',
+      };
+    });
+
+    if (!rows.length) {
+      const p = document.createElement('p');
+      p.className = 'muted';
+      p.textContent = 'No spikes detected.';
+      section.appendChild(p);
+      container.appendChild(section);
+      return;
+    }
+
+    section.appendChild(buildTable(
+      ['date', 'project', 'platform', 'daily', 'baseline', 'multiplier', 'increase', 'releases'],
+      rows,
+      { sortableColumns: ['daily', 'baseline'] }
+    ));
+    container.appendChild(section);
+  }
+
   function combineTotalsAndDaily(labelKey, totalsRows, dailyRows) {
     const byKey = new Map();
 
@@ -825,6 +894,42 @@
     });
 
     return Array.from(byKey.values()).sort((a, b) => Number(b.total ?? 0) - Number(a.total ?? 0));
+  }
+
+  function combineTotalsAndProjectDaily(labelKey, totalsRows, itemRows, projectNames, labelForItemRow) {
+    const projectColumns = Array.from(new Set(
+      (projectNames || []).map((name) => String(name || '').trim()).filter(Boolean)
+    ));
+    const projectByKey = new Map(projectColumns.map((name) => [name.toLowerCase(), name]));
+    const byKey = new Map();
+
+    function emptyProjectColumns() {
+      return Object.fromEntries(projectColumns.map((name) => [name, 0]));
+    }
+
+    function ensureRow(key) {
+      if (!byKey.has(key)) byKey.set(key, { [labelKey]: key, cumulative: 0, total: 0, ...emptyProjectColumns() });
+      return byKey.get(key);
+    }
+
+    (totalsRows || []).forEach((row) => {
+      const key = String(row[labelKey] ?? '').trim();
+      if (!key) return;
+      ensureRow(key).cumulative = Number(row.total_downloads ?? 0);
+    });
+
+    (itemRows || []).forEach((row) => {
+      const key = String(labelForItemRow(row) ?? '').trim() || 'unknown';
+      const rawProject = String(row.project_name || '').trim();
+      const projectColumn = projectByKey.get(rawProject.toLowerCase());
+      if (!projectColumn) return;
+      const daily = toNumberOrNull(row.daily_downloads);
+      if (daily === null) return;
+      ensureRow(key)[projectColumn] += daily;
+      ensureRow(key).total += daily;
+    });
+
+    return Array.from(byKey.values()).sort((a, b) => Number(b.cumulative ?? 0) - Number(a.cumulative ?? 0));
   }
 
   function buildCumulativeSummaryMeta(projectCatalog, discoveredProjectNames) {
@@ -872,6 +977,7 @@
   const fetchTag = Date.now();
   const summaryUrl = `./summary.json?v=${fetchTag}`;
   const itemRowsUrl = `./item_rows_today.csv?v=${fetchTag}`;
+  const spikesUrl = `./spikes.csv?v=${fetchTag}`;
 
   Promise.all([
     fetch(summaryUrl, { cache: 'no-store' }).then((r) => {
@@ -879,8 +985,9 @@
       return r.json().then((s) => ({ s, lastModified }));
     }),
     fetch(itemRowsUrl, { cache: 'no-store' }).then((r) => r.text()).then(parseCsv),
+    fetch(spikesUrl, { cache: 'no-store' }).then((r) => r.text()).then(parseCsv).catch(() => []),
   ])
-    .then(([summaryData, itemRowsToday]) => {
+    .then(([summaryData, itemRowsToday, spikeRows]) => {
       const { s, lastModified } = summaryData;
       const generationBaseDate = s.generated_et_date || s.generated_est_date || s.generated_utc_date;
       const generationDate = formatGenerationDate(generationBaseDate, lastModified);
@@ -941,11 +1048,31 @@
       const cumulativeSummaryMeta = buildCumulativeSummaryMeta(projectCatalog, discovered.map((x) => x.label));
 
       const cumulativeChartPaths = buildChartPaths('');
+      const cumulativeProjectColumns = discovered.map((x) => x.label);
       const cumulativeDatasets = {
-        platformRows: combineTotalsAndDaily('platform', s.latest_platform_totals, s.latest_platform_breakdown),
-        loaderRows: combineTotalsAndDaily('loader_group', s.latest_loader_totals, s.latest_loader_breakdown),
-        mcRows: combineTotalsAndDaily('mc_version', s.latest_mc_totals, s.latest_mc_breakdown),
+        platformRows: combineTotalsAndProjectDaily(
+          'platform',
+          s.latest_platform_totals,
+          itemRowsToday,
+          cumulativeProjectColumns,
+          (r) => r.platform
+        ),
+        loaderRows: combineTotalsAndProjectDaily(
+          'loader_group',
+          s.latest_loader_totals,
+          itemRowsToday,
+          cumulativeProjectColumns,
+          (r) => r.loader_group || 'unknown'
+        ),
+        mcRows: combineTotalsAndProjectDaily(
+          'mc_version',
+          s.latest_mc_totals,
+          itemRowsToday,
+          cumulativeProjectColumns,
+          (r) => rowPrimaryMcVersion(r)
+        ),
         modRows: null,
+        pieValueKey: 'cumulative',
         chartLinks: cumulativeChartPaths.chartLinks,
         chartImagePaths: cumulativeChartPaths.chartImagePaths,
       };
@@ -992,6 +1119,10 @@
         renderDownloadsGrid(viewPanel, view.datasets);
         renderPieCharts(viewPanel, view.datasets);
         renderTrendChart(viewPanel, view.datasets);
+        const scopedSpikes = view.key === '__all__'
+          ? spikeRows
+          : spikeRows.filter((row) => normalizeProjectKey(row.project_name) === view.key);
+        renderSpikeDetails(viewPanel, scopedSpikes);
       }
 
       let activeKey = '__all__';
@@ -999,7 +1130,11 @@
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = `tab-btn${view.key === activeKey ? ' active' : ''}`;
-        if (view.projectMeta && view.projectMeta.icon_url) {
+        if (view.key === '__all__') {
+          btn.textContent = 'Cumulative\nAll Projects';
+          btn.title = view.label;
+          btn.setAttribute('aria-label', view.label);
+        } else if (view.projectMeta && view.projectMeta.icon_url) {
           btn.classList.add('icon-tab');
           const img = document.createElement('img');
           img.src = view.projectMeta.icon_url;

@@ -36,12 +36,13 @@ import time
 from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable, Optional, Sequence
+from typing import Any, Callable, Iterable, Optional, Sequence
 from urllib.parse import urljoin
 from zoneinfo import ZoneInfo
 from zoneinfo import ZoneInfoNotFoundError
 
 import cloudscraper
+import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import requests
 from bs4 import BeautifulSoup
@@ -135,6 +136,13 @@ class RequestFailedError(RuntimeError):
 
 def warn(message: str) -> None:
     print(f"WARNING: {message}", file=sys.stderr)
+
+
+def format_request_url(url: str, params: Optional[Any] = None) -> str:
+    if not params:
+        return url
+    prepared = requests.Request("GET", url, params=params).prepare()
+    return prepared.url or url
 
 
 def fallback_eastern_now() -> dt.datetime:
@@ -430,6 +438,7 @@ def request_text(
 ) -> str:
     last_exc: Optional[Exception] = None
     last_status_code: Optional[int] = None
+    attempted_url = format_request_url(url, params)
 
     for attempt in range(1, retries + 1):
         try:
@@ -455,7 +464,7 @@ def request_text(
                 time.sleep(min(2 ** attempt, 12))
                 continue
 
-    raise RequestFailedError(url, last_exc or RuntimeError("unknown error"), last_status_code) from last_exc
+    raise RequestFailedError(attempted_url, last_exc or RuntimeError("unknown error"), last_status_code) from last_exc
 
 
 def request_json(
@@ -511,6 +520,29 @@ def create_db(conn: sqlite3.Connection) -> None:
             tag TEXT NOT NULL,
             notes TEXT NOT NULL DEFAULT '',
             PRIMARY KEY (release_date, project_name, tag)
+        )
+    """)
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS spikes (
+            snapshot_date TEXT NOT NULL,
+            project_name TEXT NOT NULL,
+            platform TEXT NOT NULL,
+            daily_downloads INTEGER NOT NULL,
+            rolling_avg_7d REAL,
+            release_tags TEXT NOT NULL DEFAULT '',
+            spike_multiplier REAL,
+            spike_absolute_increase REAL,
+            detected_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (snapshot_date, project_name, platform)
+        )
+    """)
+
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS project_catalog (
+            project_name TEXT NOT NULL PRIMARY KEY,
+            catalog_json TEXT NOT NULL,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
         )
     """)
 
@@ -910,11 +942,13 @@ def fetch_curseforge_files_by_scrape(
     seen_names: set[str] = set()
 
     while True:
+        page_params = {"page": page, "pageSize": page_size, "showAlphaFiles": "hide"}
+        page_url = format_request_url(base_url, page_params)
         try:
             html = request_text(
                 session,
                 base_url,
-                params={"page": page, "pageSize": page_size, "showAlphaFiles": "hide"},
+                params=page_params,
                 timeout=timeout,
                 retries=retries,
             )
@@ -922,12 +956,18 @@ def fetch_curseforge_files_by_scrape(
             status_text = f"HTTP {exc.status_code}" if exc.status_code is not None else "request failed"
             warn(
                 "Skipping CurseForge data for "
-                f"{project_name} ({project_slug}): files page {page} failed to load ({status_text})."
+                f"{project_name} ({project_slug}): files page {page} failed to load ({status_text}). "
+                f"Tried URL: {exc.url or page_url}"
             )
             return []
 
         parsed_rows = scrape_curseforge_file_rows_from_html(html, project_slug)
         if not parsed_rows:
+            if page == 1:
+                warn(
+                    "No CurseForge file rows found for "
+                    f"{project_name} ({project_slug}) on files page {page}. Tried URL: {page_url}"
+                )
             break
 
         new_count = 0
@@ -1348,6 +1388,67 @@ def detect_spikes(
     return spikes
 
 
+def upsert_spikes(conn: sqlite3.Connection, spikes: Sequence[dict[str, Any]]) -> None:
+    if not spikes:
+        return
+
+    detected_at = et_now_timestamp()
+    rows: list[tuple[Any, ...]] = []
+    for spike in spikes:
+        rows.append((
+            str(spike.get("snapshot_date", "")),
+            str(spike.get("project_name", "")),
+            str(spike.get("platform", "")),
+            safe_int(spike.get("daily_downloads"), 0),
+            spike.get("rolling_avg_7d"),
+            str(spike.get("release_tags", "") or ""),
+            spike.get("spike_multiplier"),
+            spike.get("spike_absolute_increase"),
+            detected_at,
+        ))
+
+    with conn:
+        conn.executemany("""
+            INSERT INTO spikes (
+                snapshot_date, project_name, platform, daily_downloads, rolling_avg_7d,
+                release_tags, spike_multiplier, spike_absolute_increase, detected_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(snapshot_date, project_name, platform) DO UPDATE SET
+                daily_downloads = excluded.daily_downloads,
+                rolling_avg_7d = excluded.rolling_avg_7d,
+                release_tags = excluded.release_tags,
+                spike_multiplier = excluded.spike_multiplier,
+                spike_absolute_increase = excluded.spike_absolute_increase,
+                detected_at = excluded.detected_at
+        """, rows)
+
+
+def load_persisted_spikes(conn: sqlite3.Connection) -> list[dict[str, Any]]:
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT
+            snapshot_date, project_name, platform, daily_downloads, rolling_avg_7d,
+            release_tags, spike_multiplier, spike_absolute_increase, detected_at
+        FROM spikes
+        ORDER BY snapshot_date DESC, spike_multiplier DESC, project_name, platform
+    """)
+    return [
+        {
+            "snapshot_date": r[0],
+            "project_name": r[1],
+            "platform": r[2],
+            "daily_downloads": r[3],
+            "rolling_avg_7d": r[4],
+            "release_tags": r[5],
+            "spike_multiplier": r[6],
+            "spike_absolute_increase": r[7],
+            "detected_at": r[8],
+        }
+        for r in cur.fetchall()
+    ]
+
+
 def load_release_tags(conn: sqlite3.Connection) -> list[dict[str, Any]]:
     cur = conn.cursor()
     cur.execute("""
@@ -1372,12 +1473,12 @@ def attach_release_tags_to_records(
 ) -> list[dict[str, Any]]:
     tag_map: dict[tuple[str, str], list[str]] = defaultdict(list)
     for tag in tags:
-        key = (tag["release_date"], tag["project_name"])
+        key = (tag["release_date"], str(tag["project_name"]).strip().lower())
         tag_map[key].append(tag["tag"])
 
     out = []
     for rec in records:
-        key = (rec["snapshot_date"], rec["project_name"])
+        key = (rec["snapshot_date"], str(rec["project_name"]).strip().lower())
         rec2 = dict(rec)
         rec2["release_tags"] = ",".join(tag_map.get(key, []))
         out.append(rec2)
@@ -1544,9 +1645,120 @@ def write_json(path: Path, payload: Any) -> None:
     path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
 
 
+def upsert_project_catalog(conn: sqlite3.Connection, catalog: Sequence[dict[str, str]]) -> None:
+    rows: list[tuple[str, str, str]] = []
+    updated_at = et_now_timestamp()
+    for entry in catalog:
+        project_name = str(entry.get("project_name", "")).strip()
+        if not project_name:
+            continue
+        rows.append((project_name, json.dumps(dict(entry), ensure_ascii=False), updated_at))
+
+    if not rows:
+        return
+
+    with conn:
+        conn.executemany("""
+            INSERT INTO project_catalog (project_name, catalog_json, updated_at)
+            VALUES (?, ?, ?)
+            ON CONFLICT(project_name) DO UPDATE SET
+                catalog_json = excluded.catalog_json,
+                updated_at = excluded.updated_at
+        """, rows)
+
+
+def load_project_catalog(conn: sqlite3.Connection) -> list[dict[str, str]]:
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT catalog_json
+        FROM project_catalog
+        ORDER BY project_name
+    """)
+    rows: list[dict[str, str]] = []
+    for (catalog_json,) in cur.fetchall():
+        try:
+            entry = json.loads(str(catalog_json))
+        except json.JSONDecodeError:
+            continue
+        if isinstance(entry, dict):
+            rows.append({str(k): str(v) for k, v in entry.items() if v is not None})
+    return rows
+
+
+def load_existing_summary_project_catalog(output_dir: Path) -> list[dict[str, str]]:
+    summary_path = output_dir / "summary.json"
+    if not summary_path.exists():
+        return []
+    try:
+        payload = json.loads(summary_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return []
+    raw_catalog = payload.get("project_catalog") if isinstance(payload, dict) else None
+    if not isinstance(raw_catalog, list):
+        return []
+    rows: list[dict[str, str]] = []
+    for entry in raw_catalog:
+        if isinstance(entry, dict):
+            rows.append({str(k): str(v) for k, v in entry.items() if v is not None})
+    return rows
+
+
+def merge_project_catalogs(*catalogs: Sequence[dict[str, str]]) -> list[dict[str, str]]:
+    merged_by_key: dict[str, dict[str, str]] = {}
+    order: list[str] = []
+
+    for catalog in catalogs:
+        for entry in catalog:
+            project_name = str(entry.get("project_name", "")).strip()
+            if not project_name:
+                continue
+            key = project_name.lower()
+            if key not in merged_by_key:
+                merged_by_key[key] = {"project_name": project_name}
+                order.append(key)
+            merged = merged_by_key[key]
+            for field, value in entry.items():
+                value_text = str(value).strip()
+                if value_text:
+                    merged[str(field)] = value_text
+
+    return [merged_by_key[key] for key in order]
+
+
+def copy_static_dashboard_assets(output_dir: Path) -> None:
+    source_dir = Path(__file__).resolve().parent / "docs"
+    for filename in ("index.html", "chart.html"):
+        source = source_dir / filename
+        if not source.exists():
+            continue
+        target = output_dir / filename
+        if source.resolve() == target.resolve():
+            continue
+        target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+
+
 # ============================================================================
 # CHARTS
 # ============================================================================
+
+CHART_SERIES_COLORS = [
+    "#0072B2",
+    "#D62728",
+    "#CC79A7",
+    "#E69F00",
+    "#56B4E9",
+    "#F0E442",
+    "#332288",
+    "#AA4499",
+    "#000000",
+]
+
+
+def chart_series_color(label: str, index: int) -> str:
+    if str(label).strip().lower() == "total":
+        return "#000000"
+    return CHART_SERIES_COLORS[index % len(CHART_SERIES_COLORS)]
+
 
 def plot_line_chart(
     records: Sequence[dict[str, Any]],
@@ -1572,20 +1784,34 @@ def plot_line_chart(
             running_total += value
             if len(window) > window_days:
                 running_total -= window.pop(0)
-            averages.append(running_total / window_days if len(window) == window_days else None)
+            averages.append(running_total / len(window) if window else None)
         return averages
 
     series_map: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for rec in records:
         series_map[str(rec[series_key])].append(rec)
 
+    def parse_chart_date(value: Any) -> Optional[dt.date]:
+        try:
+            return dt.date.fromisoformat(str(value))
+        except ValueError:
+            return None
+
+    use_date_axis = all(parse_chart_date(rec.get(x_key)) is not None for rec in records)
+
     plt.figure(figsize=(11, 6), dpi=dpi)
-    for label, series in sorted(series_map.items()):
-        series = sorted(series, key=lambda r: r[x_key])
-        xs = [r[x_key] for r in series]
+    for series_index, (label, series) in enumerate(sorted(series_map.items())):
+        series = sorted(
+            series,
+            key=lambda r: parse_chart_date(r.get(x_key)) if use_date_axis else str(r.get(x_key, "")),
+        )
+        xs = [
+            parse_chart_date(r.get(x_key)) if use_date_axis else r[x_key]
+            for r in series
+        ]
         ys = [r.get(y_key, 0) or 0 for r in series]
-        (line,) = plt.plot(xs, ys, marker="o", label=label)
-        if moving_average_window_days > 1 and len(ys) >= moving_average_window_days:
+        (line,) = plt.plot(xs, ys, marker="o", label=label, color=chart_series_color(label, series_index))
+        if moving_average_window_days > 1 and ys:
             avg_ys = moving_average([float(y) for y in ys], moving_average_window_days)
             avg_points = [(x, y) for x, y in zip(xs, avg_ys) if y is not None]
             avg_xs = [x for x, _ in avg_points]
@@ -1601,7 +1827,10 @@ def plot_line_chart(
             )
 
     if release_markers:
-        x_values = sorted({str(r.get(x_key, "")) for r in records if str(r.get(x_key, ""))})
+        x_values = sorted(
+            {str(r.get(x_key, "")) for r in records if str(r.get(x_key, ""))},
+            key=lambda x: parse_chart_date(x) if use_date_axis else x,
+        )
         has_any_markers = any(release_markers.get(x) for x in x_values)
         if has_any_markers:
             y_min, y_max = plt.ylim()
@@ -1612,12 +1841,13 @@ def plot_line_chart(
                 labels = list(dict.fromkeys(labels))
                 if not labels:
                     continue
-                plt.axvline(x=x, color="#b91c1c", linestyle="--", linewidth=1, alpha=0.4)
+                marker_x = parse_chart_date(x) if use_date_axis else x
+                plt.axvline(x=marker_x, color="#b91c1c", linestyle="--", linewidth=1, alpha=0.4)
                 label_text = " | ".join(labels[:2])
                 if len(labels) > 2:
                     label_text += f" (+{len(labels) - 2})"
                 plt.text(
-                    x,
+                    marker_x,
                     label_y,
                     label_text,
                     rotation=90,
@@ -1631,6 +1861,10 @@ def plot_line_chart(
     plt.title(title)
     plt.xlabel("Date")
     plt.ylabel(y_key.replace("_", " ").title())
+    if use_date_axis:
+        ax = plt.gca()
+        ax.xaxis.set_major_locator(mdates.AutoDateLocator())
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
     plt.xticks(rotation=45, ha="right")
     if len(series_map) <= 12:
         legend_cols = 2 if len(series_map) > 4 else 1
@@ -1660,7 +1894,7 @@ def plot_bar_chart(
     ys = [safe_int(r.get(y_key, 0), 0) for r in rows]
 
     plt.figure(figsize=(11, 6), dpi=dpi)
-    plt.bar(xs, ys)
+    plt.bar(xs, ys, color=CHART_SERIES_COLORS[0])
     if release_markers:
         has_any_markers = any(release_markers.get(str(x)) for x in xs)
         if has_any_markers:
@@ -1691,6 +1925,98 @@ def plot_bar_chart(
     plt.xlabel("Date")
     plt.ylabel(y_key.replace("_", " ").title())
     plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    plt.savefig(output_path)
+    plt.close()
+    return True
+
+
+def plot_stacked_bar_chart(
+    records: Sequence[dict[str, Any]],
+    *,
+    x_key: str,
+    y_key: str,
+    series_key: str,
+    title: str,
+    output_path: Path,
+    dpi: int,
+    release_markers: Optional[dict[str, list[str]]] = None,
+) -> bool:
+    if not records:
+        return False
+
+    x_values = sorted({str(r.get(x_key, "")) for r in records if str(r.get(x_key, ""))})
+    def parse_chart_date(value: Any) -> Optional[dt.date]:
+        try:
+            return dt.date.fromisoformat(str(value))
+        except ValueError:
+            return None
+
+    use_date_axis = all(parse_chart_date(x) is not None for x in x_values)
+    x_plot_values = [parse_chart_date(x) if use_date_axis else x for x in x_values]
+    series_values: list[str] = []
+    for rec in records:
+        series = str(rec.get(series_key, "")).strip()
+        if series and series not in series_values:
+            series_values.append(series)
+    if not x_values or not series_values:
+        return False
+
+    values: dict[tuple[str, str], int] = defaultdict(int)
+    for rec in records:
+        x = str(rec.get(x_key, "")).strip()
+        series = str(rec.get(series_key, "")).strip()
+        if not x or not series:
+            continue
+        values[(x, series)] += safe_int(rec.get(y_key, 0), 0)
+
+    plt.figure(figsize=(11, 6), dpi=dpi)
+    bottoms = [0] * len(x_values)
+    for series_index, series in enumerate(series_values):
+        ys = [values.get((x, series), 0) for x in x_values]
+        plt.bar(x_plot_values, ys, bottom=bottoms, label=series, color=chart_series_color(series, series_index))
+        bottoms = [bottom + y for bottom, y in zip(bottoms, ys)]
+
+    if release_markers:
+        has_any_markers = any(release_markers.get(str(x)) for x in x_values)
+        if has_any_markers:
+            y_min, y_max = plt.ylim()
+            y_span = max(y_max - y_min, 1.0)
+            label_y = y_max - y_span * 0.02
+            for x in x_values:
+                labels = [lbl for lbl in release_markers.get(str(x), []) if str(lbl).strip()]
+                labels = list(dict.fromkeys(labels))
+                if not labels:
+                    continue
+                marker_x = parse_chart_date(x) if use_date_axis else x
+                plt.axvline(x=marker_x, color="#b91c1c", linestyle="--", linewidth=1, alpha=0.4)
+                label_text = " | ".join(labels[:2])
+                if len(labels) > 2:
+                    label_text += f" (+{len(labels) - 2})"
+                plt.text(
+                    marker_x,
+                    label_y,
+                    label_text,
+                    rotation=90,
+                    va="top",
+                    ha="center",
+                    fontsize=8,
+                    color="#7f1d1d",
+                    clip_on=True,
+                )
+
+    plt.title(title)
+    plt.xlabel("Date")
+    plt.ylabel(y_key.replace("_", " ").title())
+    if use_date_axis:
+        ax = plt.gca()
+        ax.xaxis.set_major_locator(mdates.AutoDateLocator())
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
+    plt.xticks(rotation=45, ha="right")
+    if len(series_values) <= 12:
+        legend_cols = 2 if len(series_values) > 4 else 1
+        plt.legend(fontsize=8, ncol=legend_cols)
     plt.tight_layout()
     output_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_path)
@@ -1773,17 +2099,70 @@ def build_charts(
             })
         return out
 
-    by_total_map: dict[str, int] = defaultdict(int)
+    project_display_by_key: dict[str, str] = {}
+    project_order: list[str] = []
+
+    def register_project_display(value: Any) -> None:
+        display = str(value or "").strip()
+        if not display:
+            return
+        key = display.lower()
+        if key in project_display_by_key:
+            return
+        project_display_by_key[key] = display
+        project_order.append(key)
+
+    for name in configured_project_names:
+        register_project_display(name)
     for rec in daily_project_records:
-        by_total_map[rec["snapshot_date"]] += safe_int(rec["daily_downloads"], 0)
+        register_project_display(rec.get("project_name"))
+
+    def display_project_name(value: Any) -> str:
+        display = str(value or "").strip()
+        if not display:
+            return "unknown"
+        return project_display_by_key.get(display.lower(), display)
+
+    project_series = [project_display_by_key[key] for key in project_order]
+    all_dates = sorted({
+        str(rec.get("snapshot_date", "")).strip()
+        for rec in daily_project_records
+        if str(rec.get("snapshot_date", "")).strip()
+    })
+    by_project_daily_map: dict[tuple[str, str], int] = defaultdict(int)
+    for rec in daily_project_records:
+        snapshot_date = str(rec.get("snapshot_date", "")).strip()
+        if not snapshot_date:
+            continue
+        project_name = display_project_name(rec.get("project_name"))
+        by_project_daily_map[(snapshot_date, project_name)] += safe_int(rec["daily_downloads"], 0)
 
     by_total: list[dict[str, Any]] = []
-    for snapshot_date, daily_downloads in sorted(by_total_map.items()):
-        by_total.append({
-            "snapshot_date": snapshot_date,
-            "daily_downloads": daily_downloads,
-            "series": "all",
-        })
+    if all_dates and project_series:
+        started_projects = {project_name: False for project_name in project_series}
+        total_started = False
+        for snapshot_date in all_dates:
+            total_daily_downloads = 0
+            for project_name in project_series:
+                daily_downloads = by_project_daily_map.get((snapshot_date, project_name), 0)
+                total_daily_downloads += daily_downloads
+                if daily_downloads > 0:
+                    started_projects[project_name] = True
+                if not started_projects[project_name]:
+                    continue
+                by_total.append({
+                    "snapshot_date": snapshot_date,
+                    "daily_downloads": daily_downloads,
+                    "series": project_name,
+                })
+            if total_daily_downloads > 0:
+                total_started = True
+            if total_started:
+                by_total.append({
+                    "snapshot_date": snapshot_date,
+                    "daily_downloads": total_daily_downloads,
+                    "series": "Total",
+                })
 
     add_chart(
         by_total,
@@ -1794,17 +2173,23 @@ def build_charts(
         path=output_dir / "charts" / "total_daily_downloads.png",
         project_name=None,
     )
-    by_total_cumulative = cumulative_records(
-        by_total,
-        x_key="snapshot_date",
-        y_key="daily_downloads",
-        out_key="cumulative_downloads",
-    )
-    if plot_bar_chart(
+
+    by_total_cumulative: list[dict[str, Any]] = []
+    running_by_project = {project_name: 0 for project_name in project_series}
+    for snapshot_date in all_dates:
+        for project_name in project_series:
+            running_by_project[project_name] += by_project_daily_map.get((snapshot_date, project_name), 0)
+            by_total_cumulative.append({
+                "snapshot_date": snapshot_date,
+                "cumulative_downloads": running_by_project[project_name],
+                "series": project_name,
+            })
+    if plot_stacked_bar_chart(
         by_total_cumulative,
         x_key="snapshot_date",
         y_key="cumulative_downloads",
-        title="Total Downloads (Cumulative by Day)",
+        series_key="series",
+        title="Total Downloads by Project (Cumulative)",
         output_path=output_dir / "charts" / "total_daily_downloads_bar.png",
         dpi=dpi,
         release_markers=release_markers_for_project(None),
@@ -2146,6 +2531,82 @@ def print_simple_table(title: str, rows: Sequence[dict[str, Any]], columns: Sequ
         print("  ".join(str(r.get(col, "")).ljust(widths[col]) for col in columns))
 
 
+def project_names_for_console_tables(
+    projects: Sequence[dict[str, Any]],
+    item_rows_today: Sequence[dict[str, Any]],
+) -> list[str]:
+    names: list[str] = []
+
+    def add_name(value: Any) -> None:
+        name = str(value or "").strip()
+        if name and name not in names:
+            names.append(name)
+
+    for project in projects:
+        add_name(project.get("name") if isinstance(project, dict) else project)
+    for row in item_rows_today:
+        add_name(row.get("project_name"))
+
+    return names
+
+
+def build_daily_project_breakdown_rows(
+    item_rows_today: Sequence[dict[str, Any]],
+    *,
+    label_column: str,
+    label_for_row: Callable[[dict[str, Any]], Any],
+    project_names: Sequence[str],
+) -> list[dict[str, Any]]:
+    rows_by_label: dict[str, dict[str, Any]] = {}
+
+    for item_row in item_rows_today:
+        daily = item_row.get("daily_downloads")
+        if daily is None:
+            continue
+
+        project_name = str(item_row.get("project_name") or "").strip()
+        if not project_name:
+            continue
+
+        label = str(label_for_row(item_row) or "unknown").strip() or "unknown"
+        out = rows_by_label.setdefault(
+            label,
+            {label_column: label, "_total": 0, **{name: 0 for name in project_names}},
+        )
+        if project_name not in out:
+            out[project_name] = 0
+
+        daily_value = safe_int(daily, 0)
+        out[project_name] += daily_value
+        out["_total"] += daily_value
+
+    return list(rows_by_label.values())
+
+
+def print_daily_project_breakdown_table(
+    title: str,
+    item_rows_today: Sequence[dict[str, Any]],
+    *,
+    label_column: str,
+    label_for_row: Callable[[dict[str, Any]], Any],
+    project_names: Sequence[str],
+    max_rows: Optional[int] = None,
+) -> None:
+    rows = build_daily_project_breakdown_rows(
+        item_rows_today,
+        label_column=label_column,
+        label_for_row=label_for_row,
+        project_names=project_names,
+    )
+    print_simple_table(
+        title,
+        rows,
+        columns=(label_column, *project_names),
+        sort_key="_total",
+        max_rows=max_rows,
+    )
+
+
 # ============================================================================
 # MAIN ANALYTICS PIPELINE
 # ============================================================================
@@ -2220,6 +2681,7 @@ def run_fetch(conn: sqlite3.Connection, config: dict[str, Any]) -> list[Snapshot
         session.close()
 
     config["_project_catalog"] = project_catalog
+    upsert_project_catalog(conn, project_catalog)
     config["_snapshot_date"] = snapshot_date
     fetch_counts: dict[tuple[str, str], int] = defaultdict(int)
     for row in rows:
@@ -2284,6 +2746,8 @@ def build_analytics(conn: sqlite3.Connection, config: dict[str, Any]) -> dict[st
         min_multiplier=float(config.get("spike_min_multiplier", 2.0)),
         min_absolute_increase=int(config.get("spike_min_absolute_increase", 10)),
     )
+    upsert_spikes(conn, spikes)
+    persisted_spikes = load_persisted_spikes(conn)
 
     latest_loader_breakdown = summarize_latest_loader_breakdown(item_rows_today)
     latest_mc_breakdown = summarize_latest_mc_breakdown(item_rows_today)
@@ -2300,7 +2764,7 @@ def build_analytics(conn: sqlite3.Connection, config: dict[str, Any]) -> dict[st
     write_csv(output_dir / "daily_loader_totals.csv", daily_loader)
     write_csv(output_dir / "daily_mc_version_totals.csv", daily_mc)
     write_csv(output_dir / "daily_mod_version_totals.csv", daily_mod)
-    write_csv(output_dir / "spikes.csv", spikes)
+    write_csv(output_dir / "spikes.csv", persisted_spikes)
     write_csv(output_dir / "latest_platform_breakdown.csv", latest_platform_breakdown)
     write_csv(output_dir / "latest_loader_breakdown.csv", latest_loader_breakdown)
     write_csv(output_dir / "latest_mc_breakdown.csv", latest_mc_breakdown)
@@ -2310,14 +2774,24 @@ def build_analytics(conn: sqlite3.Connection, config: dict[str, Any]) -> dict[st
     write_csv(output_dir / "latest_mc_totals.csv", latest_mc_totals)
     write_csv(output_dir / "latest_mod_totals.csv", latest_mod_totals)
 
+    config_catalog = config.get("_project_catalog", [])
+    if not isinstance(config_catalog, list):
+        config_catalog = []
+    project_catalog = merge_project_catalogs(
+        load_existing_summary_project_catalog(output_dir),
+        load_project_catalog(conn),
+        config_catalog,
+    )
+    upsert_project_catalog(conn, project_catalog)
+
     summary_payload = {
         "generated_et_date": today,
         "generated_est_date": today,
         "snapshot_date": today,
         "projects": [p["name"] for p in config["projects"]],
-        "project_catalog": config.get("_project_catalog", []),
+        "project_catalog": project_catalog,
         "today_item_rows_count": len(item_rows_today),
-        "spike_count": len(spikes),
+        "spike_count": len(persisted_spikes),
         "latest_platform_totals": latest_platform_totals,
         "latest_loader_totals": latest_loader_totals,
         "latest_mc_totals": latest_mc_totals,
@@ -2340,6 +2814,7 @@ def build_analytics(conn: sqlite3.Connection, config: dict[str, Any]) -> dict[st
         release_tags=tags,
         dpi=int(config.get("chart_dpi", 140)),
     )
+    copy_static_dashboard_assets(output_dir)
 
     return {
         "today": today,
@@ -2349,7 +2824,7 @@ def build_analytics(conn: sqlite3.Connection, config: dict[str, Any]) -> dict[st
         "daily_loader": daily_loader,
         "daily_mc": daily_mc,
         "daily_mod": daily_mod,
-        "spikes": spikes,
+        "spikes": persisted_spikes,
         "latest_platform_totals": latest_platform_totals,
         "latest_loader_totals": latest_loader_totals,
         "latest_mc_totals": latest_mc_totals,
@@ -2358,6 +2833,7 @@ def build_analytics(conn: sqlite3.Connection, config: dict[str, Any]) -> dict[st
         "latest_loader_breakdown": latest_loader_breakdown,
         "latest_mc_breakdown": latest_mc_breakdown,
         "latest_mod_breakdown": latest_mod_breakdown,
+        "project_catalog": project_catalog,
         "release_tags": tags,
         "output_dir": str(output_dir),
         "chart_paths": [str(p) for p in chart_paths],
@@ -2379,32 +2855,41 @@ def main() -> int:
         analytics = build_analytics(conn, config)
 
         if config.get("verbose_console", True):
-            print_simple_table(
+            project_columns = project_names_for_console_tables(
+                config.get("projects", []),
+                analytics["item_rows_today"],
+            )
+
+            print_daily_project_breakdown_table(
                 "Today daily platform breakdown",
-                analytics["latest_platform_breakdown"],
-                columns=("platform", "daily_downloads"),
-                sort_key="daily_downloads",
+                analytics["item_rows_today"],
+                label_column="platform",
+                label_for_row=lambda row: row.get("platform"),
+                project_names=project_columns,
             )
 
-            print_simple_table(
+            print_daily_project_breakdown_table(
                 "Today daily loader breakdown",
-                analytics["latest_loader_breakdown"],
-                columns=("loader_group", "daily_downloads"),
-                sort_key="daily_downloads",
+                analytics["item_rows_today"],
+                label_column="loader_group",
+                label_for_row=lambda row: row.get("loader_group"),
+                project_names=project_columns,
             )
 
-            print_simple_table(
+            print_daily_project_breakdown_table(
                 "Today daily Minecraft version breakdown",
-                analytics["latest_mc_breakdown"],
-                columns=("mc_version", "daily_downloads"),
-                sort_key="daily_downloads",
+                analytics["item_rows_today"],
+                label_column="mc_version",
+                label_for_row=row_primary_mc_version,
+                project_names=project_columns,
                 max_rows=15,
             )
-            print_simple_table(
+            print_daily_project_breakdown_table(
                 "Today daily mod version breakdown",
-                analytics["latest_mod_breakdown"],
-                columns=("mod_version", "daily_downloads"),
-                sort_key="daily_downloads",
+                analytics["item_rows_today"],
+                label_column="mod_version",
+                label_for_row=lambda row: row.get("mod_version", "unknown") or "unknown",
+                project_names=project_columns,
                 max_rows=15,
             )
 
