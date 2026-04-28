@@ -1784,7 +1784,7 @@ def plot_line_chart(
             running_total += value
             if len(window) > window_days:
                 running_total -= window.pop(0)
-            averages.append(running_total / len(window) if window else None)
+            averages.append(running_total / window_days if len(window) == window_days else None)
         return averages
 
     series_map: dict[str, list[dict[str, Any]]] = defaultdict(list)
