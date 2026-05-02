@@ -40,15 +40,24 @@
     },
     {
       "date": "2026-05-01",
-      "project": "cinderstride",
+      "project": "cinderstride (CF)",
       "tag": "1.1.0"
     },
     {
       "date": "2026-05-01",
-      "project": "hearthguard",
+      "project": "hearthguard (CF)",
+      "tag": "1.1.0"
+    },
+    {
+      "date": "2026-05-02",
+      "project": "cinderstride (MR)",
+      "tag": "1.1.0"
+    },
+    {
+      "date": "2026-05-02",
+      "project": "hearthguard (MR)",
       "tag": "1.1.0"
     }
-
   ],
   "spike_window_days": 7,
   "spike_min_multiplier": 2.0,
