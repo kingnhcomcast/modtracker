@@ -1,36 +1,34 @@
-WARNING: Skipping Modrinth data for CinderStride (cinderstride): project is not available via the Modrinth API.
-WARNING: Skipping Modrinth data for Dirigo (dirigo): project is not available via the Modrinth API.
 
 Today daily platform breakdown
 ------------------------------
 platform    HearthGuard  CinderStride  Dirigo
 ----------  -----------  ------------  ------
-curseforge  137          61            53    
-modrinth    14           0             0     
+curseforge  84           21            19    
+modrinth    33           23            29    
 
 Today daily loader breakdown
 ----------------------------
 loader_group  HearthGuard  CinderStride  Dirigo
 ------------  -----------  ------------  ------
-fabric        79           32            29    
-neoforge      72           29            24    
+fabric        73           22            24    
+neoforge      44           22            24    
 
 Today daily Minecraft version breakdown
 ---------------------------------------
 mc_version  HearthGuard  CinderStride  Dirigo
 ----------  -----------  ------------  ------
-1.21.1      56           24            24    
-26.1.2      66           21            12    
-1.21.11     28           16            17    
-26.1.1      1            0             0     
-26.1        0            0             0     
+1.21.1      38           17            19    
+26.1.2      56           10            8     
+1.21.11     23           11            15    
+26.1        0            6             6     
+26.1.1      0            0             0     
 
 Today daily mod version breakdown
 ---------------------------------
 mod_version  HearthGuard  CinderStride  Dirigo
 -----------  -----------  ------------  ------
-1.1.0        107          61            53    
-1.0.3        43           0             0     
-1.0.2        1            0             0     
-1.0.0        0            0             0     
+1.1.0        97           31            35    
+1.0.0        0            13            13    
+1.0.3        20           0             0     
 1.0.1        0            0             0     
+1.0.2        0            0             0     
