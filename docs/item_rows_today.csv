@@ -1,95 +1,95 @@
 snapshot_date,platform,project_name,project_platform_id,item_id,item_name,version_label,mod_version,loader,game_versions,total_downloads,previous_total,daily_downloads,loader_group
-2026-05-02,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.0.0 (Fabric),CinderStride 1.21.1-1.0.0 (Fabric),CinderStride 1.21.1-1.0.0 (Fabric),1.0.0,Fabric,1.21.1,16,16,0,fabric
-2026-05-02,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.0.0 (NeoForge),CinderStride 1.21.1-1.0.0 (NeoForge),CinderStride 1.21.1-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.1,54,54,0,neoforge
-2026-05-02,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.1.0 (NeoForge),CinderStride 1.21.1-1.1.0 (NeoForge),CinderStride 1.21.1-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.1,18,12,6,neoforge
-2026-05-02,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.1.0.jar (Fabric),CinderStride 1.21.1-1.1.0.jar (Fabric),CinderStride 1.21.1-1.1.0.jar (Fabric),1.1.0,Fabric,1.21.1,13,12,1,fabric
-2026-05-02,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.0.0 (Fabric),CinderStride 1.21.11-1.0.0 (Fabric),CinderStride 1.21.11-1.0.0 (Fabric),1.0.0,Fabric,1.21.11,35,35,0,fabric
-2026-05-02,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.0.0 (NeoForge),CinderStride 1.21.11-1.0.0 (NeoForge),CinderStride 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,16,16,0,neoforge
-2026-05-02,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.1.0 (Fabric),CinderStride 1.21.11-1.1.0 (Fabric),CinderStride 1.21.11-1.1.0 (Fabric),1.1.0,Fabric,1.21.11,15,9,6,fabric
-2026-05-02,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.1.0 (NeoForge),CinderStride 1.21.11-1.1.0 (NeoForge),CinderStride 1.21.11-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.11,8,7,1,neoforge
-2026-05-02,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1-1.0.0 (Fabric),CinderStride 26.1-1.0.0 (Fabric),CinderStride 26.1-1.0.0 (Fabric),1.0.0,Fabric,"26.1.2,26.1.1,26.1",55,55,0,fabric
-2026-05-02,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1-1.0.0 (NeoForge),CinderStride 26.1-1.0.0 (NeoForge),CinderStride 26.1-1.0.0 (NeoForge),1.0.0,NeoForge,"26.1.2,26.1.1,26.1",32,32,0,neoforge
-2026-05-02,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1.2-1.1.0 (Fabric),CinderStride 26.1.2-1.1.0 (Fabric),CinderStride 26.1.2-1.1.0 (Fabric),1.1.0,Fabric,"26.1.2,26.1.1,26.1",15,11,4,fabric
-2026-05-02,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1.2-1.1.0 (NeoForge),CinderStride 26.1.2-1.1.0 (NeoForge),CinderStride 26.1.2-1.1.0 (NeoForge),1.1.0,NeoForge,"26.1.2,26.1.1,26.1",13,10,3,neoforge
-2026-05-02,modrinth,CinderStride,cinderstride,3AmaLH30,cinderstride-fabric-1.21.1-1.0.0.jar,1.21.1-1.0.0,1.0.0,fabric,1.21.1,2,0,2,fabric
-2026-05-02,modrinth,CinderStride,cinderstride,k7a9frNx,cinderstride-fabric-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,fabric,1.21.1,2,0,2,fabric
-2026-05-02,modrinth,CinderStride,cinderstride,3ULipy1h,cinderstride-fabric-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,fabric,1.21.11,1,0,1,fabric
-2026-05-02,modrinth,CinderStride,cinderstride,2fbvqPj1,cinderstride-fabric-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,fabric,1.21.11,2,0,2,fabric
-2026-05-02,modrinth,CinderStride,cinderstride,RCOgwRCp,cinderstride-fabric-26.1-1.0.0.jar,26.1.2-1.0.0,1.0.0,fabric,"26.1,26.1.1,26.1.2",3,0,3,fabric
-2026-05-02,modrinth,CinderStride,cinderstride,iONmOUuz,cinderstride-fabric-26.1.2-1.1.0.jar,26.1.2-1.1.0,1.1.0,fabric,"26.1,26.1.1,26.1.2",1,0,1,fabric
-2026-05-02,modrinth,CinderStride,cinderstride,8j56vU8d,cinderstride-neoforge-1.21.1-1.0.0.jar,1.21.11-1.0.0,1.0.0,neoforge,1.21.1,3,0,3,neoforge
-2026-05-02,modrinth,CinderStride,cinderstride,qhmEvepC,cinderstride-neoforge-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,neoforge,1.21.1,3,0,3,neoforge
-2026-05-02,modrinth,CinderStride,cinderstride,vYUmrQWr,cinderstride-neoforge-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,neoforge,1.21.11,1,0,1,neoforge
-2026-05-02,modrinth,CinderStride,cinderstride,5ROohrpl,cinderstride-neoforge-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,neoforge,1.21.11,0,0,0,neoforge
-2026-05-02,modrinth,CinderStride,cinderstride,TDgGJ90c,cinderstride-neoforge-26.1-1.0.0.jar,26.1.2-1.0.0,1.0.0,neoforge,"26.1,26.1.1,26.1.2",3,0,3,neoforge
-2026-05-02,modrinth,CinderStride,cinderstride,aAHAziIE,cinderstride-neoforge-26.1.2-1.1.0.jar,26.1.2-1.1.0,1.1.0,neoforge,"26.1,26.1.1,26.1.2",2,0,2,neoforge
-2026-05-02,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.0.0 (Fabric),Dirigo 1.21.1-1.0.0 (Fabric),Dirigo 1.21.1-1.0.0 (Fabric),1.0.0,Fabric,1.21.1,17,17,0,fabric
-2026-05-02,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.0.0 (NeoForge),Dirigo 1.21.1-1.0.0 (NeoForge),Dirigo 1.21.1-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.1,50,50,0,neoforge
-2026-05-02,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.1.0 (Fabric),Dirigo 1.21.1-1.1.0 (Fabric),Dirigo 1.21.1-1.1.0 (Fabric),1.1.0,Fabric,1.21.1,15,12,3,fabric
-2026-05-02,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.1.0 (NeoForge),Dirigo 1.21.1-1.1.0 (NeoForge),Dirigo 1.21.1-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.1,18,12,6,neoforge
-2026-05-02,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.0.0 (Fabric),Dirigo 1.21.11-1.0.0 (Fabric),Dirigo 1.21.11-1.0.0 (Fabric),1.0.0,Fabric,1.21.11,24,24,0,fabric
-2026-05-02,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.0.0 (NeoForge),Dirigo 1.21.11-1.0.0 (NeoForge),Dirigo 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,14,14,0,neoforge
-2026-05-02,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.1.0 (Fabric),Dirigo 1.21.11-1.1.0 (Fabric),Dirigo 1.21.11-1.1.0 (Fabric),1.1.0,Fabric,1.21.11,16,10,6,fabric
-2026-05-02,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.1.0 (NeoForge),Dirigo 1.21.11-1.1.0 (NeoForge),Dirigo 1.21.11-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.11,8,7,1,neoforge
-2026-05-02,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1-1.0.0 (Fabric),Dirigo 26.1-1.0.0 (Fabric),Dirigo 26.1-1.0.0 (Fabric),1.0.0,Fabric,"26.1.2,26.1.1,26.1",36,36,0,fabric
-2026-05-02,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1-1.0.0 (NeoForge),Dirigo 26.1-1.0.0 (NeoForge),Dirigo 26.1-1.0.0 (NeoForge),1.0.0,NeoForge,"26.1.2,26.1.1,26.1",32,32,0,neoforge
-2026-05-02,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1.2-1.1.0 (Fabric),Dirigo 26.1.2-1.1.0 (Fabric),Dirigo 26.1.2-1.1.0 (Fabric),1.1.0,Fabric,"26.1.2,26.1.1,26.1",10,9,1,fabric
-2026-05-02,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1.2-1.1.0 (NeoForge),Dirigo 26.1.2-1.1.0 (NeoForge),Dirigo 26.1.2-1.1.0 (NeoForge),1.1.0,NeoForge,"26.1.2,26.1.1,26.1",10,8,2,neoforge
-2026-05-02,modrinth,Dirigo,dirigo,T0jaIIel,dirigo-fabric-1.21.1-1.0.0.jar,1.21.1-1.0.0,1.0.0,fabric,1.21.1,1,0,1,fabric
-2026-05-02,modrinth,Dirigo,dirigo,eNcEXtgh,dirigo-fabric-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,fabric,1.21.1,3,0,3,fabric
-2026-05-02,modrinth,Dirigo,dirigo,95beyHOF,dirigo-fabric-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,fabric,1.21.11,1,0,1,fabric
-2026-05-02,modrinth,Dirigo,dirigo,wG9hzu1P,dirigo-fabric-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,fabric,1.21.11,3,0,3,fabric
-2026-05-02,modrinth,Dirigo,dirigo,xLfsdNcE,dirigo-fabric-26.1-1.0.0.jar,26.1.2-1.0.0,1.0.0,fabric,"26.1,26.1.1,26.1.2",3,0,3,fabric
-2026-05-02,modrinth,Dirigo,dirigo,Suxx66uD,dirigo-fabric-26.1.2-1.1.0.jar,26.1.2-1.1.0,1.1.0,fabric,"26.1,26.1.1,26.1.2",3,0,3,fabric
-2026-05-02,modrinth,Dirigo,dirigo,BL9cPdVw,dirigo-neoforge-1.21.1-1.0.0.jar,1.21.1-1.0.0,1.0.0,neoforge,1.21.1,3,0,3,neoforge
-2026-05-02,modrinth,Dirigo,dirigo,OMydJWq0,dirigo-neoforge-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,neoforge,1.21.1,3,0,3,neoforge
-2026-05-02,modrinth,Dirigo,dirigo,gWKpWcO9,dirigo-neoforge-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,neoforge,1.21.11,2,0,2,neoforge
-2026-05-02,modrinth,Dirigo,dirigo,eNMOiCnn,dirigo-neoforge-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,neoforge,1.21.11,2,0,2,neoforge
-2026-05-02,modrinth,Dirigo,dirigo,1Et8BuCV,dirigo-neoforge-26.1-1.0.0.jar,26.1.2-1.0.0,1.0.0,neoforge,"26.1,26.1.1,26.1.2",3,0,3,neoforge
-2026-05-02,modrinth,Dirigo,dirigo,FwZEBZDK,dirigo-neoforge-26.1.2-1.1.0.jar,26.1.2-1.1.0,1.1.0,neoforge,"26.1,26.1.1,26.1.2",2,0,2,neoforge
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.0.0 (Fabric),HearthGuard 1.21.1-1.0.0 (Fabric),HearthGuard 1.21.1-1.0.0 (Fabric),1.0.0,Fabric,1.21.1,52,52,0,fabric
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.0.1 (Fabric),HearthGuard 1.21.1-1.0.1 (Fabric),HearthGuard 1.21.1-1.0.1 (Fabric),1.0.1,Fabric,1.21.1,75,75,0,fabric
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.0.1 (NeoForge),HearthGuard 1.21.1-1.0.1 (NeoForge),HearthGuard 1.21.1-1.0.1 (NeoForge),1.0.1,NeoForge,1.21.1,94,94,0,neoforge
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.0.3 (Fabric),HearthGuard 1.21.1-1.0.3 (Fabric),HearthGuard 1.21.1-1.0.3 (Fabric),1.0.3,Fabric,1.21.1,102,102,0,fabric
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.0.3 (NeoForge),HearthGuard 1.21.1-1.0.3 (NeoForge),HearthGuard 1.21.1-1.0.3 (NeoForge),1.0.3,NeoForge,1.21.1,166,165,1,neoforge
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.0 (Fabric),HearthGuard 1.21.1-1.1.0 (Fabric),HearthGuard 1.21.1-1.1.0 (Fabric),1.1.0,Fabric,1.21.1,22,13,9,fabric
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.0 (NeoForge),HearthGuard 1.21.1-1.1.0 (NeoForge),HearthGuard 1.21.1-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.1,45,30,15,neoforge
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.0 (Fabric),HearthGuard 1.21.11-1.0.0 (Fabric),HearthGuard 1.21.11-1.0.0 (Fabric),1.0.0,Fabric,1.21.11,155,155,0,fabric
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.0 (NeoForge),HearthGuard 1.21.11-1.0.0 (NeoForge),HearthGuard 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,55,55,0,neoforge
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.1 (Fabric),HearthGuard 1.21.11-1.0.1 (Fabric),HearthGuard 1.21.11-1.0.1 (Fabric),1.0.1,Fabric,1.21.11,221,221,0,fabric
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.1 (NeoForge),HearthGuard 1.21.11-1.0.1 (NeoForge),HearthGuard 1.21.11-1.0.1 (NeoForge),1.0.1,NeoForge,1.21.11,58,58,0,neoforge
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.3 (Fabric),HearthGuard 1.21.11-1.0.3 (Fabric),HearthGuard 1.21.11-1.0.3 (Fabric),1.0.3,Fabric,1.21.11,199,199,0,fabric
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.3 (NeoForge),HearthGuard 1.21.11-1.0.3 (NeoForge),HearthGuard 1.21.11-1.0.3 (NeoForge),1.0.3,NeoForge,1.21.11,30,30,0,neoforge
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.1.0 (Fabric),HearthGuard 1.21.11-1.1.0 (Fabric),HearthGuard 1.21.11-1.1.0 (Fabric),1.1.0,Fabric,1.21.11,30,15,15,fabric
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.1.0 (NeoForge),HearthGuard 1.21.11-1.1.0 (NeoForge),HearthGuard 1.21.11-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.11,11,9,2,neoforge
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1-1.0.1 (Fabric),HearthGuard 26.1-1.0.1 (Fabric),HearthGuard 26.1-1.0.1 (Fabric),1.0.1,Fabric,26.1,80,80,0,fabric
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1-1.0.1 (NeoForge),HearthGuard 26.1-1.0.1 (NeoForge),HearthGuard 26.1-1.0.1 (NeoForge),1.0.1,NeoForge,26.1,22,22,0,neoforge
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1-1.0.2 (Fabric),HearthGuard 26.1.1-1.0.2 (Fabric),HearthGuard 26.1.1-1.0.2 (Fabric),1.0.2,Fabric,26.1.1,113,113,0,fabric
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1-1.0.2 (NeoForge),HearthGuard 26.1.1-1.0.2 (NeoForge),HearthGuard 26.1.1-1.0.2 (NeoForge),1.0.2,NeoForge,26.1.1,102,102,0,neoforge
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1.2-1.0.3 (Fabric),HearthGuard 26.1.2-1.0.3 (Fabric),HearthGuard 26.1.2-1.0.3 (Fabric),1.0.3,Fabric,"26.1.2,26.1.1,26.1",256,252,4,fabric
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1.2-1.0.3 (NeoForge),HearthGuard 26.1.2-1.0.3 (NeoForge),HearthGuard 26.1.2-1.0.3 (NeoForge),1.0.3,NeoForge,"26.1.2,26.1.1,26.1",110,110,0,neoforge
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1.2-1.1.0 (Fabric),HearthGuard 26.1.2-1.1.0 (Fabric),HearthGuard 26.1.2-1.1.0 (Fabric),1.1.0,Fabric,"26.1.2,26.1.1,26.1",49,22,27,fabric
-2026-05-02,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1.2-1.1.0 (NeoForge),HearthGuard 26.1.2-1.1.0 (NeoForge),HearthGuard 26.1.2-1.1.0 (NeoForge),1.1.0,NeoForge,"26.1.2,26.1.1,26.1",29,18,11,neoforge
-2026-05-02,modrinth,HearthGuard,hearthguard,3Qr0FvWY,hearthguard-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,fabric,1.21.11,6,6,0,fabric
-2026-05-02,modrinth,HearthGuard,hearthguard,uV8Oy26t,hearthguard-fabric-1.21.1-1.0.0.jar,1.21.1-1.0.0,1.0.0,fabric,1.21.1,5,5,0,fabric
-2026-05-02,modrinth,HearthGuard,hearthguard,nRpsspT3,hearthguard-fabric-1.21.1-1.0.1.jar,1.21.1-1.0.1,1.0.1,fabric,1.21.1,34,34,0,fabric
-2026-05-02,modrinth,HearthGuard,hearthguard,Wl0112bR,hearthguard-fabric-1.21.1-1.0.3.jar,1.21.1-1.0.3,1.0.3,fabric,1.21.1,29,29,0,fabric
-2026-05-02,modrinth,HearthGuard,hearthguard,x1nnCBE6,hearthguard-fabric-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,fabric,1.21.1,2,0,2,fabric
-2026-05-02,modrinth,HearthGuard,hearthguard,Ip4lznyC,hearthguard-fabric-1.21.11-1.0.1.jar,1.21.11-1.0.1,1.0.1,fabric,1.21.11,74,74,0,fabric
-2026-05-02,modrinth,HearthGuard,hearthguard,YIyUClBb,hearthguard-fabric-1.21.11-1.0.3.jar,1.21.11-1.0.3,1.0.3,fabric,1.21.11,63,60,3,fabric
-2026-05-02,modrinth,HearthGuard,hearthguard,2EwM8JLk,hearthguard-fabric-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,fabric,1.21.11,2,0,2,fabric
-2026-05-02,modrinth,HearthGuard,hearthguard,30ZlRdYy,hearthguard-fabric-26.1-1.0.1.jar,26.1-1.0.1,1.0.1,fabric,26.1,42,42,0,fabric
-2026-05-02,modrinth,HearthGuard,hearthguard,s3sT8jZk,hearthguard-fabric-26.1.1-1.0.2.jar,26.1.1-1.0.2,1.0.2,fabric,26.1.1,92,92,0,fabric
-2026-05-02,modrinth,HearthGuard,hearthguard,ltqal83o,hearthguard-fabric-26.1.2-1.0.3.jar,26.1.2-1.0.3,1.0.3,fabric,"26.1,26.1.1,26.1.2",139,133,6,fabric
-2026-05-02,modrinth,HearthGuard,hearthguard,LncB3XfS,hearthguard-fabric-26.1.2-1.1.0.jar,26.1.2-1.1.0,1.1.0,fabric,"26.1,26.1.1,26.1.2",5,0,5,fabric
-2026-05-02,modrinth,HearthGuard,hearthguard,fbe73rXR,hearthguard-neoforge-1.21.1-1.0.1.jar,1.21.1-1.0.1,1.0.1,neoforge,1.21.1,37,37,0,neoforge
-2026-05-02,modrinth,HearthGuard,hearthguard,iub5wqUR,hearthguard-neoforge-1.21.1-1.0.3.jar,1.21.1-1.0.3,1.0.3,neoforge,1.21.1,51,46,5,neoforge
-2026-05-02,modrinth,HearthGuard,hearthguard,JIByjxkH,hearthguard-neoforge-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,neoforge,1.21.1,6,0,6,neoforge
-2026-05-02,modrinth,HearthGuard,hearthguard,dFWb9IFH,hearthguard-neoforge-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,neoforge,1.21.11,6,6,0,neoforge
-2026-05-02,modrinth,HearthGuard,hearthguard,OQyeKKQM,hearthguard-neoforge-1.21.11-1.0.1.jar,1.21.11-1.0.1,1.0.1,neoforge,1.21.11,9,9,0,neoforge
-2026-05-02,modrinth,HearthGuard,hearthguard,EzCGv7l8,hearthguard-neoforge-1.21.11-1.0.3.jar,1.21.11-1.0.3,1.0.3,neoforge,1.21.11,10,10,0,neoforge
-2026-05-02,modrinth,HearthGuard,hearthguard,FTIJArH1,hearthguard-neoforge-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,neoforge,1.21.11,1,0,1,neoforge
-2026-05-02,modrinth,HearthGuard,hearthguard,ijlz9BpN,hearthguard-neoforge-26.1-1.0.1.jar,26.1-1.0.1,1.0.1,neoforge,26.1,18,18,0,neoforge
-2026-05-02,modrinth,HearthGuard,hearthguard,RgUs60SF,hearthguard-neoforge-26.1.1-1.0.2.jar,26.1.1-1.0.2,1.0.2,neoforge,26.1.1,16,16,0,neoforge
-2026-05-02,modrinth,HearthGuard,hearthguard,wtqulja4,hearthguard-neoforge-26.1.2-1.0.3.jar,26.1.2-1.0.3,1.0.3,neoforge,"26.1,26.1.1,26.1.2",18,17,1,neoforge
-2026-05-02,modrinth,HearthGuard,hearthguard,gJxFzLIJ,hearthguard-neoforge-26.1.2-1.1.0.jar,26.1.2-1.1.0,1.1.0,neoforge,"26.1,26.1.1,26.1.2",2,0,2,neoforge
+2026-05-03,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.0.0 (Fabric),CinderStride 1.21.1-1.0.0 (Fabric),CinderStride 1.21.1-1.0.0 (Fabric),1.0.0,Fabric,1.21.1,16,16,0,fabric
+2026-05-03,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.0.0 (NeoForge),CinderStride 1.21.1-1.0.0 (NeoForge),CinderStride 1.21.1-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.1,56,54,2,neoforge
+2026-05-03,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.1.0 (NeoForge),CinderStride 1.21.1-1.1.0 (NeoForge),CinderStride 1.21.1-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.1,22,18,4,neoforge
+2026-05-03,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.1.0.jar (Fabric),CinderStride 1.21.1-1.1.0.jar (Fabric),CinderStride 1.21.1-1.1.0.jar (Fabric),1.1.0,Fabric,1.21.1,13,13,0,fabric
+2026-05-03,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.0.0 (Fabric),CinderStride 1.21.11-1.0.0 (Fabric),CinderStride 1.21.11-1.0.0 (Fabric),1.0.0,Fabric,1.21.11,35,35,0,fabric
+2026-05-03,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.0.0 (NeoForge),CinderStride 1.21.11-1.0.0 (NeoForge),CinderStride 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,16,16,0,neoforge
+2026-05-03,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.1.0 (Fabric),CinderStride 1.21.11-1.1.0 (Fabric),CinderStride 1.21.11-1.1.0 (Fabric),1.1.0,Fabric,1.21.11,15,15,0,fabric
+2026-05-03,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.1.0 (NeoForge),CinderStride 1.21.11-1.1.0 (NeoForge),CinderStride 1.21.11-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.11,8,8,0,neoforge
+2026-05-03,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1-1.0.0 (Fabric),CinderStride 26.1-1.0.0 (Fabric),CinderStride 26.1-1.0.0 (Fabric),1.0.0,Fabric,"26.1.2,26.1.1,26.1",55,55,0,fabric
+2026-05-03,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1-1.0.0 (NeoForge),CinderStride 26.1-1.0.0 (NeoForge),CinderStride 26.1-1.0.0 (NeoForge),1.0.0,NeoForge,"26.1.2,26.1.1,26.1",32,32,0,neoforge
+2026-05-03,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1.2-1.1.0 (Fabric),CinderStride 26.1.2-1.1.0 (Fabric),CinderStride 26.1.2-1.1.0 (Fabric),1.1.0,Fabric,"26.1.2,26.1.1,26.1",16,15,1,fabric
+2026-05-03,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1.2-1.1.0 (NeoForge),CinderStride 26.1.2-1.1.0 (NeoForge),CinderStride 26.1.2-1.1.0 (NeoForge),1.1.0,NeoForge,"26.1.2,26.1.1,26.1",14,13,1,neoforge
+2026-05-03,modrinth,CinderStride,cinderstride,3AmaLH30,cinderstride-fabric-1.21.1-1.0.0.jar,1.21.1-1.0.0,1.0.0,fabric,1.21.1,2,2,0,fabric
+2026-05-03,modrinth,CinderStride,cinderstride,k7a9frNx,cinderstride-fabric-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,fabric,1.21.1,4,2,2,fabric
+2026-05-03,modrinth,CinderStride,cinderstride,3ULipy1h,cinderstride-fabric-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,fabric,1.21.11,1,1,0,fabric
+2026-05-03,modrinth,CinderStride,cinderstride,2fbvqPj1,cinderstride-fabric-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,fabric,1.21.11,5,2,3,fabric
+2026-05-03,modrinth,CinderStride,cinderstride,RCOgwRCp,cinderstride-fabric-26.1-1.0.0.jar,26.1.2-1.0.0,1.0.0,fabric,"26.1,26.1.1,26.1.2",3,3,0,fabric
+2026-05-03,modrinth,CinderStride,cinderstride,iONmOUuz,cinderstride-fabric-26.1.2-1.1.0.jar,26.1.2-1.1.0,1.1.0,fabric,"26.1,26.1.1,26.1.2",5,1,4,fabric
+2026-05-03,modrinth,CinderStride,cinderstride,8j56vU8d,cinderstride-neoforge-1.21.1-1.0.0.jar,1.21.11-1.0.0,1.0.0,neoforge,1.21.1,3,3,0,neoforge
+2026-05-03,modrinth,CinderStride,cinderstride,qhmEvepC,cinderstride-neoforge-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,neoforge,1.21.1,3,3,0,neoforge
+2026-05-03,modrinth,CinderStride,cinderstride,vYUmrQWr,cinderstride-neoforge-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,neoforge,1.21.11,1,1,0,neoforge
+2026-05-03,modrinth,CinderStride,cinderstride,5ROohrpl,cinderstride-neoforge-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,neoforge,1.21.11,0,0,0,neoforge
+2026-05-03,modrinth,CinderStride,cinderstride,TDgGJ90c,cinderstride-neoforge-26.1-1.0.0.jar,26.1.2-1.0.0,1.0.0,neoforge,"26.1,26.1.1,26.1.2",3,3,0,neoforge
+2026-05-03,modrinth,CinderStride,cinderstride,aAHAziIE,cinderstride-neoforge-26.1.2-1.1.0.jar,26.1.2-1.1.0,1.1.0,neoforge,"26.1,26.1.1,26.1.2",3,2,1,neoforge
+2026-05-03,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.0.0 (Fabric),Dirigo 1.21.1-1.0.0 (Fabric),Dirigo 1.21.1-1.0.0 (Fabric),1.0.0,Fabric,1.21.1,17,17,0,fabric
+2026-05-03,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.0.0 (NeoForge),Dirigo 1.21.1-1.0.0 (NeoForge),Dirigo 1.21.1-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.1,52,50,2,neoforge
+2026-05-03,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.1.0 (Fabric),Dirigo 1.21.1-1.1.0 (Fabric),Dirigo 1.21.1-1.1.0 (Fabric),1.1.0,Fabric,1.21.1,15,15,0,fabric
+2026-05-03,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.1.0 (NeoForge),Dirigo 1.21.1-1.1.0 (NeoForge),Dirigo 1.21.1-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.1,22,18,4,neoforge
+2026-05-03,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.0.0 (Fabric),Dirigo 1.21.11-1.0.0 (Fabric),Dirigo 1.21.11-1.0.0 (Fabric),1.0.0,Fabric,1.21.11,24,24,0,fabric
+2026-05-03,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.0.0 (NeoForge),Dirigo 1.21.11-1.0.0 (NeoForge),Dirigo 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,14,14,0,neoforge
+2026-05-03,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.1.0 (Fabric),Dirigo 1.21.11-1.1.0 (Fabric),Dirigo 1.21.11-1.1.0 (Fabric),1.1.0,Fabric,1.21.11,18,16,2,fabric
+2026-05-03,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.1.0 (NeoForge),Dirigo 1.21.11-1.1.0 (NeoForge),Dirigo 1.21.11-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.11,8,8,0,neoforge
+2026-05-03,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1-1.0.0 (Fabric),Dirigo 26.1-1.0.0 (Fabric),Dirigo 26.1-1.0.0 (Fabric),1.0.0,Fabric,"26.1.2,26.1.1,26.1",36,36,0,fabric
+2026-05-03,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1-1.0.0 (NeoForge),Dirigo 26.1-1.0.0 (NeoForge),Dirigo 26.1-1.0.0 (NeoForge),1.0.0,NeoForge,"26.1.2,26.1.1,26.1",32,32,0,neoforge
+2026-05-03,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1.2-1.1.0 (Fabric),Dirigo 26.1.2-1.1.0 (Fabric),Dirigo 26.1.2-1.1.0 (Fabric),1.1.0,Fabric,"26.1.2,26.1.1,26.1",21,10,11,fabric
+2026-05-03,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1.2-1.1.0 (NeoForge),Dirigo 26.1.2-1.1.0 (NeoForge),Dirigo 26.1.2-1.1.0 (NeoForge),1.1.0,NeoForge,"26.1.2,26.1.1,26.1",11,10,1,neoforge
+2026-05-03,modrinth,Dirigo,dirigo,T0jaIIel,dirigo-fabric-1.21.1-1.0.0.jar,1.21.1-1.0.0,1.0.0,fabric,1.21.1,1,1,0,fabric
+2026-05-03,modrinth,Dirigo,dirigo,eNcEXtgh,dirigo-fabric-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,fabric,1.21.1,5,3,2,fabric
+2026-05-03,modrinth,Dirigo,dirigo,95beyHOF,dirigo-fabric-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,fabric,1.21.11,1,1,0,fabric
+2026-05-03,modrinth,Dirigo,dirigo,wG9hzu1P,dirigo-fabric-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,fabric,1.21.11,5,3,2,fabric
+2026-05-03,modrinth,Dirigo,dirigo,xLfsdNcE,dirigo-fabric-26.1-1.0.0.jar,26.1.2-1.0.0,1.0.0,fabric,"26.1,26.1.1,26.1.2",3,3,0,fabric
+2026-05-03,modrinth,Dirigo,dirigo,Suxx66uD,dirigo-fabric-26.1.2-1.1.0.jar,26.1.2-1.1.0,1.1.0,fabric,"26.1,26.1.1,26.1.2",7,3,4,fabric
+2026-05-03,modrinth,Dirigo,dirigo,BL9cPdVw,dirigo-neoforge-1.21.1-1.0.0.jar,1.21.1-1.0.0,1.0.0,neoforge,1.21.1,3,3,0,neoforge
+2026-05-03,modrinth,Dirigo,dirigo,OMydJWq0,dirigo-neoforge-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,neoforge,1.21.1,3,3,0,neoforge
+2026-05-03,modrinth,Dirigo,dirigo,gWKpWcO9,dirigo-neoforge-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,neoforge,1.21.11,2,2,0,neoforge
+2026-05-03,modrinth,Dirigo,dirigo,eNMOiCnn,dirigo-neoforge-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,neoforge,1.21.11,2,2,0,neoforge
+2026-05-03,modrinth,Dirigo,dirigo,1Et8BuCV,dirigo-neoforge-26.1-1.0.0.jar,26.1.2-1.0.0,1.0.0,neoforge,"26.1,26.1.1,26.1.2",3,3,0,neoforge
+2026-05-03,modrinth,Dirigo,dirigo,FwZEBZDK,dirigo-neoforge-26.1.2-1.1.0.jar,26.1.2-1.1.0,1.1.0,neoforge,"26.1,26.1.1,26.1.2",4,2,2,neoforge
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.0.0 (Fabric),HearthGuard 1.21.1-1.0.0 (Fabric),HearthGuard 1.21.1-1.0.0 (Fabric),1.0.0,Fabric,1.21.1,52,52,0,fabric
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.0.1 (Fabric),HearthGuard 1.21.1-1.0.1 (Fabric),HearthGuard 1.21.1-1.0.1 (Fabric),1.0.1,Fabric,1.21.1,75,75,0,fabric
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.0.1 (NeoForge),HearthGuard 1.21.1-1.0.1 (NeoForge),HearthGuard 1.21.1-1.0.1 (NeoForge),1.0.1,NeoForge,1.21.1,94,94,0,neoforge
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.0.3 (Fabric),HearthGuard 1.21.1-1.0.3 (Fabric),HearthGuard 1.21.1-1.0.3 (Fabric),1.0.3,Fabric,1.21.1,102,102,0,fabric
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.0.3 (NeoForge),HearthGuard 1.21.1-1.0.3 (NeoForge),HearthGuard 1.21.1-1.0.3 (NeoForge),1.0.3,NeoForge,1.21.1,166,166,0,neoforge
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.0 (Fabric),HearthGuard 1.21.1-1.1.0 (Fabric),HearthGuard 1.21.1-1.1.0 (Fabric),1.1.0,Fabric,1.21.1,33,22,11,fabric
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.0 (NeoForge),HearthGuard 1.21.1-1.1.0 (NeoForge),HearthGuard 1.21.1-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.1,56,45,11,neoforge
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.0 (Fabric),HearthGuard 1.21.11-1.0.0 (Fabric),HearthGuard 1.21.11-1.0.0 (Fabric),1.0.0,Fabric,1.21.11,155,155,0,fabric
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.0 (NeoForge),HearthGuard 1.21.11-1.0.0 (NeoForge),HearthGuard 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,55,55,0,neoforge
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.1 (Fabric),HearthGuard 1.21.11-1.0.1 (Fabric),HearthGuard 1.21.11-1.0.1 (Fabric),1.0.1,Fabric,1.21.11,221,221,0,fabric
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.1 (NeoForge),HearthGuard 1.21.11-1.0.1 (NeoForge),HearthGuard 1.21.11-1.0.1 (NeoForge),1.0.1,NeoForge,1.21.11,58,58,0,neoforge
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.3 (Fabric),HearthGuard 1.21.11-1.0.3 (Fabric),HearthGuard 1.21.11-1.0.3 (Fabric),1.0.3,Fabric,1.21.11,199,199,0,fabric
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.3 (NeoForge),HearthGuard 1.21.11-1.0.3 (NeoForge),HearthGuard 1.21.11-1.0.3 (NeoForge),1.0.3,NeoForge,1.21.11,30,30,0,neoforge
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.1.0 (Fabric),HearthGuard 1.21.11-1.1.0 (Fabric),HearthGuard 1.21.11-1.1.0 (Fabric),1.1.0,Fabric,1.21.11,32,30,2,fabric
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.1.0 (NeoForge),HearthGuard 1.21.11-1.1.0 (NeoForge),HearthGuard 1.21.11-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.11,13,11,2,neoforge
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1-1.0.1 (Fabric),HearthGuard 26.1-1.0.1 (Fabric),HearthGuard 26.1-1.0.1 (Fabric),1.0.1,Fabric,26.1,80,80,0,fabric
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1-1.0.1 (NeoForge),HearthGuard 26.1-1.0.1 (NeoForge),HearthGuard 26.1-1.0.1 (NeoForge),1.0.1,NeoForge,26.1,22,22,0,neoforge
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1-1.0.2 (Fabric),HearthGuard 26.1.1-1.0.2 (Fabric),HearthGuard 26.1.1-1.0.2 (Fabric),1.0.2,Fabric,26.1.1,113,113,0,fabric
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1-1.0.2 (NeoForge),HearthGuard 26.1.1-1.0.2 (NeoForge),HearthGuard 26.1.1-1.0.2 (NeoForge),1.0.2,NeoForge,26.1.1,102,102,0,neoforge
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1.2-1.0.3 (Fabric),HearthGuard 26.1.2-1.0.3 (Fabric),HearthGuard 26.1.2-1.0.3 (Fabric),1.0.3,Fabric,"26.1.2,26.1.1,26.1",256,256,0,fabric
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1.2-1.0.3 (NeoForge),HearthGuard 26.1.2-1.0.3 (NeoForge),HearthGuard 26.1.2-1.0.3 (NeoForge),1.0.3,NeoForge,"26.1.2,26.1.1,26.1",110,110,0,neoforge
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1.2-1.1.0 (Fabric),HearthGuard 26.1.2-1.1.0 (Fabric),HearthGuard 26.1.2-1.1.0 (Fabric),1.1.0,Fabric,"26.1.2,26.1.1,26.1",71,49,22,fabric
+2026-05-03,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 26.1.2-1.1.0 (NeoForge),HearthGuard 26.1.2-1.1.0 (NeoForge),HearthGuard 26.1.2-1.1.0 (NeoForge),1.1.0,NeoForge,"26.1.2,26.1.1,26.1",37,29,8,neoforge
+2026-05-03,modrinth,HearthGuard,hearthguard,3Qr0FvWY,hearthguard-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,fabric,1.21.11,6,6,0,fabric
+2026-05-03,modrinth,HearthGuard,hearthguard,uV8Oy26t,hearthguard-fabric-1.21.1-1.0.0.jar,1.21.1-1.0.0,1.0.0,fabric,1.21.1,5,5,0,fabric
+2026-05-03,modrinth,HearthGuard,hearthguard,nRpsspT3,hearthguard-fabric-1.21.1-1.0.1.jar,1.21.1-1.0.1,1.0.1,fabric,1.21.1,34,34,0,fabric
+2026-05-03,modrinth,HearthGuard,hearthguard,Wl0112bR,hearthguard-fabric-1.21.1-1.0.3.jar,1.21.1-1.0.3,1.0.3,fabric,1.21.1,29,29,0,fabric
+2026-05-03,modrinth,HearthGuard,hearthguard,x1nnCBE6,hearthguard-fabric-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,fabric,1.21.1,3,2,1,fabric
+2026-05-03,modrinth,HearthGuard,hearthguard,Ip4lznyC,hearthguard-fabric-1.21.11-1.0.1.jar,1.21.11-1.0.1,1.0.1,fabric,1.21.11,74,74,0,fabric
+2026-05-03,modrinth,HearthGuard,hearthguard,YIyUClBb,hearthguard-fabric-1.21.11-1.0.3.jar,1.21.11-1.0.3,1.0.3,fabric,1.21.11,63,63,0,fabric
+2026-05-03,modrinth,HearthGuard,hearthguard,2EwM8JLk,hearthguard-fabric-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,fabric,1.21.11,6,2,4,fabric
+2026-05-03,modrinth,HearthGuard,hearthguard,30ZlRdYy,hearthguard-fabric-26.1-1.0.1.jar,26.1-1.0.1,1.0.1,fabric,26.1,42,42,0,fabric
+2026-05-03,modrinth,HearthGuard,hearthguard,s3sT8jZk,hearthguard-fabric-26.1.1-1.0.2.jar,26.1.1-1.0.2,1.0.2,fabric,26.1.1,93,92,1,fabric
+2026-05-03,modrinth,HearthGuard,hearthguard,ltqal83o,hearthguard-fabric-26.1.2-1.0.3.jar,26.1.2-1.0.3,1.0.3,fabric,"26.1,26.1.1,26.1.2",141,139,2,fabric
+2026-05-03,modrinth,HearthGuard,hearthguard,LncB3XfS,hearthguard-fabric-26.1.2-1.1.0.jar,26.1.2-1.1.0,1.1.0,fabric,"26.1,26.1.1,26.1.2",14,5,9,fabric
+2026-05-03,modrinth,HearthGuard,hearthguard,fbe73rXR,hearthguard-neoforge-1.21.1-1.0.1.jar,1.21.1-1.0.1,1.0.1,neoforge,1.21.1,37,37,0,neoforge
+2026-05-03,modrinth,HearthGuard,hearthguard,iub5wqUR,hearthguard-neoforge-1.21.1-1.0.3.jar,1.21.1-1.0.3,1.0.3,neoforge,1.21.1,51,51,0,neoforge
+2026-05-03,modrinth,HearthGuard,hearthguard,JIByjxkH,hearthguard-neoforge-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,neoforge,1.21.1,12,6,6,neoforge
+2026-05-03,modrinth,HearthGuard,hearthguard,dFWb9IFH,hearthguard-neoforge-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,neoforge,1.21.11,6,6,0,neoforge
+2026-05-03,modrinth,HearthGuard,hearthguard,OQyeKKQM,hearthguard-neoforge-1.21.11-1.0.1.jar,1.21.11-1.0.1,1.0.1,neoforge,1.21.11,9,9,0,neoforge
+2026-05-03,modrinth,HearthGuard,hearthguard,EzCGv7l8,hearthguard-neoforge-1.21.11-1.0.3.jar,1.21.11-1.0.3,1.0.3,neoforge,1.21.11,10,10,0,neoforge
+2026-05-03,modrinth,HearthGuard,hearthguard,FTIJArH1,hearthguard-neoforge-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,neoforge,1.21.11,8,1,7,neoforge
+2026-05-03,modrinth,HearthGuard,hearthguard,ijlz9BpN,hearthguard-neoforge-26.1-1.0.1.jar,26.1-1.0.1,1.0.1,neoforge,26.1,18,18,0,neoforge
+2026-05-03,modrinth,HearthGuard,hearthguard,RgUs60SF,hearthguard-neoforge-26.1.1-1.0.2.jar,26.1.1-1.0.2,1.0.2,neoforge,26.1.1,16,16,0,neoforge
+2026-05-03,modrinth,HearthGuard,hearthguard,wtqulja4,hearthguard-neoforge-26.1.2-1.0.3.jar,26.1.2-1.0.3,1.0.3,neoforge,"26.1,26.1.1,26.1.2",18,18,0,neoforge
+2026-05-03,modrinth,HearthGuard,hearthguard,gJxFzLIJ,hearthguard-neoforge-26.1.2-1.1.0.jar,26.1.2-1.1.0,1.1.0,neoforge,"26.1,26.1.1,26.1.2",4,2,2,neoforge
