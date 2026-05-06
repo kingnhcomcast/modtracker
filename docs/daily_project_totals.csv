@@ -13,13 +13,15 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-04-28,CinderStride,curseforge,10,12.428571428571429,
 2026-04-29,CinderStride,curseforge,10,12.142857142857142,
 2026-04-30,CinderStride,curseforge,4,12.285714285714286,
-2026-05-01,CinderStride,curseforge,61,11.571428571428571,
-2026-05-02,CinderStride,curseforge,21,19.0,
+2026-05-01,CinderStride,curseforge,61,11.571428571428571,1.1.0 (CF)
+2026-05-02,CinderStride,curseforge,21,19.0,1.1.0 (MR)
 2026-05-03,CinderStride,curseforge,8,20.857142857142858,
 2026-05-04,CinderStride,curseforge,22,18.142857142857142,
-2026-05-02,CinderStride,modrinth,23,,
+2026-05-05,CinderStride,curseforge,15,19.428571428571427,
+2026-05-02,CinderStride,modrinth,23,,1.1.0 (MR)
 2026-05-03,CinderStride,modrinth,10,23.0,
 2026-05-04,CinderStride,modrinth,6,16.5,
+2026-05-05,CinderStride,modrinth,1,13.0,
 2026-04-17,Dirigo,curseforge,51,,
 2026-04-18,Dirigo,curseforge,12,51.0,
 2026-04-19,Dirigo,curseforge,4,31.5,
@@ -38,9 +40,11 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-02,Dirigo,curseforge,19,16.714285714285715,
 2026-05-03,Dirigo,curseforge,20,18.571428571428573,
 2026-05-04,Dirigo,curseforge,19,18.428571428571427,
+2026-05-05,Dirigo,curseforge,18,19.857142857142858,
 2026-05-02,Dirigo,modrinth,29,,
 2026-05-03,Dirigo,modrinth,10,29.0,
 2026-05-04,Dirigo,modrinth,3,19.5,
+2026-05-05,Dirigo,modrinth,2,14.0,
 2026-04-11,HearthGuard,curseforge,96,,
 2026-04-12,HearthGuard,curseforge,52,96.0,
 2026-04-13,HearthGuard,curseforge,51,74.0,
@@ -61,10 +65,11 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-04-28,HearthGuard,curseforge,35,37.714285714285715,
 2026-04-29,HearthGuard,curseforge,22,38.0,
 2026-04-30,HearthGuard,curseforge,42,35.142857142857146,
-2026-05-01,HearthGuard,curseforge,137,37.42857142857143,
-2026-05-02,HearthGuard,curseforge,84,53.285714285714285,
+2026-05-01,HearthGuard,curseforge,137,37.42857142857143,1.1.0 (CF)
+2026-05-02,HearthGuard,curseforge,84,53.285714285714285,1.1.0 (MR)
 2026-05-03,HearthGuard,curseforge,56,57.0,
 2026-05-04,HearthGuard,curseforge,65,59.42857142857143,
+2026-05-05,HearthGuard,curseforge,109,63.0,1.1.1
 2026-04-11,HearthGuard,modrinth,30,,
 2026-04-12,HearthGuard,modrinth,13,30.0,
 2026-04-13,HearthGuard,modrinth,14,21.5,
@@ -85,10 +90,11 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-04-28,HearthGuard,modrinth,17,11.857142857142858,
 2026-04-29,HearthGuard,modrinth,11,12.0,
 2026-04-30,HearthGuard,modrinth,20,12.714285714285714,
-2026-05-01,HearthGuard,modrinth,14,13.571428571428571,
-2026-05-02,HearthGuard,modrinth,33,12.571428571428571,
+2026-05-01,HearthGuard,modrinth,14,13.571428571428571,1.1.0 (CF)
+2026-05-02,HearthGuard,modrinth,33,12.571428571428571,1.1.0 (MR)
 2026-05-03,HearthGuard,modrinth,32,17.0,
 2026-05-04,HearthGuard,modrinth,33,20.428571428571427,
+2026-05-05,HearthGuard,modrinth,48,22.857142857142858,1.1.1
 2026-03-27,hearthguard,curseforge,69,,1.0.1
 2026-03-28,hearthguard,curseforge,60,69.0,
 2026-03-29,hearthguard,curseforge,41,64.5,

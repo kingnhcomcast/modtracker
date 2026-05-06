@@ -17,6 +17,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-05-02,CinderStride,curseforge,fabric,11,9.714285714285714
 2026-05-03,CinderStride,curseforge,fabric,1,10.571428571428571
 2026-05-04,CinderStride,curseforge,fabric,12,9.0
+2026-05-05,CinderStride,curseforge,fabric,6,9.142857142857142
 2026-04-17,CinderStride,curseforge,neoforge,25,
 2026-04-18,CinderStride,curseforge,neoforge,9,25.0
 2026-04-19,CinderStride,curseforge,neoforge,3,17.0
@@ -35,12 +36,15 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-05-02,CinderStride,curseforge,neoforge,10,9.285714285714286
 2026-05-03,CinderStride,curseforge,neoforge,7,10.285714285714286
 2026-05-04,CinderStride,curseforge,neoforge,10,9.142857142857142
+2026-05-05,CinderStride,curseforge,neoforge,9,10.285714285714286
 2026-05-02,CinderStride,modrinth,fabric,11,
 2026-05-03,CinderStride,modrinth,fabric,9,11.0
 2026-05-04,CinderStride,modrinth,fabric,3,10.0
+2026-05-05,CinderStride,modrinth,fabric,1,7.666666666666667
 2026-05-02,CinderStride,modrinth,neoforge,12,
 2026-05-03,CinderStride,modrinth,neoforge,1,12.0
 2026-05-04,CinderStride,modrinth,neoforge,3,6.5
+2026-05-05,CinderStride,modrinth,neoforge,0,5.333333333333333
 2026-04-17,Dirigo,curseforge,fabric,27,
 2026-04-18,Dirigo,curseforge,fabric,5,27.0
 2026-04-19,Dirigo,curseforge,fabric,1,16.0
@@ -59,6 +63,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-05-02,Dirigo,curseforge,fabric,10,7.285714285714286
 2026-05-03,Dirigo,curseforge,fabric,13,8.285714285714286
 2026-05-04,Dirigo,curseforge,fabric,8,9.142857142857142
+2026-05-05,Dirigo,curseforge,fabric,9,9.571428571428571
 2026-04-17,Dirigo,curseforge,neoforge,24,
 2026-04-18,Dirigo,curseforge,neoforge,7,24.0
 2026-04-19,Dirigo,curseforge,neoforge,3,15.5
@@ -77,12 +82,15 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-05-02,Dirigo,curseforge,neoforge,9,9.428571428571429
 2026-05-03,Dirigo,curseforge,neoforge,7,10.285714285714286
 2026-05-04,Dirigo,curseforge,neoforge,11,9.285714285714286
+2026-05-05,Dirigo,curseforge,neoforge,9,10.285714285714286
 2026-05-02,Dirigo,modrinth,fabric,14,
 2026-05-03,Dirigo,modrinth,fabric,8,14.0
 2026-05-04,Dirigo,modrinth,fabric,3,11.0
+2026-05-05,Dirigo,modrinth,fabric,2,8.333333333333334
 2026-05-02,Dirigo,modrinth,neoforge,15,
 2026-05-03,Dirigo,modrinth,neoforge,2,15.0
 2026-05-04,Dirigo,modrinth,neoforge,0,8.5
+2026-05-05,Dirigo,modrinth,neoforge,0,5.666666666666667
 2026-04-11,HearthGuard,curseforge,fabric,55,
 2026-04-12,HearthGuard,curseforge,fabric,41,55.0
 2026-04-13,HearthGuard,curseforge,fabric,42,48.0
@@ -107,6 +115,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-05-02,HearthGuard,curseforge,fabric,55,29.142857142857142
 2026-05-03,HearthGuard,curseforge,fabric,35,30.714285714285715
 2026-05-04,HearthGuard,curseforge,fabric,24,32.714285714285715
+2026-05-05,HearthGuard,curseforge,fabric,52,32.142857142857146
 2026-04-11,HearthGuard,curseforge,neoforge,41,
 2026-04-12,HearthGuard,curseforge,neoforge,11,41.0
 2026-04-13,HearthGuard,curseforge,neoforge,9,26.0
@@ -131,6 +140,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-05-02,HearthGuard,curseforge,neoforge,29,24.142857142857142
 2026-05-03,HearthGuard,curseforge,neoforge,21,26.285714285714285
 2026-05-04,HearthGuard,curseforge,neoforge,41,26.714285714285715
+2026-05-05,HearthGuard,curseforge,neoforge,57,30.857142857142858
 2026-04-11,HearthGuard,modrinth,fabric,20,
 2026-04-12,HearthGuard,modrinth,fabric,12,20.0
 2026-04-13,HearthGuard,modrinth,fabric,7,16.0
@@ -155,6 +165,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-05-02,HearthGuard,modrinth,fabric,18,9.571428571428571
 2026-05-03,HearthGuard,modrinth,fabric,17,11.857142857142858
 2026-05-04,HearthGuard,modrinth,fabric,8,13.142857142857142
+2026-05-05,HearthGuard,modrinth,fabric,24,12.428571428571429
 2026-04-11,HearthGuard,modrinth,neoforge,10,
 2026-04-12,HearthGuard,modrinth,neoforge,1,10.0
 2026-04-13,HearthGuard,modrinth,neoforge,7,5.5
@@ -179,6 +190,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-05-02,HearthGuard,modrinth,neoforge,15,3.0
 2026-05-03,HearthGuard,modrinth,neoforge,15,5.142857142857143
 2026-05-04,HearthGuard,modrinth,neoforge,25,7.285714285714286
+2026-05-05,HearthGuard,modrinth,neoforge,24,10.428571428571429
 2026-03-27,hearthguard,curseforge,fabric,51,
 2026-03-28,hearthguard,curseforge,fabric,37,51.0
 2026-03-29,hearthguard,curseforge,fabric,30,44.0

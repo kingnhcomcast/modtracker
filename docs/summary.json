@@ -1,7 +1,7 @@
 {
-  "generated_et_date": "2026-05-04",
-  "generated_est_date": "2026-05-04",
-  "snapshot_date": "2026-05-04",
+  "generated_et_date": "2026-05-05",
+  "generated_est_date": "2026-05-05",
+  "snapshot_date": "2026-05-05",
   "projects": [
     "HearthGuard",
     "CinderStride",
@@ -36,40 +36,40 @@
       "icon_url": "https://cdn.modrinth.com/data/QE9szL3C/b7c6629ea1f478149286eb779623612f79467ab5_96.webp"
     }
   ],
-  "today_item_rows_count": 94,
-  "spike_count": 6,
+  "today_item_rows_count": 106,
+  "spike_count": 7,
   "latest_platform_totals": [
     {
       "platform": "curseforge",
-      "total_downloads": 2806
+      "total_downloads": 2948
     },
     {
       "platform": "modrinth",
-      "total_downloads": 813
+      "total_downloads": 864
     }
   ],
   "latest_loader_totals": [
     {
       "loader_group": "fabric",
-      "total_downloads": 2280
+      "total_downloads": 2374
     },
     {
       "loader_group": "neoforge",
-      "total_downloads": 1339
+      "total_downloads": 1438
     }
   ],
   "latest_mc_totals": [
     {
       "mc_version": "1.21.11",
-      "total_downloads": 1128
+      "total_downloads": 1169
     },
     {
       "mc_version": "1.21.1",
-      "total_downloads": 1063
+      "total_downloads": 1157
     },
     {
       "mc_version": "26.1.2",
-      "total_downloads": 775
+      "total_downloads": 833
     },
     {
       "mc_version": "26.1",
@@ -83,7 +83,11 @@
   "latest_mod_totals": [
     {
       "mod_version": "1.0.3",
-      "total_downloads": 1180
+      "total_downloads": 1190
+    },
+    {
+      "mod_version": "1.1.0",
+      "total_downloads": 785
     },
     {
       "mod_version": "1.0.1",
@@ -91,45 +95,45 @@
     },
     {
       "mod_version": "1.0.0",
-      "total_downloads": 690
-    },
-    {
-      "mod_version": "1.1.0",
-      "total_downloads": 660
+      "total_downloads": 695
     },
     {
       "mod_version": "1.0.2",
       "total_downloads": 324
+    },
+    {
+      "mod_version": "1.1.1",
+      "total_downloads": 53
     }
   ],
   "latest_platform_breakdown": [
     {
       "platform": "curseforge",
-      "daily_downloads": 106
+      "daily_downloads": 142
     },
     {
       "platform": "modrinth",
-      "daily_downloads": 42
+      "daily_downloads": 51
     }
   ],
   "latest_loader_breakdown": [
     {
       "loader_group": "fabric",
-      "daily_downloads": 58
+      "daily_downloads": 94
     },
     {
       "loader_group": "neoforge",
-      "daily_downloads": 90
+      "daily_downloads": 99
     }
   ],
   "latest_mc_breakdown": [
     {
       "mc_version": "1.21.1",
-      "daily_downloads": 77
+      "daily_downloads": 94
     },
     {
       "mc_version": "1.21.11",
-      "daily_downloads": 28
+      "daily_downloads": 41
     },
     {
       "mc_version": "26.1",
@@ -141,17 +145,17 @@
     },
     {
       "mc_version": "26.1.2",
-      "daily_downloads": 43
+      "daily_downloads": 58
     }
   ],
   "latest_mod_breakdown": [
     {
       "mod_version": "1.0.0",
-      "daily_downloads": 0
+      "daily_downloads": 5
     },
     {
       "mod_version": "1.0.1",
-      "daily_downloads": 1
+      "daily_downloads": 0
     },
     {
       "mod_version": "1.0.2",
@@ -159,11 +163,15 @@
     },
     {
       "mod_version": "1.0.3",
-      "daily_downloads": 5
+      "daily_downloads": 10
     },
     {
       "mod_version": "1.1.0",
-      "daily_downloads": 142
+      "daily_downloads": 125
+    },
+    {
+      "mod_version": "1.1.1",
+      "daily_downloads": 53
     }
   ],
   "release_tags": [
@@ -193,26 +201,32 @@
     },
     {
       "release_date": "2026-05-01",
-      "project_name": "cinderstride (CF)",
-      "tag": "1.1.0",
+      "project_name": "cinderstride",
+      "tag": "1.1.0 (CF)",
       "notes": ""
     },
     {
       "release_date": "2026-05-01",
-      "project_name": "hearthguard (CF)",
-      "tag": "1.1.0",
+      "project_name": "hearthguard",
+      "tag": "1.1.0 (CF)",
       "notes": ""
     },
     {
       "release_date": "2026-05-02",
-      "project_name": "cinderstride (MR)",
-      "tag": "1.1.0",
+      "project_name": "cinderstride",
+      "tag": "1.1.0 (MR)",
       "notes": ""
     },
     {
       "release_date": "2026-05-02",
-      "project_name": "hearthguard (MR)",
-      "tag": "1.1.0",
+      "project_name": "hearthguard",
+      "tag": "1.1.0 (MR)",
+      "notes": ""
+    },
+    {
+      "release_date": "2026-05-05",
+      "project_name": "hearthguard",
+      "tag": "1.1.1",
       "notes": ""
     }
   ]
