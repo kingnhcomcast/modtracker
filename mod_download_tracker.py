@@ -2382,18 +2382,6 @@ def build_charts(
             path=project_dir / "total_daily_downloads.png",
             project_name=project_name,
         )
-        if plot_stacked_bar_chart(
-            project_total_rows,
-            x_key="snapshot_date",
-            y_key="daily_downloads",
-            series_key="series",
-            title=f"{project_name}: Daily Downloads (Stacked)",
-            output_path=project_dir / "total_daily_downloads_stacked_bar.png",
-            dpi=dpi,
-            release_markers=release_markers_for_project(project_name),
-        ):
-            chart_paths.append(project_dir / "total_daily_downloads_stacked_bar.png")
-
         project_total_cumulative = cumulative_records(
             project_total_rows,
             x_key="snapshot_date",

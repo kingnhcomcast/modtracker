@@ -535,7 +535,6 @@
         mc: `./charts/projects/${slugifyProjectName(project)}/downloads_by_mc_version_top8.png`,
         mod: `./charts/projects/${slugifyProjectName(project)}/downloads_by_mod_version_top8.png`,
         totalDaily: `./charts/projects/${slugifyProjectName(project)}/total_daily_downloads.png`,
-        totalDailyStackedBar: `./charts/projects/${slugifyProjectName(project)}/total_daily_downloads_stacked_bar.png`,
         totalDailyBar: `./charts/projects/${slugifyProjectName(project)}/total_daily_downloads_bar.png`,
       }
       : {
@@ -556,7 +555,9 @@
         mc: buildChartDetailLink(chartImagePaths.mc, 'mc', project),
         mod: buildChartDetailLink(chartImagePaths.mod, 'mod', project),
         totalDaily: buildChartDetailLink(chartImagePaths.totalDaily, 'totalDaily', project),
-        totalDailyStackedBar: buildChartDetailLink(chartImagePaths.totalDailyStackedBar, 'totalDailyStackedBar', project),
+        totalDailyStackedBar: chartImagePaths.totalDailyStackedBar
+          ? buildChartDetailLink(chartImagePaths.totalDailyStackedBar, 'totalDailyStackedBar', project)
+          : '',
         totalDailyBar: buildChartDetailLink(chartImagePaths.totalDailyBar, 'totalDailyBar', project),
       },
     };
