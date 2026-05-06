@@ -535,6 +535,7 @@
         mc: `./charts/projects/${slugifyProjectName(project)}/downloads_by_mc_version_top8.png`,
         mod: `./charts/projects/${slugifyProjectName(project)}/downloads_by_mod_version_top8.png`,
         totalDaily: `./charts/projects/${slugifyProjectName(project)}/total_daily_downloads.png`,
+        totalDailyStackedBar: `./charts/projects/${slugifyProjectName(project)}/total_daily_downloads_stacked_bar.png`,
         totalDailyBar: `./charts/projects/${slugifyProjectName(project)}/total_daily_downloads_bar.png`,
       }
       : {
@@ -543,6 +544,7 @@
         mc: './charts/downloads_by_mc_version_top8.png',
         mod: './charts/downloads_by_mod_version_top8.png',
         totalDaily: './charts/total_daily_downloads.png',
+        totalDailyStackedBar: './charts/total_daily_downloads_stacked_bar.png',
         totalDailyBar: './charts/total_daily_downloads_bar.png',
       };
 
@@ -554,6 +556,7 @@
         mc: buildChartDetailLink(chartImagePaths.mc, 'mc', project),
         mod: buildChartDetailLink(chartImagePaths.mod, 'mod', project),
         totalDaily: buildChartDetailLink(chartImagePaths.totalDaily, 'totalDaily', project),
+        totalDailyStackedBar: buildChartDetailLink(chartImagePaths.totalDailyStackedBar, 'totalDailyStackedBar', project),
         totalDailyBar: buildChartDetailLink(chartImagePaths.totalDailyBar, 'totalDailyBar', project),
       },
     };
@@ -775,10 +778,12 @@
 
   function renderTrendChart(container, datasets) {
     const lineLink = datasets.chartLinks && datasets.chartLinks.totalDaily;
+    const dailyBarLink = datasets.chartLinks && datasets.chartLinks.totalDailyStackedBar;
     const barLink = datasets.chartLinks && datasets.chartLinks.totalDailyBar;
     const lineImage = datasets.chartImagePaths && datasets.chartImagePaths.totalDaily;
+    const dailyBarImage = datasets.chartImagePaths && datasets.chartImagePaths.totalDailyStackedBar;
     const barImage = datasets.chartImagePaths && datasets.chartImagePaths.totalDailyBar;
-    if (!lineLink && !barLink) return;
+    if (!lineLink && !dailyBarLink && !barLink) return;
 
     const card = document.createElement('div');
     card.className = 'trend-card';
@@ -796,13 +801,22 @@
       a1.textContent = 'line';
       linksLine.appendChild(a1);
     }
-    if (lineLink && barLink) {
+    if (lineLink && (dailyBarLink || barLink)) {
+      linksLine.appendChild(document.createTextNode(' | '));
+    }
+    if (dailyBarLink) {
+      const aDailyBar = document.createElement('a');
+      aDailyBar.href = dailyBarLink;
+      aDailyBar.textContent = 'daily stacked bar';
+      linksLine.appendChild(aDailyBar);
+    }
+    if (dailyBarLink && barLink) {
       linksLine.appendChild(document.createTextNode(' | '));
     }
     if (barLink) {
       const a2 = document.createElement('a');
       a2.href = barLink;
-      a2.textContent = 'bar';
+      a2.textContent = 'cumulative stacked bar';
       linksLine.appendChild(a2);
     }
     card.appendChild(linksLine);
@@ -813,9 +827,16 @@
       imgLine.src = `${lineImage}?v=${Date.now()}`;
       card.appendChild(imgLine);
     }
+    if (dailyBarImage) {
+      const imgDailyBar = document.createElement('img');
+      imgDailyBar.alt = 'Daily downloads stacked bar chart';
+      imgDailyBar.src = `${dailyBarImage}?v=${Date.now()}`;
+      imgDailyBar.style.marginTop = '10px';
+      card.appendChild(imgDailyBar);
+    }
     if (barImage) {
       const imgBar = document.createElement('img');
-      imgBar.alt = 'Total daily downloads bar chart';
+      imgBar.alt = 'Total downloads cumulative stacked bar chart';
       imgBar.src = `${barImage}?v=${Date.now()}`;
       imgBar.style.marginTop = '10px';
       card.appendChild(imgBar);

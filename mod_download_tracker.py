@@ -1467,20 +1467,33 @@ def load_release_tags(conn: sqlite3.Connection) -> list[dict[str, Any]]:
     ]
 
 
+def normalized_release_project_key(project_name: Any) -> str:
+    key = str(project_name or "").strip().lower()
+    while True:
+        stripped = re.sub(r"\s*\([^)]*\)\s*$", "", key).strip()
+        if stripped == key:
+            return key
+        key = stripped
+
+
 def attach_release_tags_to_records(
     records: Sequence[dict[str, Any]],
     tags: Sequence[dict[str, Any]],
 ) -> list[dict[str, Any]]:
     tag_map: dict[tuple[str, str], list[str]] = defaultdict(list)
     for tag in tags:
-        key = (tag["release_date"], str(tag["project_name"]).strip().lower())
-        tag_map[key].append(tag["tag"])
+        release_date = str(tag["release_date"]).strip()
+        exact_key = str(tag["project_name"]).strip().lower()
+        base_key = normalized_release_project_key(tag["project_name"])
+        tag_map[(release_date, exact_key)].append(tag["tag"])
+        if base_key and base_key != exact_key:
+            tag_map[(release_date, base_key)].append(tag["tag"])
 
     out = []
     for rec in records:
-        key = (rec["snapshot_date"], str(rec["project_name"]).strip().lower())
+        key = (rec["snapshot_date"], normalized_release_project_key(rec["project_name"]))
         rec2 = dict(rec)
-        rec2["release_tags"] = ",".join(tag_map.get(key, []))
+        rec2["release_tags"] = ",".join(dict.fromkeys(tag_map.get(key, [])))
         out.append(rec2)
     return out
 
@@ -2064,7 +2077,7 @@ def build_charts(
             chart_paths.append(path)
 
     def release_markers_for_project(project_name: Optional[str] = None) -> dict[str, list[str]]:
-        project_key = str(project_name or "").strip().lower()
+        project_key = normalized_release_project_key(project_name)
         markers: dict[str, list[str]] = defaultdict(list)
         for tag in release_tags:
             release_date = str(tag.get("release_date", "")).strip()
@@ -2074,7 +2087,7 @@ def build_charts(
                 continue
             tag_project_key = raw_project.lower()
             if project_key:
-                if tag_project_key != project_key:
+                if tag_project_key != project_key and normalized_release_project_key(raw_project) != project_key:
                     continue
                 label = tag_text
             else:
@@ -2184,6 +2197,22 @@ def build_charts(
                 "cumulative_downloads": running_by_project[project_name],
                 "series": project_name,
             })
+    if plot_stacked_bar_chart(
+        [
+            rec
+            for rec in by_total
+            if str(rec.get("series", "")).strip().lower() != "total"
+        ],
+        x_key="snapshot_date",
+        y_key="daily_downloads",
+        series_key="series",
+        title="Daily Downloads by Project (Stacked)",
+        output_path=output_dir / "charts" / "total_daily_downloads_stacked_bar.png",
+        dpi=dpi,
+        release_markers=release_markers_for_project(None),
+    ):
+        chart_paths.append(output_dir / "charts" / "total_daily_downloads_stacked_bar.png")
+
     if plot_stacked_bar_chart(
         by_total_cumulative,
         x_key="snapshot_date",
@@ -2353,6 +2382,18 @@ def build_charts(
             path=project_dir / "total_daily_downloads.png",
             project_name=project_name,
         )
+        if plot_stacked_bar_chart(
+            project_total_rows,
+            x_key="snapshot_date",
+            y_key="daily_downloads",
+            series_key="series",
+            title=f"{project_name}: Daily Downloads (Stacked)",
+            output_path=project_dir / "total_daily_downloads_stacked_bar.png",
+            dpi=dpi,
+            release_markers=release_markers_for_project(project_name),
+        ):
+            chart_paths.append(project_dir / "total_daily_downloads_stacked_bar.png")
+
         project_total_cumulative = cumulative_records(
             project_total_rows,
             x_key="snapshot_date",

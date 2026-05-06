@@ -94,6 +94,7 @@
     mc: 'Daily Downloads by Minecraft Version (Top 8)',
     mod: 'Daily Downloads by Mod Version (Top 8)',
     totalDaily: 'Total Daily Downloads',
+    totalDailyStackedBar: 'Daily Downloads by Project (Stacked)',
     totalDailyBar: 'Total Downloads by Project (Cumulative)',
   };
 
@@ -103,6 +104,7 @@
     mc: './daily_mc_version_totals.csv',
     mod: './daily_mod_version_totals.csv',
     totalDaily: './daily_project_totals.csv',
+    totalDailyStackedBar: './daily_project_totals.csv',
     totalDailyBar: './daily_project_totals.csv',
   };
 
@@ -194,6 +196,15 @@
   function colorForTagIndex(index) {
     const palette = ['#0072B2', '#D62728', '#CC79A7', '#E69F00', '#56B4E9', '#F0E442', '#332288', '#AA4499'];
     return palette[index % palette.length];
+  }
+
+  function normalizedReleaseProjectKey(projectName) {
+    let key = String(projectName || '').trim().toLowerCase();
+    while (true) {
+      const stripped = key.replace(/\s*\([^)]*\)\s*$/, '').trim();
+      if (stripped === key) return key;
+      key = stripped;
+    }
   }
 
   function buildTable(columns, rows, options = {}) {
@@ -290,7 +301,7 @@
       'project_name'
     );
 
-    if (chart === 'totalDaily') return totalsByProject;
+    if (chart === 'totalDaily' || chart === 'totalDailyStackedBar') return totalsByProject;
 
     if (chart === 'totalDailyBar') {
       const dates = Array.from(new Set(totalsByProject.map((r) => String(r.snapshot_date || '')).filter(Boolean)))
@@ -340,7 +351,7 @@
     if (chart === 'loader') return 'loader_group';
     if (chart === 'mc') return 'mc_version';
     if (chart === 'mod') return 'mod_version';
-    if (chart === 'totalDaily' || chart === 'totalDailyBar') return 'project_name';
+    if (chart === 'totalDaily' || chart === 'totalDailyStackedBar' || chart === 'totalDailyBar') return 'project_name';
     return null;
   }
 
@@ -382,7 +393,7 @@
   }
 
   function buildReleaseTagContext(summary, project) {
-    const projectKey = String(project || '').trim().toLowerCase();
+    const projectKey = normalizedReleaseProjectKey(project);
     const releaseTags = Array.isArray(summary && summary.release_tags) ? summary.release_tags : [];
     const byDate = new Map();
     const labels = [];
@@ -392,7 +403,8 @@
       const rawProject = String(t.project_name || '').trim();
       const tag = String(t.tag || '').trim();
       if (!date || !tag) return;
-      if (projectKey && rawProject.toLowerCase() !== projectKey) return;
+      const releaseProjectKey = rawProject.toLowerCase();
+      if (projectKey && releaseProjectKey !== projectKey && normalizedReleaseProjectKey(rawProject) !== projectKey) return;
       const label = projectKey ? tag : (rawProject ? `${rawProject}:${tag}` : tag);
       if (!byDate.has(date)) byDate.set(date, []);
       byDate.get(date).push(label);
