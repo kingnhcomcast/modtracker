@@ -18,10 +18,12 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-03,CinderStride,curseforge,8,20.857142857142858,
 2026-05-04,CinderStride,curseforge,22,18.142857142857142,
 2026-05-05,CinderStride,curseforge,15,19.428571428571427,
+2026-05-06,CinderStride,curseforge,16,20.142857142857142,
 2026-05-02,CinderStride,modrinth,23,,1.1.0 (MR)
 2026-05-03,CinderStride,modrinth,10,23.0,
 2026-05-04,CinderStride,modrinth,6,16.5,
 2026-05-05,CinderStride,modrinth,1,13.0,
+2026-05-06,CinderStride,modrinth,4,10.0,
 2026-04-17,Dirigo,curseforge,51,,
 2026-04-18,Dirigo,curseforge,12,51.0,
 2026-04-19,Dirigo,curseforge,4,31.5,
@@ -41,10 +43,12 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-03,Dirigo,curseforge,20,18.571428571428573,
 2026-05-04,Dirigo,curseforge,19,18.428571428571427,
 2026-05-05,Dirigo,curseforge,18,19.857142857142858,
+2026-05-06,Dirigo,curseforge,22,21.0,
 2026-05-02,Dirigo,modrinth,29,,
 2026-05-03,Dirigo,modrinth,10,29.0,
 2026-05-04,Dirigo,modrinth,3,19.5,
 2026-05-05,Dirigo,modrinth,2,14.0,
+2026-05-06,Dirigo,modrinth,4,11.0,
 2026-04-11,HearthGuard,curseforge,96,,
 2026-04-12,HearthGuard,curseforge,52,96.0,
 2026-04-13,HearthGuard,curseforge,51,74.0,
@@ -70,6 +74,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-03,HearthGuard,curseforge,56,57.0,
 2026-05-04,HearthGuard,curseforge,65,59.42857142857143,
 2026-05-05,HearthGuard,curseforge,109,63.0,1.1.1
+2026-05-06,HearthGuard,curseforge,107,73.57142857142857,
 2026-04-11,HearthGuard,modrinth,30,,
 2026-04-12,HearthGuard,modrinth,13,30.0,
 2026-04-13,HearthGuard,modrinth,14,21.5,
@@ -95,6 +100,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-03,HearthGuard,modrinth,32,17.0,
 2026-05-04,HearthGuard,modrinth,33,20.428571428571427,
 2026-05-05,HearthGuard,modrinth,48,22.857142857142858,1.1.1
+2026-05-06,HearthGuard,modrinth,30,27.285714285714285,
 2026-03-27,hearthguard,curseforge,69,,1.0.1
 2026-03-28,hearthguard,curseforge,60,69.0,
 2026-03-29,hearthguard,curseforge,41,64.5,
