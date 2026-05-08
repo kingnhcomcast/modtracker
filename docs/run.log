@@ -3,33 +3,33 @@ Today daily platform breakdown
 ------------------------------
 platform    HearthGuard  CinderStride  Dirigo
 ----------  -----------  ------------  ------
-curseforge  107          16            22    
-modrinth    30           4             4     
+curseforge  77           10            9     
+modrinth    17           0             6     
 
 Today daily loader breakdown
 ----------------------------
 loader_group  HearthGuard  CinderStride  Dirigo
 ------------  -----------  ------------  ------
-fabric        75           12            17    
-neoforge      62           8             9     
+neoforge      62           7             7     
+fabric        32           3             8     
 
 Today daily Minecraft version breakdown
 ---------------------------------------
 mc_version  HearthGuard  CinderStride  Dirigo
 ----------  -----------  ------------  ------
-1.21.1      72           11            16    
-26.1.2      40           2             2     
-1.21.11     25           7             8     
-26.1        0            0             0     
+1.21.1      60           5             5     
+1.21.11     18           3             6     
+26.1.2      16           2             3     
+26.1        0            0             1     
 26.1.1      0            0             0     
 
 Today daily mod version breakdown
 ---------------------------------
 mod_version  HearthGuard  CinderStride  Dirigo
 -----------  -----------  ------------  ------
-1.1.1        121          0             0     
-1.1.0        10           20            22    
-1.0.3        6            0             0     
-1.0.0        0            0             4     
+1.1.1        81           0             0     
+1.1.0        10           10            12    
+1.0.0        1            0             3     
+1.0.3        2            0             0     
 1.0.1        0            0             0     
 1.0.2        0            0             0     
