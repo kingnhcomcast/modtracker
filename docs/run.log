@@ -3,33 +3,33 @@ Today daily platform breakdown
 ------------------------------
 platform    HearthGuard  CinderStride  Dirigo
 ----------  -----------  ------------  ------
-curseforge  77           10            9     
-modrinth    17           0             6     
+curseforge  119          3             12    
+modrinth    28           2             3     
 
 Today daily loader breakdown
 ----------------------------
 loader_group  HearthGuard  CinderStride  Dirigo
 ------------  -----------  ------------  ------
-neoforge      62           7             7     
-fabric        32           3             8     
+neoforge      91           3             6     
+fabric        56           2             9     
 
 Today daily Minecraft version breakdown
 ---------------------------------------
 mc_version  HearthGuard  CinderStride  Dirigo
 ----------  -----------  ------------  ------
-1.21.1      60           5             5     
-1.21.11     18           3             6     
-26.1.2      16           2             3     
-26.1        0            0             1     
-26.1.1      0            0             0     
+1.21.1      86           1             10    
+26.1.2      43           2             2     
+1.21.11     16           2             3     
+26.1        1            0             0     
+26.1.1      1            0             0     
 
 Today daily mod version breakdown
 ---------------------------------
 mod_version  HearthGuard  CinderStride  Dirigo
 -----------  -----------  ------------  ------
-1.1.1        81           0             0     
-1.1.0        10           10            12    
-1.0.0        1            0             3     
-1.0.3        2            0             0     
-1.0.1        0            0             0     
-1.0.2        0            0             0     
+1.1.1        136          0             0     
+1.1.0        8            5             14    
+1.0.0        1            0             1     
+1.0.1        1            0             0     
+1.0.2        1            0             0     
+1.0.3        0            0             0     
