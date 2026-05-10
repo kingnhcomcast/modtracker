@@ -3,33 +3,33 @@ Today daily platform breakdown
 ------------------------------
 platform    HearthGuard  CinderStride  Dirigo
 ----------  -----------  ------------  ------
-curseforge  119          3             12    
-modrinth    28           2             3     
+curseforge  34           6             1     
+modrinth    26           4             4     
 
 Today daily loader breakdown
 ----------------------------
 loader_group  HearthGuard  CinderStride  Dirigo
 ------------  -----------  ------------  ------
-neoforge      91           3             6     
-fabric        56           2             9     
+fabric        31           5             3     
+neoforge      29           5             2     
 
 Today daily Minecraft version breakdown
 ---------------------------------------
 mc_version  HearthGuard  CinderStride  Dirigo
 ----------  -----------  ------------  ------
-1.21.1      86           1             10    
-26.1.2      43           2             2     
-1.21.11     16           2             3     
-26.1        1            0             0     
-26.1.1      1            0             0     
+26.1.2      21           7             4     
+1.21.1      21           3             1     
+1.21.11     18           0             0     
+26.1        0            0             0     
+26.1.1      0            0             0     
 
 Today daily mod version breakdown
 ---------------------------------
 mod_version  HearthGuard  CinderStride  Dirigo
 -----------  -----------  ------------  ------
-1.1.1        136          0             0     
-1.1.0        8            5             14    
-1.0.0        1            0             1     
+1.1.1        54           0             0     
+1.1.0        1            10            5     
+1.0.3        3            0             0     
+1.0.0        1            0             0     
 1.0.1        1            0             0     
-1.0.2        1            0             0     
-1.0.3        0            0             0     
+1.0.2        0            0             0     
