@@ -1,11 +1,12 @@
 {
-  "generated_et_date": "2026-05-13",
-  "generated_est_date": "2026-05-13",
-  "snapshot_date": "2026-05-13",
+  "generated_et_date": "2026-05-14",
+  "generated_est_date": "2026-05-14",
+  "snapshot_date": "2026-05-14",
   "projects": [
     "HearthGuard",
     "CinderStride",
-    "Dirigo"
+    "Dirigo",
+    "Smart Feeding Troughs"
   ],
   "project_catalog": [
     {
@@ -34,42 +35,48 @@
       "modrinth_author_url": "https://modrinth.com/user/Drahlek",
       "curseforge_url": "https://www.curseforge.com/minecraft/mc-mods/hearthguard",
       "icon_url": "https://cdn.modrinth.com/data/QE9szL3C/b7c6629ea1f478149286eb779623612f79467ab5_96.webp"
+    },
+    {
+      "project_name": "Smart Feeding Troughs",
+      "modrinth_url": "https://modrinth.com/mod/smart-feeding-troughs",
+      "curseforge_url": "https://www.curseforge.com/minecraft/mc-mods/smart-feeding-troughs",
+      "icon_url": "https://media.forgecdn.net/avatars/thumbnails/1806/808/256/256/639143175418399232.png"
     }
   ],
-  "today_item_rows_count": 106,
-  "spike_count": 9,
+  "today_item_rows_count": 118,
+  "spike_count": 11,
   "latest_platform_totals": [
     {
       "platform": "curseforge",
-      "total_downloads": 3751
+      "total_downloads": 3823
     },
     {
       "platform": "modrinth",
-      "total_downloads": 1096
+      "total_downloads": 1163
     }
   ],
   "latest_loader_totals": [
     {
       "loader_group": "fabric",
-      "total_downloads": 2876
+      "total_downloads": 2959
     },
     {
       "loader_group": "neoforge",
-      "total_downloads": 1971
+      "total_downloads": 2027
     }
   ],
   "latest_mc_totals": [
     {
       "mc_version": "1.21.1",
-      "total_downloads": 1669
+      "total_downloads": 1728
     },
     {
       "mc_version": "1.21.11",
-      "total_downloads": 1319
+      "total_downloads": 1339
     },
     {
       "mc_version": "26.1.2",
-      "total_downloads": 1196
+      "total_downloads": 1256
     },
     {
       "mc_version": "26.1",
@@ -83,15 +90,15 @@
   "latest_mod_totals": [
     {
       "mod_version": "1.0.3",
-      "total_downloads": 1207
+      "total_downloads": 1208
     },
     {
       "mod_version": "1.1.0",
-      "total_downloads": 1046
+      "total_downloads": 1080
     },
     {
       "mod_version": "1.1.1",
-      "total_downloads": 778
+      "total_downloads": 854
     },
     {
       "mod_version": "1.0.1",
@@ -104,40 +111,44 @@
     {
       "mod_version": "1.0.2",
       "total_downloads": 327
+    },
+    {
+      "mod_version": "1.2.0",
+      "total_downloads": 28
     }
   ],
   "latest_platform_breakdown": [
     {
       "platform": "curseforge",
-      "daily_downloads": 70
+      "daily_downloads": 72
     },
     {
       "platform": "modrinth",
-      "daily_downloads": 20
+      "daily_downloads": 67
     }
   ],
   "latest_loader_breakdown": [
     {
       "loader_group": "fabric",
-      "daily_downloads": 37
+      "daily_downloads": 83
     },
     {
       "loader_group": "neoforge",
-      "daily_downloads": 53
+      "daily_downloads": 56
     }
   ],
   "latest_mc_breakdown": [
     {
       "mc_version": "1.21.1",
-      "daily_downloads": 52
+      "daily_downloads": 59
     },
     {
       "mc_version": "1.21.11",
-      "daily_downloads": 1
+      "daily_downloads": 20
     },
     {
       "mc_version": "26.1",
-      "daily_downloads": 1
+      "daily_downloads": 0
     },
     {
       "mc_version": "26.1.1",
@@ -145,7 +156,7 @@
     },
     {
       "mc_version": "26.1.2",
-      "daily_downloads": 36
+      "daily_downloads": 60
     }
   ],
   "latest_mod_breakdown": [
@@ -155,7 +166,7 @@
     },
     {
       "mod_version": "1.0.1",
-      "daily_downloads": 1
+      "daily_downloads": 0
     },
     {
       "mod_version": "1.0.2",
@@ -163,15 +174,19 @@
     },
     {
       "mod_version": "1.0.3",
-      "daily_downloads": 0
+      "daily_downloads": 1
     },
     {
       "mod_version": "1.1.0",
-      "daily_downloads": 17
+      "daily_downloads": 34
     },
     {
       "mod_version": "1.1.1",
-      "daily_downloads": 72
+      "daily_downloads": 76
+    },
+    {
+      "mod_version": "1.2.0",
+      "daily_downloads": 28
     }
   ],
   "release_tags": [
@@ -227,6 +242,12 @@
       "release_date": "2026-05-05",
       "project_name": "hearthguard",
       "tag": "1.1.1",
+      "notes": ""
+    },
+    {
+      "release_date": "2026-05-15",
+      "project_name": "smartfeedingtroughs",
+      "tag": "1.0.0 (CF)",
       "notes": ""
     }
   ]
