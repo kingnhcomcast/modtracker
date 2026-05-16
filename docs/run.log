@@ -1,38 +1,37 @@
 WARNING: Skipping Modrinth data for Smart Feeding Troughs (smart-feeding-troughs): project is not available via the Modrinth API.
-WARNING: No CurseForge file rows found for Smart Feeding Troughs (smart-feeding-troughs) on files page 1. Tried URL: https://www.curseforge.com/minecraft/mc-mods/smart-feeding-troughs/files/all?page=1&pageSize=50&showAlphaFiles=hide
 
 Today daily platform breakdown
 ------------------------------
 platform    HearthGuard  CinderStride  Dirigo  Smart Feeding Troughs
 ----------  -----------  ------------  ------  ---------------------
-curseforge  40           9             23      0                    
-modrinth    37           7             23      0                    
+curseforge  45           4             116     101                  
+modrinth    19           1             9       0                    
 
 Today daily loader breakdown
 ----------------------------
 loader_group  HearthGuard  CinderStride  Dirigo  Smart Feeding Troughs
 ------------  -----------  ------------  ------  ---------------------
-fabric        42           10            31      0                    
-neoforge      35           6             15      0                    
+fabric        35           1             75      59                   
+neoforge      29           4             50      42                   
 
 Today daily Minecraft version breakdown
 ---------------------------------------
 mc_version  HearthGuard  CinderStride  Dirigo  Smart Feeding Troughs
 ----------  -----------  ------------  ------  ---------------------
-26.1.2      36           6             18      0                    
-1.21.1      32           8             19      0                    
-1.21.11     9            2             9       0                    
-26.1        0            0             0       0                    
+26.1.2      10           4             77      63                   
+1.21.1      42           1             17      18                   
+1.21.11     12           0             30      20                   
+26.1        0            0             1       0                    
 26.1.1      0            0             0       0                    
 
 Today daily mod version breakdown
 ---------------------------------
 mod_version  HearthGuard  CinderStride  Dirigo  Smart Feeding Troughs
 -----------  -----------  ------------  ------  ---------------------
-1.1.1        76           0             0       0                    
-1.1.0        0            16            18      0                    
-1.2.0        0            0             28      0                    
-1.0.3        1            0             0       0                    
-1.0.0        0            0             0       0                    
+1.2.0        0            0             120     0                    
+1.0.0        0            0             1       101                  
+1.1.1        62           0             0       0                    
+1.1.0        0            5             4       0                    
+1.0.3        2            0             0       0                    
 1.0.1        0            0             0       0                    
 1.0.2        0            0             0       0                    
