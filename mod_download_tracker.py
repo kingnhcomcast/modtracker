@@ -37,7 +37,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Iterable, Optional, Sequence
-from urllib.parse import urljoin
+from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
 from zoneinfo import ZoneInfo
 from zoneinfo import ZoneInfoNotFoundError
 
@@ -80,6 +80,8 @@ CONFIG_PATH = Path(__file__).with_name("tracker_config.json")
 
 
 MODRINTH_BASE = "https://api.modrinth.com/v2"
+CURSEFORGE_FILES_PAGE_SIZE = 20
+CURSEFORGE_MAX_FILES_PAGES = 500
 try:
     ET_TZ = ZoneInfo("America/New_York")
     ET_TZ_FALLBACK = False
@@ -145,6 +147,25 @@ def format_request_url(url: str, params: Optional[Any] = None) -> str:
     return prepared.url or url
 
 
+def remove_url_query_params(url: str, param_names: set[str]) -> str:
+    if not param_names:
+        return url
+
+    parts = urlsplit(url)
+    query_items = [
+        (key, value)
+        for key, value in parse_qsl(parts.query, keep_blank_values=True)
+        if key not in param_names
+    ]
+    return urlunsplit((
+        parts.scheme,
+        parts.netloc,
+        parts.path,
+        urlencode(query_items, doseq=True),
+        parts.fragment,
+    ))
+
+
 def fallback_eastern_now() -> dt.datetime:
     utc_now = dt.datetime.now(dt.UTC)
     year = utc_now.year
@@ -190,6 +211,15 @@ def snapshot_date_for_run(config: Optional[dict[str, Any]] = None) -> str:
 
 def parse_args(argv: Optional[Sequence[str]] = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Minecraft mod download tracker")
+    parser.add_argument(
+        "-u",
+        "--platform-updates-only",
+        action="store_true",
+        help=(
+            "Only print the platform breakdown table, with each value showing "
+            "the change since the previous run."
+        ),
+    )
     parser.add_argument(
         "snapshot_day_offset_days",
         nargs="?",
@@ -937,17 +967,18 @@ def fetch_curseforge_files_by_scrape(
     retries: int,
 ) -> list[SnapshotRow]:
     page = 1
-    page_size = 50
+    page_size = CURSEFORGE_FILES_PAGE_SIZE
+    files_url = remove_url_query_params(base_url, {"page", "pageSize", "showAlphaFiles"})
     all_rows: list[SnapshotRow] = []
     seen_names: set[str] = set()
 
     while True:
         page_params = {"page": page, "pageSize": page_size, "showAlphaFiles": "hide"}
-        page_url = format_request_url(base_url, page_params)
+        page_url = format_request_url(files_url, page_params)
         try:
             html = request_text(
                 session,
-                base_url,
+                files_url,
                 params=page_params,
                 timeout=timeout,
                 retries=retries,
@@ -995,11 +1026,18 @@ def fetch_curseforge_files_by_scrape(
                 total_downloads=row["total_downloads"],
             ))
 
-        if new_count < page_size:
+        if new_count == 0:
+            break
+
+        if len(parsed_rows) < page_size:
             break
 
         page += 1
-        if page > 20:
+        if page > CURSEFORGE_MAX_FILES_PAGES:
+            warn(
+                "Stopping CurseForge pagination for "
+                f"{project_name} ({project_slug}) after {CURSEFORGE_MAX_FILES_PAGES} files pages."
+            )
             break
 
     return all_rows
@@ -1185,6 +1223,51 @@ def compute_item_report_for_date(conn: sqlite3.Connection, snapshot_date: str) -
             "total_downloads": total,
             "previous_total": prev_total,
             "daily_downloads": daily,
+            "loader_group": canonical_loader_group(r[8]),
+        })
+    return rows
+
+
+def load_latest_item_total_rows(conn: sqlite3.Connection) -> list[dict[str, Any]]:
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT
+            s.snapshot_date,
+            s.platform,
+            s.project_name,
+            s.project_platform_id,
+            s.item_id,
+            s.item_name,
+            s.version_label,
+            s.mod_version,
+            s.loader,
+            s.game_versions,
+            s.total_downloads
+        FROM snapshots s
+        WHERE s.snapshot_date = (
+            SELECT MAX(s2.snapshot_date)
+            FROM snapshots s2
+            WHERE s2.platform = s.platform
+              AND s2.item_id = s.item_id
+        )
+        ORDER BY s.project_name, s.platform, s.item_name
+    """)
+
+    rows = []
+    for r in cur.fetchall():
+        total = safe_int(r[10], 0)
+        rows.append({
+            "snapshot_date": r[0],
+            "platform": r[1],
+            "project_name": r[2],
+            "project_platform_id": r[3],
+            "item_id": r[4],
+            "item_name": r[5],
+            "version_label": r[6],
+            "mod_version": r[7],
+            "loader": r[8],
+            "game_versions": r[9],
+            "total_downloads": total,
             "loader_group": canonical_loader_group(r[8]),
         })
     return rows
@@ -2585,12 +2668,13 @@ def build_daily_project_breakdown_rows(
     label_column: str,
     label_for_row: Callable[[dict[str, Any]], Any],
     project_names: Sequence[str],
+    value_key: str = "daily_downloads",
 ) -> list[dict[str, Any]]:
     rows_by_label: dict[str, dict[str, Any]] = {}
 
     for item_row in item_rows_today:
-        daily = item_row.get("daily_downloads")
-        if daily is None:
+        value = item_row.get(value_key)
+        if value is None:
             continue
 
         project_name = str(item_row.get("project_name") or "").strip()
@@ -2605,11 +2689,55 @@ def build_daily_project_breakdown_rows(
         if project_name not in out:
             out[project_name] = 0
 
-        daily_value = safe_int(daily, 0)
-        out[project_name] += daily_value
-        out["_total"] += daily_value
+        row_value = safe_int(value, 0)
+        out[project_name] += row_value
+        out["_total"] += row_value
 
     return list(rows_by_label.values())
+
+
+def delta_suffix(delta: int) -> str:
+    if delta > 0:
+        return f"(+{delta})"
+    return f"({delta})"
+
+
+def add_breakdown_cell_deltas(
+    display_rows: Sequence[dict[str, Any]],
+    current_value_rows: Sequence[dict[str, Any]],
+    previous_value_rows: Sequence[dict[str, Any]],
+    *,
+    label_column: str,
+    project_names: Sequence[str],
+) -> list[dict[str, Any]]:
+    previous_values: dict[tuple[str, str], int] = {}
+    for row in previous_value_rows:
+        label = str(row.get(label_column) or "").strip()
+        if not label:
+            continue
+        for project_name in project_names:
+            previous_values[(label, project_name)] = safe_int(row.get(project_name), 0)
+
+    current_values: dict[tuple[str, str], int] = {}
+    for row in current_value_rows:
+        label = str(row.get(label_column) or "").strip()
+        if not label:
+            continue
+        for project_name in project_names:
+            current_values[(label, project_name)] = safe_int(row.get(project_name), 0)
+
+    out: list[dict[str, Any]] = []
+    for row in display_rows:
+        label = str(row.get(label_column) or "").strip()
+        row_with_deltas = dict(row)
+        for project_name in project_names:
+            display_value = safe_int(row.get(project_name), 0)
+            current_value = current_values.get((label, project_name), 0)
+            previous_value = previous_values.get((label, project_name), 0)
+            delta = current_value - previous_value
+            row_with_deltas[project_name] = f"{display_value} {delta_suffix(delta)}"
+        out.append(row_with_deltas)
+    return out
 
 
 def print_daily_project_breakdown_table(
@@ -2620,6 +2748,7 @@ def print_daily_project_breakdown_table(
     label_for_row: Callable[[dict[str, Any]], Any],
     project_names: Sequence[str],
     max_rows: Optional[int] = None,
+    previous_item_rows: Optional[Sequence[dict[str, Any]]] = None,
 ) -> None:
     rows = build_daily_project_breakdown_rows(
         item_rows_today,
@@ -2627,6 +2756,28 @@ def print_daily_project_breakdown_table(
         label_for_row=label_for_row,
         project_names=project_names,
     )
+    if previous_item_rows is not None:
+        current_value_rows = build_daily_project_breakdown_rows(
+            item_rows_today,
+            label_column=label_column,
+            label_for_row=label_for_row,
+            project_names=project_names,
+            value_key="total_downloads",
+        )
+        previous_value_rows = build_daily_project_breakdown_rows(
+            previous_item_rows,
+            label_column=label_column,
+            label_for_row=label_for_row,
+            project_names=project_names,
+            value_key="total_downloads",
+        )
+        rows = add_breakdown_cell_deltas(
+            rows,
+            current_value_rows,
+            previous_value_rows,
+            label_column=label_column,
+            project_names=project_names,
+        )
     print_simple_table(
         title,
         rows,
@@ -2880,10 +3031,15 @@ def main() -> int:
     try:
         create_db(conn)
         sync_release_tags(conn, config.get("release_tags", []))
+        previous_item_rows = (
+            load_latest_item_total_rows(conn)
+            if args.platform_updates_only
+            else None
+        )
         run_fetch(conn, config)
         analytics = build_analytics(conn, config)
 
-        if config.get("verbose_console", True):
+        if config.get("verbose_console", True) or args.platform_updates_only:
             project_columns = project_names_for_console_tables(
                 config.get("projects", []),
                 analytics["item_rows_today"],
@@ -2895,32 +3051,34 @@ def main() -> int:
                 label_column="platform",
                 label_for_row=lambda row: row.get("platform"),
                 project_names=project_columns,
+                previous_item_rows=previous_item_rows,
             )
 
-            print_daily_project_breakdown_table(
-                "Today daily loader breakdown",
-                analytics["item_rows_today"],
-                label_column="loader_group",
-                label_for_row=lambda row: row.get("loader_group"),
-                project_names=project_columns,
-            )
+            if not args.platform_updates_only:
+                print_daily_project_breakdown_table(
+                    "Today daily loader breakdown",
+                    analytics["item_rows_today"],
+                    label_column="loader_group",
+                    label_for_row=lambda row: row.get("loader_group"),
+                    project_names=project_columns,
+                )
 
-            print_daily_project_breakdown_table(
-                "Today daily Minecraft version breakdown",
-                analytics["item_rows_today"],
-                label_column="mc_version",
-                label_for_row=row_primary_mc_version,
-                project_names=project_columns,
-                max_rows=15,
-            )
-            print_daily_project_breakdown_table(
-                "Today daily mod version breakdown",
-                analytics["item_rows_today"],
-                label_column="mod_version",
-                label_for_row=lambda row: row.get("mod_version", "unknown") or "unknown",
-                project_names=project_columns,
-                max_rows=15,
-            )
+                print_daily_project_breakdown_table(
+                    "Today daily Minecraft version breakdown",
+                    analytics["item_rows_today"],
+                    label_column="mc_version",
+                    label_for_row=row_primary_mc_version,
+                    project_names=project_columns,
+                    max_rows=15,
+                )
+                print_daily_project_breakdown_table(
+                    "Today daily mod version breakdown",
+                    analytics["item_rows_today"],
+                    label_column="mod_version",
+                    label_for_row=lambda row: row.get("mod_version", "unknown") or "unknown",
+                    project_names=project_columns,
+                    max_rows=15,
+                )
 
         return 0
 

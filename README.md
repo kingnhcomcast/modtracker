@@ -88,6 +88,12 @@ Use same-day snapshot attribution (override default prior-day offset):
 python mod_download_tracker.py 0
 ```
 
+Only print the platform breakdown table, with each cell showing the change since the previous run:
+
+```bash
+python mod_download_tracker.py -u
+```
+
 ## Output
 
 After a successful run:

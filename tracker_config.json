@@ -71,6 +71,11 @@
       "date": "2026-05-15",
       "project": "smartfeedingtroughs",
       "tag": "1.0.0 (CF)"
+    },
+    {
+      "date": "2026-05-17",
+      "project": "smartfeedingtroughs",
+      "tag": "1.0.0 (MR)"
     }
   ],
   "spike_window_days": 7,
