@@ -3,34 +3,34 @@ Today daily platform breakdown
 ------------------------------
 platform    HearthGuard  CinderStride  Dirigo  Smart Feeding Troughs
 ----------  -----------  ------------  ------  ---------------------
-curseforge  47           14            57      43                   
-modrinth    16           10            37      37                   
+curseforge  27           7             46      38                   
+modrinth    20           10            41      34                   
 
 Today daily loader breakdown
 ----------------------------
 loader_group  HearthGuard  CinderStride  Dirigo  Smart Feeding Troughs
 ------------  -----------  ------------  ------  ---------------------
-fabric        37           14            65      57                   
-neoforge      26           10            29      23                   
+fabric        27           13            63      52                   
+neoforge      20           4             24      20                   
 
 Today daily Minecraft version breakdown
 ---------------------------------------
 mc_version  HearthGuard  CinderStride  Dirigo  Smart Feeding Troughs
 ----------  -----------  ------------  ------  ---------------------
-26.1.2      29           15            77      66                   
-1.21.11     13           6             10      12                   
-1.21.1      21           3             7       2                    
-26.1        0            0             0       0                    
-26.1.1      0            0             0       0                    
+26.1.2      14           5             68      62                   
+1.21.1      25           6             11      7                    
+1.21.11     7            3             8       3                    
+26.1        0            3             0       0                    
+26.1.1      1            0             0       0                    
 
 Today daily mod version breakdown
 ---------------------------------
 mod_version  HearthGuard  CinderStride  Dirigo  Smart Feeding Troughs
 -----------  -----------  ------------  ------  ---------------------
-1.2.0        0            0             93      0                    
-1.0.0        0            0             0       80                   
-1.1.1        55           0             0       0                    
-1.1.0        2            24            1       0                    
-1.0.3        6            0             0       0                    
-1.0.1        0            0             0       0                    
-1.0.2        0            0             0       0                    
+1.2.0        0            0             84      0                    
+1.0.0        2            3             0       72                   
+1.1.1        41           0             0       0                    
+1.1.0        2            14            3       0                    
+1.0.1        1            0             0       0                    
+1.0.2        1            0             0       0                    
+1.0.3        0            0             0       0                    
