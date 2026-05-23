@@ -69,13 +69,18 @@
     },
     {
       "date": "2026-05-15",
-      "project": "smartfeedingtroughs",
+      "project": "Smart Feeding Troughs",
       "tag": "1.0.0 (CF)"
     },
     {
       "date": "2026-05-17",
-      "project": "smartfeedingtroughs",
+      "project": "Smart Feeding Troughs",
       "tag": "1.0.0 (MR)"
+    },
+    {
+      "date": "2026-05-22",
+      "project": "Smart Feeding Troughs",
+      "tag": "1.1.0"
     }
   ],
   "spike_window_days": 7,
