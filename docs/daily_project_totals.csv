@@ -115,7 +115,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-27,Dirigo,curseforge,44,73.71428571428571,
 2026-05-28,Dirigo,curseforge,53,73.42857142857143,
 2026-05-29,Dirigo,curseforge,44,73.0,
-2026-05-30,Dirigo,curseforge,0,62.0,
+2026-05-30,Dirigo,curseforge,35,62.0,
 2026-05-02,Dirigo,modrinth,29,,
 2026-05-03,Dirigo,modrinth,10,29.0,
 2026-05-04,Dirigo,modrinth,3,19.5,
@@ -194,7 +194,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-27,HearthGuard,curseforge,55,41.285714285714285,
 2026-05-28,HearthGuard,curseforge,47,45.285714285714285,
 2026-05-29,HearthGuard,curseforge,37,47.285714285714285,
-2026-05-30,HearthGuard,curseforge,0,47.0,
+2026-05-30,HearthGuard,curseforge,47,47.0,
 2026-04-11,HearthGuard,modrinth,30,,
 2026-04-12,HearthGuard,modrinth,13,30.0,
 2026-04-13,HearthGuard,modrinth,14,21.5,
@@ -260,7 +260,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-27,Smart Feeding Troughs,curseforge,43,75.0,
 2026-05-28,Smart Feeding Troughs,curseforge,61,75.71428571428571,1.2.0
 2026-05-29,Smart Feeding Troughs,curseforge,71,77.85714285714286,
-2026-05-30,Smart Feeding Troughs,curseforge,0,74.28571428571429,
+2026-05-30,Smart Feeding Troughs,curseforge,72,74.28571428571429,
 2026-05-17,Smart Feeding Troughs,modrinth,22,,1.0.0 (MR)
 2026-05-18,Smart Feeding Troughs,modrinth,47,22.0,
 2026-05-19,Smart Feeding Troughs,modrinth,37,34.5,

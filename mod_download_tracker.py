@@ -5,7 +5,7 @@ Advanced Minecraft Mod Download Tracker
 
 Tracks daily download totals and analytics for Minecraft mods on:
 - Modrinth (public API)
-- CurseForge (public website scraping via cloudscraper; no API key required)
+- CurseForge (official API when CURSEFORGE_API_KEY is set; website scraping fallback)
 
 Features
 --------
@@ -28,6 +28,7 @@ import argparse
 import csv
 import datetime as dt
 import json
+import os
 import re
 import shutil
 import sqlite3
@@ -71,6 +72,10 @@ DEFAULT_CONFIG: dict[str, Any] = {
 
     "http_timeout_seconds": 30,
     "http_retries": 4,
+    "curseforge_browser_fallback": True,
+    "curseforge_browser_headless": True,
+    "curseforge_browser_timeout_seconds": 60,
+    "curseforge_browser_user_data_dir": "tracker_output/curseforge_browser_profile",
     "snapshot_day_offset_days": 1,
 
     "chart_dpi": 140,
@@ -80,7 +85,11 @@ CONFIG_PATH = Path(__file__).with_name("tracker_config.json")
 
 
 MODRINTH_BASE = "https://api.modrinth.com/v2"
+CURSEFORGE_API_BASE = "https://api.curseforge.com/v1"
+CURSEFORGE_MINECRAFT_GAME_ID = 432
+CURSEFORGE_MINECRAFT_MODS_CLASS_ID = 6
 CURSEFORGE_FILES_PAGE_SIZE = 20
+CURSEFORGE_API_FILES_PAGE_SIZE = 50
 CURSEFORGE_MAX_FILES_PAGES = 500
 try:
     ET_TZ = ZoneInfo("America/New_York")
@@ -329,6 +338,22 @@ def load_config(config_path: Path = CONFIG_PATH) -> dict[str, Any]:
     config.update(loaded)
     config["projects"] = normalize_projects(config.get("projects"))
     return config
+
+
+def curseforge_api_key_from_config(config: dict[str, Any]) -> str:
+    env_key = os.environ.get("CURSEFORGE_API_KEY", "").strip()
+    if env_key:
+        return env_key
+    return str(config.get("curseforge_api_key") or "").strip()
+
+
+def config_bool(config: dict[str, Any], key: str, default: bool = False) -> bool:
+    value = config.get(key, default)
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str):
+        return value.strip().lower() in {"1", "true", "yes", "on"}
+    return bool(value)
 
 
 def ensure_dir(path: str | Path) -> Path:
@@ -785,6 +810,262 @@ def fetch_modrinth_project_metadata(
 # CURSEFORGE SCRAPING
 # ============================================================================
 
+def curseforge_api_headers(api_key: str) -> dict[str, str]:
+    return {
+        "Accept": "application/json",
+        "x-api-key": api_key,
+    }
+
+
+def curseforge_response_data(payload: Any) -> Any:
+    if isinstance(payload, dict) and "data" in payload:
+        return payload.get("data")
+    return payload
+
+
+def select_curseforge_mod_from_search(payload: Any, project_slug: str) -> Optional[dict[str, Any]]:
+    data = curseforge_response_data(payload)
+    if not isinstance(data, list):
+        return None
+
+    slug_lower = project_slug.strip().lower()
+    fallback: Optional[dict[str, Any]] = None
+    for mod_obj in data:
+        if not isinstance(mod_obj, dict):
+            continue
+        if fallback is None:
+            fallback = mod_obj
+        if str(mod_obj.get("slug") or "").strip().lower() == slug_lower:
+            return mod_obj
+    return fallback
+
+
+def fetch_curseforge_mod_by_api(
+    session,
+    *,
+    project_slug: str,
+    api_key: str,
+    timeout: int,
+    retries: int,
+) -> Optional[dict[str, Any]]:
+    payload = request_json(
+        session,
+        f"{CURSEFORGE_API_BASE}/mods/search",
+        headers=curseforge_api_headers(api_key),
+        params={
+            "gameId": CURSEFORGE_MINECRAFT_GAME_ID,
+            "classId": CURSEFORGE_MINECRAFT_MODS_CLASS_ID,
+            "slug": project_slug,
+            "pageSize": 10,
+        },
+        timeout=timeout,
+        retries=retries,
+    )
+    return select_curseforge_mod_from_search(payload, project_slug)
+
+
+def curseforge_file_row_from_api(file_obj: dict[str, Any]) -> Optional[dict[str, Any]]:
+    name = str(file_obj.get("displayName") or file_obj.get("fileName") or "").strip()
+    if not name:
+        return None
+
+    raw_versions = [str(x).strip() for x in (file_obj.get("gameVersions") or []) if str(x).strip()]
+    loaders: list[str] = []
+    versions: list[str] = []
+    loader_words = {"fabric", "neoforge", "forge", "quilt"}
+    for value in raw_versions:
+        if value.lower() in loader_words:
+            loaders.append(value)
+        elif re.fullmatch(r"[0-9]+(?:\.[0-9]+)*", value):
+            versions.append(value)
+
+    if not loaders:
+        loaders = guess_loader_from_filename(name)
+
+    mod_version = extract_mod_version(name)
+    item_name, version_label, game_versions_csv = apply_known_version_fixes(
+        item_name=name,
+        version_label=name,
+        mod_version=mod_version,
+        game_versions_csv=normalize_list(versions),
+    )
+    return {
+        "raw_item_name": name,
+        "item_name": item_name,
+        "version_label": version_label,
+        "mod_version": mod_version,
+        "game_versions": game_versions_csv,
+        "loader": normalize_list(loaders),
+        "total_downloads": safe_int(file_obj.get("downloadCount"), 0),
+    }
+
+
+def fetch_curseforge_files_by_api(
+    session,
+    *,
+    project_name: str,
+    project_slug: str,
+    api_key: str,
+    snapshot_date: str,
+    timeout: int,
+    retries: int,
+) -> Optional[list[SnapshotRow]]:
+    try:
+        mod_obj = fetch_curseforge_mod_by_api(
+            session,
+            project_slug=project_slug,
+            api_key=api_key,
+            timeout=timeout,
+            retries=retries,
+        )
+    except RequestFailedError as exc:
+        status_text = f"HTTP {exc.status_code}" if exc.status_code is not None else "request failed"
+        warn(
+            "CurseForge API lookup failed for "
+            f"{project_name} ({project_slug}) ({status_text}). Falling back to website scraping."
+        )
+        return None
+    except Exception as exc:
+        warn(
+            "CurseForge API lookup failed for "
+            f"{project_name} ({project_slug}) ({type(exc).__name__}). Falling back to website scraping."
+        )
+        return None
+
+    if not mod_obj:
+        warn(
+            "CurseForge API did not find "
+            f"{project_name} ({project_slug}). Falling back to website scraping."
+        )
+        return None
+
+    mod_id = safe_int(mod_obj.get("id"), -1)
+    if mod_id < 0:
+        warn(
+            "CurseForge API did not return a valid project id for "
+            f"{project_name} ({project_slug}). Falling back to website scraping."
+        )
+        return None
+
+    all_rows: list[SnapshotRow] = []
+    seen_names: set[str] = set()
+    index = 0
+
+    while True:
+        try:
+            payload = request_json(
+                session,
+                f"{CURSEFORGE_API_BASE}/mods/{mod_id}/files",
+                headers=curseforge_api_headers(api_key),
+                params={
+                    "index": index,
+                    "pageSize": CURSEFORGE_API_FILES_PAGE_SIZE,
+                },
+                timeout=timeout,
+                retries=retries,
+            )
+        except RequestFailedError as exc:
+            status_text = f"HTTP {exc.status_code}" if exc.status_code is not None else "request failed"
+            warn(
+                "CurseForge API files lookup failed for "
+                f"{project_name} ({project_slug}) at index {index} ({status_text})."
+            )
+            return all_rows if all_rows else None
+
+        files = curseforge_response_data(payload)
+        if not isinstance(files, list) or not files:
+            break
+
+        for file_obj in files:
+            if not isinstance(file_obj, dict):
+                continue
+            if safe_int(file_obj.get("releaseType"), 1) == 3:
+                continue
+
+            row = curseforge_file_row_from_api(file_obj)
+            if row is None:
+                continue
+
+            item_name = row["item_name"]
+            source_name = row.get("raw_item_name", item_name)
+            if item_name in seen_names:
+                continue
+            seen_names.add(item_name)
+
+            all_rows.append(SnapshotRow(
+                snapshot_date=snapshot_date,
+                platform="curseforge",
+                project_name=project_name,
+                project_platform_id=project_slug,
+                item_id=f"{project_slug}:{source_name}",
+                item_name=item_name,
+                version_label=row["version_label"],
+                mod_version=row.get("mod_version", "unknown"),
+                loader=row["loader"],
+                game_versions=row["game_versions"],
+                total_downloads=row["total_downloads"],
+            ))
+
+        if len(files) < CURSEFORGE_API_FILES_PAGE_SIZE:
+            break
+
+        index += CURSEFORGE_API_FILES_PAGE_SIZE
+        if index >= CURSEFORGE_MAX_FILES_PAGES * CURSEFORGE_API_FILES_PAGE_SIZE:
+            warn(
+                "Stopping CurseForge API pagination for "
+                f"{project_name} ({project_slug}) after index {index}."
+            )
+            break
+
+    return all_rows
+
+
+def curseforge_project_metadata_from_api_mod(mod_obj: dict[str, Any]) -> dict[str, str]:
+    out: dict[str, str] = {}
+
+    logo = mod_obj.get("logo") if isinstance(mod_obj.get("logo"), dict) else {}
+    icon_url = str(logo.get("thumbnailUrl") or logo.get("url") or "").strip()
+    if icon_url:
+        out["icon_url"] = icon_url
+
+    authors = mod_obj.get("authors") if isinstance(mod_obj.get("authors"), list) else []
+    if authors:
+        first = authors[0]
+        if isinstance(first, dict):
+            author_name = str(first.get("name") or "").strip()
+            author_url = str(first.get("url") or "").strip()
+            if author_name:
+                out["author_name"] = author_name
+            if author_url:
+                out["author_url"] = author_url
+
+    return out
+
+
+def fetch_curseforge_project_metadata_by_api(
+    session,
+    *,
+    project_slug: str,
+    api_key: str,
+    timeout: int,
+    retries: int,
+) -> dict[str, str]:
+    try:
+        mod_obj = fetch_curseforge_mod_by_api(
+            session,
+            project_slug=project_slug,
+            api_key=api_key,
+            timeout=timeout,
+            retries=retries,
+        )
+    except Exception:
+        return {}
+
+    if not mod_obj:
+        return {}
+    return curseforge_project_metadata_from_api_mod(mod_obj)
+
+
 CF_ROW_PATTERN = re.compile(
     r'^R\s+'
     r'(?P<name>.+?)\s+'
@@ -956,6 +1237,95 @@ def scrape_curseforge_file_rows_from_html(html: str, project_slug: str) -> list[
     return deduped
 
 
+def fetch_curseforge_html_by_browser(
+    *,
+    page_url: str,
+    project_name: str,
+    project_slug: str,
+    timeout: int,
+    user_data_dir: str,
+    headless: bool,
+) -> Optional[str]:
+    try:
+        from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+        from playwright.sync_api import sync_playwright
+    except Exception:
+        warn(
+            "CurseForge browser fallback is enabled, but Playwright is not installed. "
+            "Install it with: pip install playwright; python -m playwright install chromium"
+        )
+        return None
+
+    profile_dir = Path(user_data_dir)
+    profile_dir.mkdir(parents=True, exist_ok=True)
+    timeout_ms = max(timeout, 1) * 1000
+    user_agent = (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/124.0.0.0 Safari/537.36"
+    )
+
+    try:
+        with sync_playwright() as playwright:
+            launch_kwargs = {
+                "headless": headless,
+                "viewport": {"width": 1365, "height": 900},
+                "user_agent": user_agent,
+                "locale": "en-US",
+                "timezone_id": "America/New_York",
+                "args": [
+                    "--disable-blink-features=AutomationControlled",
+                    "--no-default-browser-check",
+                ],
+            }
+            try:
+                context = playwright.chromium.launch_persistent_context(
+                    str(profile_dir),
+                    channel="chrome",
+                    **launch_kwargs,
+                )
+            except Exception:
+                context = playwright.chromium.launch_persistent_context(
+                    str(profile_dir),
+                    **launch_kwargs,
+                )
+
+            try:
+                page = context.pages[0] if context.pages else context.new_page()
+                page.goto(page_url, wait_until="domcontentloaded", timeout=timeout_ms)
+
+                deadline = time.monotonic() + max(timeout, 1)
+                html = page.content()
+                while time.monotonic() < deadline:
+                    lower_html = html.lower()
+                    if "just a moment" not in lower_html and (
+                        "_next_f.push" in html or "/minecraft/mc-mods/" in lower_html
+                    ):
+                        break
+                    try:
+                        page.wait_for_load_state("networkidle", timeout=2000)
+                    except PlaywrightTimeoutError:
+                        pass
+                    page.wait_for_timeout(1000)
+                    html = page.content()
+
+                return html
+            finally:
+                context.close()
+    except PlaywrightTimeoutError:
+        warn(
+            "CurseForge browser fallback timed out for "
+            f"{project_name} ({project_slug}). Tried URL: {page_url}"
+        )
+    except Exception as exc:
+        warn(
+            "CurseForge browser fallback failed for "
+            f"{project_name} ({project_slug}) ({type(exc).__name__}: {exc})."
+        )
+
+    return None
+
+
 def fetch_curseforge_files_by_scrape(
     session,
     *,
@@ -965,6 +1335,10 @@ def fetch_curseforge_files_by_scrape(
     snapshot_date: str,
     timeout: int,
     retries: int,
+    browser_fallback: bool = False,
+    browser_timeout: int = 60,
+    browser_user_data_dir: str = "tracker_output/curseforge_browser_profile",
+    browser_headless: bool = True,
 ) -> list[SnapshotRow]:
     page = 1
     page_size = CURSEFORGE_FILES_PAGE_SIZE
@@ -985,12 +1359,36 @@ def fetch_curseforge_files_by_scrape(
             )
         except RequestFailedError as exc:
             status_text = f"HTTP {exc.status_code}" if exc.status_code is not None else "request failed"
-            warn(
-                "Skipping CurseForge data for "
-                f"{project_name} ({project_slug}): files page {page} failed to load ({status_text}). "
-                f"Tried URL: {exc.url or page_url}"
-            )
-            return []
+            if browser_fallback and exc.status_code == 403:
+                html = fetch_curseforge_html_by_browser(
+                    page_url=page_url,
+                    project_name=project_name,
+                    project_slug=project_slug,
+                    timeout=browser_timeout,
+                    user_data_dir=browser_user_data_dir,
+                    headless=browser_headless,
+                )
+                if html is not None:
+                    pass
+                else:
+                    warn(
+                        "Skipping CurseForge data for "
+                        f"{project_name} ({project_slug}): browser fallback did not load files page {page}. "
+                        f"Tried URL: {page_url}"
+                    )
+                    return []
+            else:
+                extra = (
+                    " CurseForge returned Cloudflare's browser challenge; set CURSEFORGE_API_KEY "
+                    "or install/configure the browser fallback."
+                    if exc.status_code == 403 else ""
+                )
+                warn(
+                    "Skipping CurseForge data for "
+                    f"{project_name} ({project_slug}): files page {page} failed to load ({status_text}). "
+                    f"Tried URL: {exc.url or page_url}.{extra}"
+                )
+                return []
 
         parsed_rows = scrape_curseforge_file_rows_from_html(html, project_slug)
         if not parsed_rows:
@@ -1107,6 +1505,7 @@ def build_project_catalog(
     projects: Sequence[dict[str, Any]],
     timeout: int,
     retries: int,
+    curseforge_api_key: str = "",
 ) -> list[dict[str, str]]:
     catalog: list[dict[str, str]] = []
 
@@ -1144,12 +1543,24 @@ def build_project_catalog(
                 entry["curseforge_url"] = f"https://www.curseforge.com/minecraft/mc-mods/{curseforge_slug}"
 
         if entry.get("curseforge_url"):
-            cf_meta = fetch_curseforge_project_metadata(
-                session,
-                project_url=entry["curseforge_url"],
-                timeout=timeout,
-                retries=retries,
-            )
+            cf_meta: dict[str, str] = {}
+            if curseforge_api_key and isinstance(curseforge_cfg, dict):
+                curseforge_slug = str(curseforge_cfg.get("slug") or "").strip()
+                if curseforge_slug:
+                    cf_meta = fetch_curseforge_project_metadata_by_api(
+                        session,
+                        project_slug=curseforge_slug,
+                        api_key=curseforge_api_key,
+                        timeout=timeout,
+                        retries=retries,
+                    )
+            if not cf_meta:
+                cf_meta = fetch_curseforge_project_metadata(
+                    session,
+                    project_url=entry["curseforge_url"],
+                    timeout=timeout,
+                    retries=retries,
+                )
             if cf_meta.get("author_name"):
                 entry["curseforge_author_name"] = cf_meta["author_name"]
                 if not entry.get("author_name"):
@@ -2816,6 +3227,14 @@ def run_fetch(conn: sqlite3.Connection, config: dict[str, Any]) -> list[Snapshot
     projects = config["projects"]
     enable_modrinth = bool(config.get("enable_modrinth", True))
     enable_curseforge = bool(config.get("enable_curseforge", True))
+    curseforge_api_key = curseforge_api_key_from_config(config)
+    curseforge_browser_fallback = config_bool(config, "curseforge_browser_fallback", True)
+    curseforge_browser_headless = config_bool(config, "curseforge_browser_headless", True)
+    curseforge_browser_timeout = int(config.get("curseforge_browser_timeout_seconds", 60))
+    curseforge_browser_user_data_dir = str(
+        config.get("curseforge_browser_user_data_dir")
+        or "tracker_output/curseforge_browser_profile"
+    )
     timeout = int(config.get("http_timeout_seconds", 30))
     retries = int(config.get("http_retries", 4))
     snapshot_date = snapshot_date_for_run(config)
@@ -2828,6 +3247,7 @@ def run_fetch(conn: sqlite3.Connection, config: dict[str, Any]) -> list[Snapshot
         project_catalog = build_project_catalog(
             session,
             projects=projects,
+            curseforge_api_key=curseforge_api_key,
             timeout=timeout,
             retries=retries,
         )
@@ -2848,15 +3268,33 @@ def run_fetch(conn: sqlite3.Connection, config: dict[str, Any]) -> list[Snapshot
 
             if enable_curseforge and project.get("curseforge"):
                 cf = project["curseforge"]
-                rows.extend(fetch_curseforge_files_by_scrape(
-                    session,
-                    project_name=project_name,
-                    project_slug=str(cf["slug"]),
-                    base_url=str(cf["base_url"]),
-                    snapshot_date=snapshot_date,
-                    timeout=timeout,
-                    retries=retries,
-                ))
+                curseforge_slug = str(cf["slug"])
+                curseforge_rows: Optional[list[SnapshotRow]] = None
+                if curseforge_api_key:
+                    curseforge_rows = fetch_curseforge_files_by_api(
+                        session,
+                        project_name=project_name,
+                        project_slug=curseforge_slug,
+                        api_key=curseforge_api_key,
+                        snapshot_date=snapshot_date,
+                        timeout=timeout,
+                        retries=retries,
+                    )
+                if curseforge_rows is None:
+                    curseforge_rows = fetch_curseforge_files_by_scrape(
+                        session,
+                        project_name=project_name,
+                        project_slug=curseforge_slug,
+                        base_url=str(cf["base_url"]),
+                        snapshot_date=snapshot_date,
+                        timeout=timeout,
+                        retries=retries,
+                        browser_fallback=curseforge_browser_fallback,
+                        browser_timeout=curseforge_browser_timeout,
+                        browser_user_data_dir=curseforge_browser_user_data_dir,
+                        browser_headless=curseforge_browser_headless,
+                    )
+                rows.extend(curseforge_rows)
     finally:
         session.close()
 

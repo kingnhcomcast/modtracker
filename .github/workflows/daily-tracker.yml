@@ -25,7 +25,9 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install cloudscraper matplotlib requests beautifulsoup4
+        run: |
+          pip install cloudscraper matplotlib requests beautifulsoup4 playwright
+          python -m playwright install --with-deps chromium
 
       - name: Run only at midnight ET
         run: |
@@ -36,6 +38,8 @@ jobs:
           fi
 
       - name: Run tracker
+        env:
+          CURSEFORGE_API_KEY: ${{ secrets.CURSEFORGE_API_KEY }}
         run: |
           mkdir -p tracker_output
           python mod_download_tracker.py 2>&1 | tee tracker_output/run.log

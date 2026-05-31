@@ -10,24 +10,6 @@
   ],
   "project_catalog": [
     {
-      "project_name": "CinderStride",
-      "modrinth_url": "https://modrinth.com/mod/cinderstride",
-      "modrinth_author_name": "Drahlek",
-      "author_name": "Drahlek",
-      "modrinth_author_url": "https://modrinth.com/user/Drahlek",
-      "curseforge_url": "https://www.curseforge.com/minecraft/mc-mods/cinderstride",
-      "icon_url": "https://cdn.modrinth.com/data/rZcOAbbe/11b494acecf531275f57bc3e58d9bc5fb74961ab.png"
-    },
-    {
-      "project_name": "Dirigo",
-      "modrinth_url": "https://modrinth.com/mod/dirigo",
-      "modrinth_author_name": "Drahlek",
-      "author_name": "Drahlek",
-      "modrinth_author_url": "https://modrinth.com/user/Drahlek",
-      "curseforge_url": "https://www.curseforge.com/minecraft/mc-mods/dirigo",
-      "icon_url": "https://cdn.modrinth.com/data/zSARzLjX/ebb7ae91267e9d106467984099c681a41f70d7d3_96.webp"
-    },
-    {
       "project_name": "HearthGuard",
       "modrinth_url": "https://modrinth.com/mod/hearthguard",
       "modrinth_author_name": "Drahlek",
@@ -37,13 +19,31 @@
       "icon_url": "https://cdn.modrinth.com/data/QE9szL3C/dfef3cead45cdca4c852c47e359809ce3d338ee9.png"
     },
     {
-      "project_name": "Smart Feeding Troughs",
-      "modrinth_url": "https://modrinth.com/mod/smart-feeding-troughs",
+      "project_name": "CinderStride",
+      "modrinth_url": "https://modrinth.com/mod/cinderstride",
+      "curseforge_url": "https://www.curseforge.com/minecraft/mc-mods/cinderstride",
+      "icon_url": "https://cdn.modrinth.com/data/rZcOAbbe/11b494acecf531275f57bc3e58d9bc5fb74961ab.png",
       "modrinth_author_name": "Drahlek",
       "author_name": "Drahlek",
-      "modrinth_author_url": "https://modrinth.com/user/Drahlek",
+      "modrinth_author_url": "https://modrinth.com/user/Drahlek"
+    },
+    {
+      "project_name": "Dirigo",
+      "modrinth_url": "https://modrinth.com/mod/dirigo",
+      "curseforge_url": "https://www.curseforge.com/minecraft/mc-mods/dirigo",
+      "icon_url": "https://cdn.modrinth.com/data/zSARzLjX/ebb7ae91267e9d106467984099c681a41f70d7d3_96.webp",
+      "modrinth_author_name": "Drahlek",
+      "author_name": "Drahlek",
+      "modrinth_author_url": "https://modrinth.com/user/Drahlek"
+    },
+    {
+      "project_name": "Smart Feeding Troughs",
+      "modrinth_url": "https://modrinth.com/mod/smart-feeding-troughs",
       "curseforge_url": "https://www.curseforge.com/minecraft/mc-mods/smart-feeding-troughs",
-      "icon_url": "https://cdn.modrinth.com/data/4dEFIhvD/67b0d5543befd687a16e2b6673e8077657d93c6e_96.webp"
+      "icon_url": "https://cdn.modrinth.com/data/4dEFIhvD/67b0d5543befd687a16e2b6673e8077657d93c6e_96.webp",
+      "modrinth_author_name": "Drahlek",
+      "author_name": "Drahlek",
+      "modrinth_author_url": "https://modrinth.com/user/Drahlek"
     }
   ],
   "today_item_rows_count": 178,
@@ -51,7 +51,7 @@
   "latest_platform_totals": [
     {
       "platform": "curseforge",
-      "total_downloads": 6802
+      "total_downloads": 6956
     },
     {
       "platform": "modrinth",
@@ -61,25 +61,25 @@
   "latest_loader_totals": [
     {
       "loader_group": "fabric",
-      "total_downloads": 6004
+      "total_downloads": 6119
     },
     {
       "loader_group": "neoforge",
-      "total_downloads": 3641
+      "total_downloads": 3680
     }
   ],
   "latest_mc_totals": [
     {
       "mc_version": "26.1.2",
-      "total_downloads": 4083
+      "total_downloads": 4190
     },
     {
       "mc_version": "1.21.1",
-      "total_downloads": 2907
+      "total_downloads": 2926
     },
     {
       "mc_version": "1.21.11",
-      "total_downloads": 1972
+      "total_downloads": 2000
     },
     {
       "mc_version": "26.1",
@@ -93,7 +93,7 @@
   "latest_mod_totals": [
     {
       "mod_version": "1.1.1",
-      "total_downloads": 2245
+      "total_downloads": 2292
     },
     {
       "mod_version": "1.1.0",
@@ -109,11 +109,11 @@
     },
     {
       "mod_version": "1.2.0",
-      "total_downloads": 950
+      "total_downloads": 1022
     },
     {
       "mod_version": "1.3.0",
-      "total_downloads": 865
+      "total_downloads": 900
     },
     {
       "mod_version": "1.0.1",
@@ -127,7 +127,7 @@
   "latest_platform_breakdown": [
     {
       "platform": "curseforge",
-      "daily_downloads": 0
+      "daily_downloads": 154
     },
     {
       "platform": "modrinth",
@@ -137,21 +137,21 @@
   "latest_loader_breakdown": [
     {
       "loader_group": "fabric",
-      "daily_downloads": 112
+      "daily_downloads": 227
     },
     {
       "loader_group": "neoforge",
-      "daily_downloads": 36
+      "daily_downloads": 75
     }
   ],
   "latest_mc_breakdown": [
     {
       "mc_version": "1.21.1",
-      "daily_downloads": 36
+      "daily_downloads": 55
     },
     {
       "mc_version": "1.21.11",
-      "daily_downloads": 20
+      "daily_downloads": 48
     },
     {
       "mc_version": "26.1",
@@ -163,7 +163,7 @@
     },
     {
       "mc_version": "26.1.2",
-      "daily_downloads": 91
+      "daily_downloads": 198
     }
   ],
   "latest_mod_breakdown": [
@@ -189,15 +189,15 @@
     },
     {
       "mod_version": "1.1.1",
-      "daily_downloads": 39
+      "daily_downloads": 86
     },
     {
       "mod_version": "1.2.0",
-      "daily_downloads": 47
+      "daily_downloads": 119
     },
     {
       "mod_version": "1.3.0",
-      "daily_downloads": 40
+      "daily_downloads": 75
     }
   ],
   "release_tags": [
