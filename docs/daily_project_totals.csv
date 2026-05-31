@@ -42,6 +42,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-27,CinderStride,curseforge,12,8.285714285714286,
 2026-05-28,CinderStride,curseforge,6,9.0,
 2026-05-29,CinderStride,curseforge,3,8.142857142857142,
+2026-05-30,CinderStride,curseforge,0,8.0,
 2026-05-02,CinderStride,modrinth,23,,1.1.0 (MR)
 2026-05-03,CinderStride,modrinth,10,23.0,
 2026-05-04,CinderStride,modrinth,6,16.5,
@@ -70,6 +71,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-27,CinderStride,modrinth,13,10.714285714285714,
 2026-05-28,CinderStride,modrinth,12,11.142857142857142,
 2026-05-29,CinderStride,modrinth,9,11.714285714285714,
+2026-05-30,CinderStride,modrinth,6,11.857142857142858,
 2026-04-17,Dirigo,curseforge,51,,
 2026-04-18,Dirigo,curseforge,12,51.0,
 2026-04-19,Dirigo,curseforge,4,31.5,
@@ -113,6 +115,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-27,Dirigo,curseforge,44,73.71428571428571,
 2026-05-28,Dirigo,curseforge,53,73.42857142857143,
 2026-05-29,Dirigo,curseforge,44,73.0,
+2026-05-30,Dirigo,curseforge,0,62.0,
 2026-05-02,Dirigo,modrinth,29,,
 2026-05-03,Dirigo,modrinth,10,29.0,
 2026-05-04,Dirigo,modrinth,3,19.5,
@@ -141,6 +144,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-27,Dirigo,modrinth,32,45.57142857142857,
 2026-05-28,Dirigo,modrinth,46,44.285714285714285,
 2026-05-29,Dirigo,modrinth,52,44.857142857142854,
+2026-05-30,Dirigo,modrinth,43,40.42857142857143,
 2026-04-11,HearthGuard,curseforge,96,,
 2026-04-12,HearthGuard,curseforge,52,96.0,
 2026-04-13,HearthGuard,curseforge,51,74.0,
@@ -190,6 +194,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-27,HearthGuard,curseforge,55,41.285714285714285,
 2026-05-28,HearthGuard,curseforge,47,45.285714285714285,
 2026-05-29,HearthGuard,curseforge,37,47.285714285714285,
+2026-05-30,HearthGuard,curseforge,0,47.0,
 2026-04-11,HearthGuard,modrinth,30,,
 2026-04-12,HearthGuard,modrinth,13,30.0,
 2026-04-13,HearthGuard,modrinth,14,21.5,
@@ -239,6 +244,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-27,HearthGuard,modrinth,18,18.428571428571427,
 2026-05-28,HearthGuard,modrinth,36,18.142857142857142,
 2026-05-29,HearthGuard,modrinth,22,19.857142857142858,
+2026-05-30,HearthGuard,modrinth,35,21.285714285714285,
 2026-05-15,Smart Feeding Troughs,curseforge,101,,1.0.0 (CF)
 2026-05-16,Smart Feeding Troughs,curseforge,56,101.0,
 2026-05-17,Smart Feeding Troughs,curseforge,97,78.5,1.0.0 (MR)
@@ -254,6 +260,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-27,Smart Feeding Troughs,curseforge,43,75.0,
 2026-05-28,Smart Feeding Troughs,curseforge,61,75.71428571428571,1.2.0
 2026-05-29,Smart Feeding Troughs,curseforge,71,77.85714285714286,
+2026-05-30,Smart Feeding Troughs,curseforge,0,74.28571428571429,
 2026-05-17,Smart Feeding Troughs,modrinth,22,,1.0.0 (MR)
 2026-05-18,Smart Feeding Troughs,modrinth,47,22.0,
 2026-05-19,Smart Feeding Troughs,modrinth,37,34.5,
@@ -267,6 +274,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-05-27,Smart Feeding Troughs,modrinth,27,41.0,
 2026-05-28,Smart Feeding Troughs,modrinth,49,40.0,1.2.0
 2026-05-29,Smart Feeding Troughs,modrinth,46,41.857142857142854,
+2026-05-30,Smart Feeding Troughs,modrinth,64,38.857142857142854,
 2026-03-27,hearthguard,curseforge,69,,1.0.1
 2026-03-28,hearthguard,curseforge,60,69.0,
 2026-03-29,hearthguard,curseforge,41,64.5,
