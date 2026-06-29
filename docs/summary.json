@@ -1,7 +1,7 @@
 {
-  "generated_et_date": "2026-06-27",
-  "generated_est_date": "2026-06-27",
-  "snapshot_date": "2026-06-27",
+  "generated_et_date": "2026-06-28",
+  "generated_est_date": "2026-06-28",
+  "snapshot_date": "2026-06-28",
   "projects": [
     "HearthGuard",
     "CinderStride",
@@ -51,35 +51,35 @@
   "latest_platform_totals": [
     {
       "platform": "curseforge",
-      "total_downloads": 11260
+      "total_downloads": 11363
     },
     {
       "platform": "modrinth",
-      "total_downloads": 4840
+      "total_downloads": 4893
     }
   ],
   "latest_loader_totals": [
     {
       "loader_group": "fabric",
-      "total_downloads": 9706
+      "total_downloads": 9792
     },
     {
       "loader_group": "neoforge",
-      "total_downloads": 6394
+      "total_downloads": 6464
     }
   ],
   "latest_mc_totals": [
     {
       "mc_version": "26.1.2",
-      "total_downloads": 6928
+      "total_downloads": 6972
     },
     {
       "mc_version": "1.21.1",
-      "total_downloads": 5342
+      "total_downloads": 5423
     },
     {
       "mc_version": "1.21.11",
-      "total_downloads": 3090
+      "total_downloads": 3120
     },
     {
       "mc_version": "26.1",
@@ -87,25 +87,25 @@
     },
     {
       "mc_version": "26.1.1",
-      "total_downloads": 342
+      "total_downloads": 343
     }
   ],
   "latest_mod_totals": [
     {
       "mod_version": "1.1.1",
-      "total_downloads": 4017
+      "total_downloads": 4078
     },
     {
       "mod_version": "1.1.0",
-      "total_downloads": 2807
+      "total_downloads": 2830
     },
     {
       "mod_version": "1.3.0",
-      "total_downloads": 2695
+      "total_downloads": 2740
     },
     {
       "mod_version": "1.2.0",
-      "total_downloads": 2547
+      "total_downloads": 2572
     },
     {
       "mod_version": "1.0.0",
@@ -113,7 +113,7 @@
     },
     {
       "mod_version": "1.0.3",
-      "total_downloads": 1281
+      "total_downloads": 1282
     },
     {
       "mod_version": "1.0.1",
@@ -121,83 +121,83 @@
     },
     {
       "mod_version": "1.0.2",
-      "total_downloads": 342
+      "total_downloads": 343
     }
   ],
   "latest_platform_breakdown": [
     {
       "platform": "curseforge",
-      "daily_downloads": 214
+      "daily_downloads": 103
     },
     {
       "platform": "modrinth",
-      "daily_downloads": 62
+      "daily_downloads": 53
     }
   ],
   "latest_loader_breakdown": [
     {
       "loader_group": "fabric",
-      "daily_downloads": 157
+      "daily_downloads": 86
     },
     {
       "loader_group": "neoforge",
-      "daily_downloads": 119
+      "daily_downloads": 70
     }
   ],
   "latest_mc_breakdown": [
     {
       "mc_version": "1.21.1",
-      "daily_downloads": 103
+      "daily_downloads": 81
     },
     {
       "mc_version": "1.21.11",
-      "daily_downloads": 84
+      "daily_downloads": 30
     },
     {
       "mc_version": "26.1",
-      "daily_downloads": 16
+      "daily_downloads": 0
     },
     {
       "mc_version": "26.1.1",
-      "daily_downloads": 2
+      "daily_downloads": 1
     },
     {
       "mc_version": "26.1.2",
-      "daily_downloads": 71
+      "daily_downloads": 44
     }
   ],
   "latest_mod_breakdown": [
     {
       "mod_version": "1.0.0",
-      "daily_downloads": 42
+      "daily_downloads": 0
     },
     {
       "mod_version": "1.0.1",
-      "daily_downloads": 11
+      "daily_downloads": 0
     },
     {
       "mod_version": "1.0.2",
-      "daily_downloads": 2
+      "daily_downloads": 1
     },
     {
       "mod_version": "1.0.3",
-      "daily_downloads": 10
+      "daily_downloads": 1
     },
     {
       "mod_version": "1.1.0",
-      "daily_downloads": 44
+      "daily_downloads": 23
     },
     {
       "mod_version": "1.1.1",
-      "daily_downloads": 67
+      "daily_downloads": 61
     },
     {
       "mod_version": "1.2.0",
-      "daily_downloads": 45
+      "daily_downloads": 25
     },
     {
       "mod_version": "1.3.0",
-      "daily_downloads": 55
+      "daily_downloads": 45
     }
   ],
   "release_tags": [
