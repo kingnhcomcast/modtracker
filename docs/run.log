@@ -3,35 +3,35 @@ Today daily platform breakdown
 ------------------------------
 platform    HearthGuard  CinderStride  Dirigo  Smart Feeding Troughs
 ----------  -----------  ------------  ------  ---------------------
-curseforge  56           13            30      13                   
-modrinth    7            2             20      27                   
+curseforge  40           9             22      11                   
+modrinth    10           11            17      13                   
 
 Today daily loader breakdown
 ----------------------------
 loader_group  HearthGuard  CinderStride  Dirigo  Smart Feeding Troughs
 ------------  -----------  ------------  ------  ---------------------
-fabric        34           12            30      22                   
-neoforge      29           3             20      18                   
+neoforge      28           7             21      15                   
+fabric        22           13            18      9                    
 
 Today daily Minecraft version breakdown
 ---------------------------------------
 mc_version  HearthGuard  CinderStride  Dirigo  Smart Feeding Troughs
 ----------  -----------  ------------  ------  ---------------------
-1.21.1      44           6             21      22                   
-26.1.2      12           3             18      16                   
-1.21.11     6            6             11      2                    
+1.21.1      27           7             21      13                   
+26.1.2      8            8             13      9                    
+1.21.11     13           5             5       2                    
 26.1        1            0             0       0                    
-26.1.1      0            0             0       0                    
+26.1.1      1            0             0       0                    
 
 Today daily mod version breakdown
 ---------------------------------
 mod_version  HearthGuard  CinderStride  Dirigo  Smart Feeding Troughs
 -----------  -----------  ------------  ------  ---------------------
-1.1.1        58           0             0       3                    
-1.3.0        0            0             49      0                    
-1.2.0        0            0             0       33                   
-1.1.0        1            15            1       4                    
+1.1.1        43           0             0       0                    
+1.3.0        0            0             38      0                    
+1.1.0        0            20            0       3                    
+1.2.0        0            0             1       20                   
 1.0.1        3            0             0       0                    
-1.0.3        1            0             0       0                    
-1.0.0        0            0             0       0                    
-1.0.2        0            0             0       0                    
+1.0.3        3            0             0       0                    
+1.0.0        0            0             0       1                    
+1.0.2        1            0             0       0                    
