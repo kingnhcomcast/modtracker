@@ -1,7 +1,7 @@
 {
-  "generated_et_date": "2026-07-18",
-  "generated_est_date": "2026-07-18",
-  "snapshot_date": "2026-07-18",
+  "generated_et_date": "2026-07-19",
+  "generated_est_date": "2026-07-19",
+  "snapshot_date": "2026-07-19",
   "projects": [
     "HearthGuard",
     "CinderStride",
@@ -47,43 +47,43 @@
     }
   ],
   "today_item_rows_count": 178,
-  "spike_count": 38,
+  "spike_count": 39,
   "latest_platform_totals": [
     {
       "platform": "curseforge",
-      "total_downloads": 13296
+      "total_downloads": 13451
     },
     {
       "platform": "modrinth",
-      "total_downloads": 6168
+      "total_downloads": 6244
     }
   ],
   "latest_loader_totals": [
     {
       "loader_group": "fabric",
-      "total_downloads": 11464
+      "total_downloads": 11574
     },
     {
       "loader_group": "neoforge",
-      "total_downloads": 8000
+      "total_downloads": 8121
     }
   ],
   "latest_mc_totals": [
     {
       "mc_version": "26.1.2",
-      "total_downloads": 8042
+      "total_downloads": 8097
     },
     {
       "mc_version": "1.21.1",
-      "total_downloads": 7005
+      "total_downloads": 7138
     },
     {
       "mc_version": "1.21.11",
-      "total_downloads": 3655
+      "total_downloads": 3697
     },
     {
       "mc_version": "26.1",
-      "total_downloads": 412
+      "total_downloads": 413
     },
     {
       "mc_version": "26.1.1",
@@ -93,23 +93,23 @@
   "latest_mod_totals": [
     {
       "mod_version": "1.1.1",
-      "total_downloads": 4964
+      "total_downloads": 5032
     },
     {
       "mod_version": "1.3.0",
-      "total_downloads": 3771
+      "total_downloads": 3843
     },
     {
       "mod_version": "1.2.0",
-      "total_downloads": 3343
+      "total_downloads": 3405
     },
     {
       "mod_version": "1.1.0",
-      "total_downloads": 3274
+      "total_downloads": 3299
     },
     {
       "mod_version": "1.0.0",
-      "total_downloads": 1607
+      "total_downloads": 1611
     },
     {
       "mod_version": "1.0.3",
@@ -127,35 +127,35 @@
   "latest_platform_breakdown": [
     {
       "platform": "curseforge",
-      "daily_downloads": 120
+      "daily_downloads": 155
     },
     {
       "platform": "modrinth",
-      "daily_downloads": 38
+      "daily_downloads": 76
     }
   ],
   "latest_loader_breakdown": [
     {
       "loader_group": "fabric",
-      "daily_downloads": 94
+      "daily_downloads": 110
     },
     {
       "loader_group": "neoforge",
-      "daily_downloads": 64
+      "daily_downloads": 121
     }
   ],
   "latest_mc_breakdown": [
     {
       "mc_version": "1.21.1",
-      "daily_downloads": 85
+      "daily_downloads": 133
     },
     {
       "mc_version": "1.21.11",
-      "daily_downloads": 35
+      "daily_downloads": 42
     },
     {
       "mc_version": "26.1",
-      "daily_downloads": 4
+      "daily_downloads": 1
     },
     {
       "mc_version": "26.1.1",
@@ -163,17 +163,17 @@
     },
     {
       "mc_version": "26.1.2",
-      "daily_downloads": 34
+      "daily_downloads": 55
     }
   ],
   "latest_mod_breakdown": [
     {
       "mod_version": "1.0.0",
-      "daily_downloads": 8
+      "daily_downloads": 4
     },
     {
       "mod_version": "1.0.1",
-      "daily_downloads": 1
+      "daily_downloads": 0
     },
     {
       "mod_version": "1.0.2",
@@ -181,23 +181,23 @@
     },
     {
       "mod_version": "1.0.3",
-      "daily_downloads": 1
+      "daily_downloads": 0
     },
     {
       "mod_version": "1.1.0",
-      "daily_downloads": 21
+      "daily_downloads": 25
     },
     {
       "mod_version": "1.1.1",
-      "daily_downloads": 46
+      "daily_downloads": 68
     },
     {
       "mod_version": "1.2.0",
-      "daily_downloads": 34
+      "daily_downloads": 62
     },
     {
       "mod_version": "1.3.0",
-      "daily_downloads": 47
+      "daily_downloads": 72
     }
   ],
   "release_tags": [
