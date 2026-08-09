@@ -17267,16 +17267,16 @@ snapshot_date,platform,project_name,project_platform_id,item_id,item_name,versio
 2026-08-07,modrinth,Smart Feeding Troughs,smart-feeding-troughs,YL5ZiURN,smartfeedingtroughs-neoforge-26.1.2-1.2.0.jar,26.1.2-1.2.0,1.2.0,neoforge,"26.1,26.1.1,26.1.2",63,61,2,neoforge
 2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.0.0 (Fabric),CinderStride 1.21.1-1.0.0 (Fabric),CinderStride 1.21.1-1.0.0 (Fabric),1.0.0,Fabric,1.21.1,19,19,0,fabric
 2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.0.0 (NeoForge),CinderStride 1.21.1-1.0.0 (NeoForge),CinderStride 1.21.1-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.1,61,61,0,neoforge
-2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.1.0 (NeoForge),CinderStride 1.21.1-1.1.0 (NeoForge),CinderStride 1.21.1-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.1,240,237,3,neoforge
+2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.1.0 (NeoForge),CinderStride 1.21.1-1.1.0 (NeoForge),CinderStride 1.21.1-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.1,241,237,4,neoforge
 2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.1.0.jar (Fabric),CinderStride 1.21.1-1.1.0.jar (Fabric),CinderStride 1.21.1-1.1.0.jar (Fabric),1.1.0,Fabric,1.21.1,131,131,0,fabric
 2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.0.0 (Fabric),CinderStride 1.21.11-1.0.0 (Fabric),CinderStride 1.21.11-1.0.0 (Fabric),1.0.0,Fabric,1.21.11,42,42,0,fabric
 2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.0.0 (NeoForge),CinderStride 1.21.11-1.0.0 (NeoForge),CinderStride 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,24,24,0,neoforge
 2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.1.0 (Fabric),CinderStride 1.21.11-1.1.0 (Fabric),CinderStride 1.21.11-1.1.0 (Fabric),1.1.0,Fabric,1.21.11,192,192,0,fabric
 2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.1.0 (NeoForge),CinderStride 1.21.11-1.1.0 (NeoForge),CinderStride 1.21.11-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.11,64,64,0,neoforge
 2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1-1.0.0 (Fabric),CinderStride 26.1-1.0.0 (Fabric),CinderStride 26.1-1.0.0 (Fabric),1.0.0,Fabric,"26.1.2,26.1.1,26.1",66,66,0,fabric
-2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1-1.0.0 (NeoForge),CinderStride 26.1-1.0.0 (NeoForge),CinderStride 26.1-1.0.0 (NeoForge),1.0.0,NeoForge,"26.1.2,26.1.1,26.1",37,37,0,neoforge
+2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1-1.0.0 (NeoForge),CinderStride 26.1-1.0.0 (NeoForge),CinderStride 26.1-1.0.0 (NeoForge),1.0.0,NeoForge,"26.1.2,26.1.1,26.1",38,37,1,neoforge
 2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1.2-1.1.0 (Fabric),CinderStride 26.1.2-1.1.0 (Fabric),CinderStride 26.1.2-1.1.0 (Fabric),1.1.0,Fabric,"26.1.2,26.1.1,26.1",336,334,2,fabric
-2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1.2-1.1.0 (NeoForge),CinderStride 26.1.2-1.1.0 (NeoForge),CinderStride 26.1.2-1.1.0 (NeoForge),1.1.0,NeoForge,"26.1.2,26.1.1,26.1",150,150,0,neoforge
+2026-08-08,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 26.1.2-1.1.0 (NeoForge),CinderStride 26.1.2-1.1.0 (NeoForge),CinderStride 26.1.2-1.1.0 (NeoForge),1.1.0,NeoForge,"26.1.2,26.1.1,26.1",151,150,1,neoforge
 2026-08-08,modrinth,CinderStride,cinderstride,3AmaLH30,cinderstride-fabric-1.21.1-1.0.0.jar,1.21.1-1.0.0,1.0.0,fabric,1.21.1,8,8,0,fabric
 2026-08-08,modrinth,CinderStride,cinderstride,k7a9frNx,cinderstride-fabric-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,fabric,1.21.1,102,101,1,fabric
 2026-08-08,modrinth,CinderStride,cinderstride,3ULipy1h,cinderstride-fabric-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,fabric,1.21.11,10,10,0,fabric
@@ -17296,7 +17296,7 @@ snapshot_date,platform,project_name,project_platform_id,item_id,item_name,versio
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.2.0 (Fabric),Dirigo 1.21.1-1.2.0 (Fabric),Dirigo 1.21.1-1.2.0 (Fabric),1.2.0,Fabric,1.21.1,31,31,0,fabric
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.2.0 (NeoForge),Dirigo 1.21.1-1.2.0 (NeoForge),Dirigo 1.21.1-1.2.0 (NeoForge),1.2.0,NeoForge,1.21.1,74,74,0,neoforge
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.3.0 (Fabric),Dirigo 1.21.1-1.3.0 (Fabric),Dirigo 1.21.1-1.3.0 (Fabric),1.3.0,Fabric,1.21.1,263,262,1,fabric
-2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.3.0 (NeoForge),Dirigo 1.21.1-1.3.0 (NeoForge),Dirigo 1.21.1-1.3.0 (NeoForge),1.3.0,NeoForge,1.21.1,991,984,7,neoforge
+2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.3.0 (NeoForge),Dirigo 1.21.1-1.3.0 (NeoForge),Dirigo 1.21.1-1.3.0 (NeoForge),1.3.0,NeoForge,1.21.1,993,984,9,neoforge
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.0.0 (Fabric),Dirigo 1.21.11-1.0.0 (Fabric),Dirigo 1.21.11-1.0.0 (Fabric),1.0.0,Fabric,1.21.11,29,29,0,fabric
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.0.0 (NeoForge),Dirigo 1.21.11-1.0.0 (NeoForge),Dirigo 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,18,18,0,neoforge
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.1.0 (Fabric),Dirigo 1.21.11-1.1.0 (Fabric),Dirigo 1.21.11-1.1.0 (Fabric),1.1.0,Fabric,1.21.11,57,57,0,fabric
@@ -17306,17 +17306,17 @@ snapshot_date,platform,project_name,project_platform_id,item_id,item_name,versio
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.3.0 (Fabric),Dirigo 1.21.11-1.3.0 (Fabric),Dirigo 1.21.11-1.3.0 (Fabric),1.3.0,Fabric,1.21.11,403,403,0,fabric
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.3.0 (NeoForge),Dirigo 1.21.11-1.3.0 (NeoForge),Dirigo 1.21.11-1.3.0 (NeoForge),1.3.0,NeoForge,1.21.11,82,81,1,neoforge
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1-1.0.0 (Fabric),Dirigo 26.1-1.0.0 (Fabric),Dirigo 26.1-1.0.0 (Fabric),1.0.0,Fabric,"26.1.2,26.1.1,26.1",43,43,0,fabric
-2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1-1.0.0 (NeoForge),Dirigo 26.1-1.0.0 (NeoForge),Dirigo 26.1-1.0.0 (NeoForge),1.0.0,NeoForge,"26.1.2,26.1.1,26.1",36,36,0,neoforge
+2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1-1.0.0 (NeoForge),Dirigo 26.1-1.0.0 (NeoForge),Dirigo 26.1-1.0.0 (NeoForge),1.0.0,NeoForge,"26.1.2,26.1.1,26.1",37,36,1,neoforge
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1.2-1.1.0 (Fabric),Dirigo 26.1.2-1.1.0 (Fabric),Dirigo 26.1.2-1.1.0 (Fabric),1.1.0,Fabric,"26.1.2,26.1.1,26.1",76,76,0,fabric
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1.2-1.1.0 (NeoForge),Dirigo 26.1.2-1.1.0 (NeoForge),Dirigo 26.1.2-1.1.0 (NeoForge),1.1.0,NeoForge,"26.1.2,26.1.1,26.1",41,41,0,neoforge
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1.2-1.2.0 (Fabric),Dirigo 26.1.2-1.2.0 (Fabric),Dirigo 26.1.2-1.2.0 (Fabric),1.2.0,Fabric,"26.1.2,26.1.1,26.1",300,300,0,fabric
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1.2-1.2.0 (NeoForge),Dirigo 26.1.2-1.2.0 (NeoForge),Dirigo 26.1.2-1.2.0 (NeoForge),1.2.0,NeoForge,"26.1.2,26.1.1,26.1",124,124,0,neoforge
 2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1.2-1.3.0 (Fabric),Dirigo 26.1.2-1.3.0 (Fabric),Dirigo 26.1.2-1.3.0 (Fabric),1.3.0,Fabric,"26.1.2,26.1.1,26.1",1026,1024,2,fabric
-2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1.2-1.3.0 (NeoForge),Dirigo 26.1.2-1.3.0 (NeoForge),Dirigo 26.1.2-1.3.0 (NeoForge),1.3.0,NeoForge,"26.1.2,26.1.1,26.1",395,394,1,neoforge
+2026-08-08,curseforge,Dirigo,dirigo,dirigo:Dirigo 26.1.2-1.3.0 (NeoForge),Dirigo 26.1.2-1.3.0 (NeoForge),Dirigo 26.1.2-1.3.0 (NeoForge),1.3.0,NeoForge,"26.1.2,26.1.1,26.1",396,394,2,neoforge
 2026-08-08,modrinth,Dirigo,dirigo,T0jaIIel,dirigo-fabric-1.21.1-1.0.0.jar,1.21.1-1.0.0,1.0.0,fabric,1.21.1,9,7,2,fabric
 2026-08-08,modrinth,Dirigo,dirigo,eNcEXtgh,dirigo-fabric-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,fabric,1.21.1,83,83,0,fabric
 2026-08-08,modrinth,Dirigo,dirigo,XKONajaq,dirigo-fabric-1.21.1-1.2.0.jar,1.21.1-1.2.0,1.2.0,fabric,1.21.1,19,19,0,fabric
-2026-08-08,modrinth,Dirigo,dirigo,OnHgpEhW,dirigo-fabric-1.21.1-1.3.0.jar,1.21.1-1.3.0,1.3.0,fabric,1.21.1,201,199,2,fabric
+2026-08-08,modrinth,Dirigo,dirigo,OnHgpEhW,dirigo-fabric-1.21.1-1.3.0.jar,1.21.1-1.3.0,1.3.0,fabric,1.21.1,202,199,3,fabric
 2026-08-08,modrinth,Dirigo,dirigo,95beyHOF,dirigo-fabric-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,fabric,1.21.11,11,10,1,fabric
 2026-08-08,modrinth,Dirigo,dirigo,wG9hzu1P,dirigo-fabric-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,fabric,1.21.11,109,108,1,fabric
 2026-08-08,modrinth,Dirigo,dirigo,36KhNytn,dirigo-fabric-1.21.11-1.2.0.jar,1.21.11-1.2.0,1.2.0,fabric,1.21.11,24,24,0,fabric
@@ -17345,7 +17345,7 @@ snapshot_date,platform,project_name,project_platform_id,item_id,item_name,versio
 2026-08-08,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.0 (Fabric),HearthGuard 1.21.1-1.1.0 (Fabric),HearthGuard 1.21.1-1.1.0 (Fabric),1.1.0,Fabric,1.21.1,66,66,0,fabric
 2026-08-08,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.0 (NeoForge),HearthGuard 1.21.1-1.1.0 (NeoForge),HearthGuard 1.21.1-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.1,163,163,0,neoforge
 2026-08-08,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.1 (Fabric),HearthGuard 1.21.1-1.1.1 (Fabric),HearthGuard 1.21.1-1.1.1 (Fabric),1.1.1,Fabric,1.21.1,450,445,5,fabric
-2026-08-08,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.1 (NeoForge),HearthGuard 1.21.1-1.1.1 (NeoForge),HearthGuard 1.21.1-1.1.1 (NeoForge),1.1.1,NeoForge,1.21.1,1829,1812,17,neoforge
+2026-08-08,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.1 (NeoForge),HearthGuard 1.21.1-1.1.1 (NeoForge),HearthGuard 1.21.1-1.1.1 (NeoForge),1.1.1,NeoForge,1.21.1,1831,1812,19,neoforge
 2026-08-08,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.0 (Fabric),HearthGuard 1.21.11-1.0.0 (Fabric),HearthGuard 1.21.11-1.0.0 (Fabric),1.0.0,Fabric,1.21.11,158,158,0,fabric
 2026-08-08,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.0 (NeoForge),HearthGuard 1.21.11-1.0.0 (NeoForge),HearthGuard 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,61,61,0,neoforge
 2026-08-08,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.1 (Fabric),HearthGuard 1.21.11-1.0.1 (Fabric),HearthGuard 1.21.11-1.0.1 (Fabric),1.0.1,Fabric,1.21.11,228,228,0,fabric

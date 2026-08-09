@@ -226,7 +226,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-08-05,CinderStride,curseforge,neoforge,3,4.714285714285714
 2026-08-06,CinderStride,curseforge,neoforge,10,4.857142857142857
 2026-08-07,CinderStride,curseforge,neoforge,12,6.142857142857143
-2026-08-08,CinderStride,curseforge,neoforge,3,7.571428571428571
+2026-08-08,CinderStride,curseforge,neoforge,6,7.571428571428571
 2026-05-02,CinderStride,modrinth,fabric,11,
 2026-05-03,CinderStride,modrinth,fabric,9,11.0
 2026-05-04,CinderStride,modrinth,fabric,3,10.0
@@ -652,7 +652,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-08-05,Dirigo,curseforge,neoforge,9,21.285714285714285
 2026-08-06,Dirigo,curseforge,neoforge,21,18.714285714285715
 2026-08-07,Dirigo,curseforge,neoforge,16,18.857142857142858
-2026-08-08,Dirigo,curseforge,neoforge,9,20.0
+2026-08-08,Dirigo,curseforge,neoforge,13,20.0
 2026-05-02,Dirigo,modrinth,fabric,14,
 2026-05-03,Dirigo,modrinth,fabric,8,14.0
 2026-05-04,Dirigo,modrinth,fabric,3,11.0
@@ -751,7 +751,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-08-05,Dirigo,modrinth,fabric,4,14.571428571428571
 2026-08-06,Dirigo,modrinth,fabric,14,12.571428571428571
 2026-08-07,Dirigo,modrinth,fabric,18,12.857142857142858
-2026-08-08,Dirigo,modrinth,fabric,16,14.428571428571429
+2026-08-08,Dirigo,modrinth,fabric,17,14.428571428571429
 2026-05-02,Dirigo,modrinth,neoforge,15,
 2026-05-03,Dirigo,modrinth,neoforge,2,15.0
 2026-05-04,Dirigo,modrinth,neoforge,0,8.5
@@ -1090,7 +1090,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-08-05,HearthGuard,curseforge,neoforge,9,14.857142857142858
 2026-08-06,HearthGuard,curseforge,neoforge,12,12.285714285714286
 2026-08-07,HearthGuard,curseforge,neoforge,29,11.857142857142858
-2026-08-08,HearthGuard,curseforge,neoforge,22,15.0
+2026-08-08,HearthGuard,curseforge,neoforge,24,15.0
 2026-04-11,HearthGuard,modrinth,fabric,20,
 2026-04-12,HearthGuard,modrinth,fabric,12,20.0
 2026-04-13,HearthGuard,modrinth,fabric,7,16.0
