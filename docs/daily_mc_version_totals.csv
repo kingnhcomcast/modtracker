@@ -114,7 +114,7 @@ snapshot_date,project_name,platform,mc_version,daily_downloads,rolling_avg_7d
 2026-08-07,CinderStride,curseforge,1.21.1,13,6.142857142857143
 2026-08-08,CinderStride,curseforge,1.21.1,4,7.714285714285714
 2026-08-09,CinderStride,curseforge,1.21.1,5,8.0
-2026-08-10,CinderStride,curseforge,1.21.1,5,8.285714285714286
+2026-08-10,CinderStride,curseforge,1.21.1,6,8.285714285714286
 2026-04-17,CinderStride,curseforge,1.21.11,16,
 2026-04-18,CinderStride,curseforge,1.21.11,1,16.0
 2026-04-19,CinderStride,curseforge,1.21.11,0,8.5
@@ -968,7 +968,7 @@ snapshot_date,project_name,platform,mc_version,daily_downloads,rolling_avg_7d
 2026-08-07,Dirigo,curseforge,1.21.1,15,19.428571428571427
 2026-08-08,Dirigo,curseforge,1.21.1,10,19.857142857142858
 2026-08-09,Dirigo,curseforge,1.21.1,13,19.142857142857142
-2026-08-10,Dirigo,curseforge,1.21.1,13,17.571428571428573
+2026-08-10,Dirigo,curseforge,1.21.1,15,17.571428571428573
 2026-04-17,Dirigo,curseforge,1.21.11,13,
 2026-04-18,Dirigo,curseforge,1.21.11,0,13.0
 2026-04-19,Dirigo,curseforge,1.21.11,0,6.5
@@ -1829,7 +1829,7 @@ snapshot_date,project_name,platform,mc_version,daily_downloads,rolling_avg_7d
 2026-08-07,HearthGuard,curseforge,1.21.1,33,14.857142857142858
 2026-08-08,HearthGuard,curseforge,1.21.1,24,18.428571428571427
 2026-08-09,HearthGuard,curseforge,1.21.1,23,18.714285714285715
-2026-08-10,HearthGuard,curseforge,1.21.1,23,20.714285714285715
+2026-08-10,HearthGuard,curseforge,1.21.1,25,20.714285714285715
 2026-04-11,HearthGuard,curseforge,1.21.11,27,
 2026-04-12,HearthGuard,curseforge,1.21.11,19,27.0
 2026-04-13,HearthGuard,curseforge,1.21.11,17,23.0

@@ -1,7 +1,7 @@
 snapshot_date,platform,project_name,project_platform_id,item_id,item_name,version_label,mod_version,loader,game_versions,total_downloads,previous_total,daily_downloads,loader_group
 2026-08-10,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.0.0 (Fabric),CinderStride 1.21.1-1.0.0 (Fabric),CinderStride 1.21.1-1.0.0 (Fabric),1.0.0,Fabric,1.21.1,19,19,0,fabric
 2026-08-10,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.0.0 (NeoForge),CinderStride 1.21.1-1.0.0 (NeoForge),CinderStride 1.21.1-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.1,61,61,0,neoforge
-2026-08-10,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.1.0 (NeoForge),CinderStride 1.21.1-1.1.0 (NeoForge),CinderStride 1.21.1-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.1,251,246,5,neoforge
+2026-08-10,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.1.0 (NeoForge),CinderStride 1.21.1-1.1.0 (NeoForge),CinderStride 1.21.1-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.1,252,246,6,neoforge
 2026-08-10,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.1-1.1.0.jar (Fabric),CinderStride 1.21.1-1.1.0.jar (Fabric),CinderStride 1.21.1-1.1.0.jar (Fabric),1.1.0,Fabric,1.21.1,131,131,0,fabric
 2026-08-10,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.0.0 (Fabric),CinderStride 1.21.11-1.0.0 (Fabric),CinderStride 1.21.11-1.0.0 (Fabric),1.0.0,Fabric,1.21.11,42,42,0,fabric
 2026-08-10,curseforge,CinderStride,cinderstride,cinderstride:CinderStride 1.21.11-1.0.0 (NeoForge),CinderStride 1.21.11-1.0.0 (NeoForge),CinderStride 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,24,24,0,neoforge
@@ -30,7 +30,7 @@ snapshot_date,platform,project_name,project_platform_id,item_id,item_name,versio
 2026-08-10,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.2.0 (Fabric),Dirigo 1.21.1-1.2.0 (Fabric),Dirigo 1.21.1-1.2.0 (Fabric),1.2.0,Fabric,1.21.1,31,31,0,fabric
 2026-08-10,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.2.0 (NeoForge),Dirigo 1.21.1-1.2.0 (NeoForge),Dirigo 1.21.1-1.2.0 (NeoForge),1.2.0,NeoForge,1.21.1,74,74,0,neoforge
 2026-08-10,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.3.0 (Fabric),Dirigo 1.21.1-1.3.0 (Fabric),Dirigo 1.21.1-1.3.0 (Fabric),1.3.0,Fabric,1.21.1,265,264,1,fabric
-2026-08-10,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.3.0 (NeoForge),Dirigo 1.21.1-1.3.0 (NeoForge),Dirigo 1.21.1-1.3.0 (NeoForge),1.3.0,NeoForge,1.21.1,1017,1005,12,neoforge
+2026-08-10,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.1-1.3.0 (NeoForge),Dirigo 1.21.1-1.3.0 (NeoForge),Dirigo 1.21.1-1.3.0 (NeoForge),1.3.0,NeoForge,1.21.1,1019,1005,14,neoforge
 2026-08-10,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.0.0 (Fabric),Dirigo 1.21.11-1.0.0 (Fabric),Dirigo 1.21.11-1.0.0 (Fabric),1.0.0,Fabric,1.21.11,29,29,0,fabric
 2026-08-10,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.0.0 (NeoForge),Dirigo 1.21.11-1.0.0 (NeoForge),Dirigo 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,18,18,0,neoforge
 2026-08-10,curseforge,Dirigo,dirigo,dirigo:Dirigo 1.21.11-1.1.0 (Fabric),Dirigo 1.21.11-1.1.0 (Fabric),Dirigo 1.21.11-1.1.0 (Fabric),1.1.0,Fabric,1.21.11,57,57,0,fabric
@@ -79,7 +79,7 @@ snapshot_date,platform,project_name,project_platform_id,item_id,item_name,versio
 2026-08-10,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.0 (Fabric),HearthGuard 1.21.1-1.1.0 (Fabric),HearthGuard 1.21.1-1.1.0 (Fabric),1.1.0,Fabric,1.21.1,66,66,0,fabric
 2026-08-10,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.0 (NeoForge),HearthGuard 1.21.1-1.1.0 (NeoForge),HearthGuard 1.21.1-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.1,163,163,0,neoforge
 2026-08-10,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.1 (Fabric),HearthGuard 1.21.1-1.1.1 (Fabric),HearthGuard 1.21.1-1.1.1 (Fabric),1.1.1,Fabric,1.21.1,453,451,2,fabric
-2026-08-10,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.1 (NeoForge),HearthGuard 1.21.1-1.1.1 (NeoForge),HearthGuard 1.21.1-1.1.1 (NeoForge),1.1.1,NeoForge,1.21.1,1874,1853,21,neoforge
+2026-08-10,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.1 (NeoForge),HearthGuard 1.21.1-1.1.1 (NeoForge),HearthGuard 1.21.1-1.1.1 (NeoForge),1.1.1,NeoForge,1.21.1,1876,1853,23,neoforge
 2026-08-10,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.0 (Fabric),HearthGuard 1.21.11-1.0.0 (Fabric),HearthGuard 1.21.11-1.0.0 (Fabric),1.0.0,Fabric,1.21.11,158,158,0,fabric
 2026-08-10,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.0 (NeoForge),HearthGuard 1.21.11-1.0.0 (NeoForge),HearthGuard 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,61,61,0,neoforge
 2026-08-10,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.1 (Fabric),HearthGuard 1.21.11-1.0.1 (Fabric),HearthGuard 1.21.11-1.0.1 (Fabric),1.0.1,Fabric,1.21.11,228,228,0,fabric
