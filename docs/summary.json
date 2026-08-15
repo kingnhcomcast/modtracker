@@ -51,11 +51,11 @@
   "latest_platform_totals": [
     {
       "platform": "curseforge",
-      "total_downloads": 15952
+      "total_downloads": 15955
     },
     {
       "platform": "modrinth",
-      "total_downloads": 7858
+      "total_downloads": 7859
     }
   ],
   "latest_loader_totals": [
@@ -65,7 +65,7 @@
     },
     {
       "loader_group": "neoforge",
-      "total_downloads": 10263
+      "total_downloads": 10267
     }
   ],
   "latest_mc_totals": [
@@ -75,11 +75,11 @@
     },
     {
       "mc_version": "1.21.1",
-      "total_downloads": 9294
+      "total_downloads": 9296
     },
     {
       "mc_version": "1.21.11",
-      "total_downloads": 4384
+      "total_downloads": 4386
     },
     {
       "mc_version": "26.1",
@@ -93,15 +93,15 @@
   "latest_mod_totals": [
     {
       "mod_version": "1.1.1",
-      "total_downloads": 6183
+      "total_downloads": 6185
     },
     {
       "mod_version": "1.3.0",
-      "total_downloads": 5143
+      "total_downloads": 5144
     },
     {
       "mod_version": "1.2.0",
-      "total_downloads": 4404
+      "total_downloads": 4405
     },
     {
       "mod_version": "1.1.0",
@@ -127,11 +127,11 @@
   "latest_platform_breakdown": [
     {
       "platform": "curseforge",
-      "daily_downloads": 58
+      "daily_downloads": 61
     },
     {
       "platform": "modrinth",
-      "daily_downloads": 94
+      "daily_downloads": 95
     }
   ],
   "latest_loader_breakdown": [
@@ -141,17 +141,17 @@
     },
     {
       "loader_group": "neoforge",
-      "daily_downloads": 74
+      "daily_downloads": 78
     }
   ],
   "latest_mc_breakdown": [
     {
       "mc_version": "1.21.1",
-      "daily_downloads": 78
+      "daily_downloads": 80
     },
     {
       "mc_version": "1.21.11",
-      "daily_downloads": 37
+      "daily_downloads": 39
     },
     {
       "mc_version": "26.1",
@@ -189,15 +189,15 @@
     },
     {
       "mod_version": "1.1.1",
-      "daily_downloads": 45
+      "daily_downloads": 47
     },
     {
       "mod_version": "1.2.0",
-      "daily_downloads": 43
+      "daily_downloads": 44
     },
     {
       "mod_version": "1.3.0",
-      "daily_downloads": 50
+      "daily_downloads": 51
     }
   ],
   "release_tags": [

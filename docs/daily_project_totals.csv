@@ -343,7 +343,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-08-11,Dirigo,curseforge,26,27.428571428571427,
 2026-08-12,Dirigo,curseforge,23,25.142857142857142,
 2026-08-13,Dirigo,curseforge,17,25.571428571428573,
-2026-08-14,Dirigo,curseforge,19,23.428571428571427,
+2026-08-14,Dirigo,curseforge,20,23.428571428571427,
 2026-05-02,Dirigo,modrinth,29,,
 2026-05-03,Dirigo,modrinth,10,29.0,
 2026-05-04,Dirigo,modrinth,3,19.5,
@@ -574,7 +574,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-08-11,HearthGuard,curseforge,18,31.714285714285715,
 2026-08-12,HearthGuard,curseforge,19,29.428571428571427,
 2026-08-13,HearthGuard,curseforge,14,29.857142857142858,
-2026-08-14,HearthGuard,curseforge,21,29.0,
+2026-08-14,HearthGuard,curseforge,22,29.0,
 2026-04-11,HearthGuard,modrinth,30,,
 2026-04-12,HearthGuard,modrinth,13,30.0,
 2026-04-13,HearthGuard,modrinth,14,21.5,
@@ -700,7 +700,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-08-11,HearthGuard,modrinth,18,18.285714285714285,
 2026-08-12,HearthGuard,modrinth,16,17.285714285714285,
 2026-08-13,HearthGuard,modrinth,33,17.428571428571427,
-2026-08-14,HearthGuard,modrinth,29,18.285714285714285,
+2026-08-14,HearthGuard,modrinth,30,18.285714285714285,
 2026-05-15,Smart Feeding Troughs,curseforge,101,,1.0.0 (CF)
 2026-05-16,Smart Feeding Troughs,curseforge,56,101.0,
 2026-05-17,Smart Feeding Troughs,curseforge,97,78.5,1.0.0 (MR)
@@ -792,7 +792,7 @@ snapshot_date,project_name,platform,daily_downloads,rolling_avg_7d,release_tags
 2026-08-11,Smart Feeding Troughs,curseforge,16,15.857142857142858,
 2026-08-12,Smart Feeding Troughs,curseforge,11,15.571428571428571,
 2026-08-13,Smart Feeding Troughs,curseforge,9,14.857142857142858,
-2026-08-14,Smart Feeding Troughs,curseforge,16,13.285714285714286,
+2026-08-14,Smart Feeding Troughs,curseforge,17,13.285714285714286,
 2026-05-17,Smart Feeding Troughs,modrinth,22,,1.0.0 (MR)
 2026-05-18,Smart Feeding Troughs,modrinth,47,22.0,
 2026-05-19,Smart Feeding Troughs,modrinth,37,34.5,
