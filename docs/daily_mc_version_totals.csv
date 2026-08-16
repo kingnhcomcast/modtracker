@@ -1469,7 +1469,7 @@ snapshot_date,project_name,platform,mc_version,daily_downloads,rolling_avg_7d
 2026-08-12,Dirigo,modrinth,1.21.1,9,7.428571428571429
 2026-08-13,Dirigo,modrinth,1.21.1,14,8.285714285714286
 2026-08-14,Dirigo,modrinth,1.21.1,16,9.714285714285714
-2026-08-15,Dirigo,modrinth,1.21.1,4,10.428571428571429
+2026-08-15,Dirigo,modrinth,1.21.1,5,10.428571428571429
 2026-05-02,Dirigo,modrinth,1.21.11,8,
 2026-05-03,Dirigo,modrinth,1.21.11,2,8.0
 2026-05-04,Dirigo,modrinth,1.21.11,0,5.0
@@ -1914,7 +1914,7 @@ snapshot_date,project_name,platform,mc_version,daily_downloads,rolling_avg_7d
 2026-08-12,HearthGuard,curseforge,1.21.1,13,20.571428571428573
 2026-08-13,HearthGuard,curseforge,1.21.1,8,20.714285714285715
 2026-08-14,HearthGuard,curseforge,1.21.1,13,19.857142857142858
-2026-08-15,HearthGuard,curseforge,1.21.1,23,17.0
+2026-08-15,HearthGuard,curseforge,1.21.1,24,17.0
 2026-04-11,HearthGuard,curseforge,1.21.11,27,
 2026-04-12,HearthGuard,curseforge,1.21.11,19,27.0
 2026-04-13,HearthGuard,curseforge,1.21.11,17,23.0
@@ -2549,7 +2549,7 @@ snapshot_date,project_name,platform,mc_version,daily_downloads,rolling_avg_7d
 2026-08-12,HearthGuard,modrinth,1.21.1,11,11.142857142857142
 2026-08-13,HearthGuard,modrinth,1.21.1,27,11.428571428571429
 2026-08-14,HearthGuard,modrinth,1.21.1,18,12.857142857142858
-2026-08-15,HearthGuard,modrinth,1.21.1,2,14.428571428571429
+2026-08-15,HearthGuard,modrinth,1.21.1,3,14.428571428571429
 2026-04-11,HearthGuard,modrinth,1.21.11,10,
 2026-04-12,HearthGuard,modrinth,1.21.11,2,10.0
 2026-04-13,HearthGuard,modrinth,1.21.11,2,6.0
@@ -3427,7 +3427,7 @@ snapshot_date,project_name,platform,mc_version,daily_downloads,rolling_avg_7d
 2026-08-12,Smart Feeding Troughs,modrinth,1.21.1,5,5.714285714285714
 2026-08-13,Smart Feeding Troughs,modrinth,1.21.1,14,6.142857142857143
 2026-08-14,Smart Feeding Troughs,modrinth,1.21.1,17,8.142857142857142
-2026-08-15,Smart Feeding Troughs,modrinth,1.21.1,2,8.857142857142858
+2026-08-15,Smart Feeding Troughs,modrinth,1.21.1,3,8.857142857142858
 2026-05-17,Smart Feeding Troughs,modrinth,1.21.11,2,
 2026-05-18,Smart Feeding Troughs,modrinth,1.21.11,2,2.0
 2026-05-19,Smart Feeding Troughs,modrinth,1.21.11,3,2.0

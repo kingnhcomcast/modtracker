@@ -18562,7 +18562,7 @@ snapshot_date,platform,project_name,project_platform_id,item_id,item_name,versio
 2026-08-15,modrinth,Dirigo,dirigo,T0jaIIel,dirigo-fabric-1.21.1-1.0.0.jar,1.21.1-1.0.0,1.0.0,fabric,1.21.1,9,9,0,fabric
 2026-08-15,modrinth,Dirigo,dirigo,eNcEXtgh,dirigo-fabric-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,fabric,1.21.1,85,85,0,fabric
 2026-08-15,modrinth,Dirigo,dirigo,XKONajaq,dirigo-fabric-1.21.1-1.2.0.jar,1.21.1-1.2.0,1.2.0,fabric,1.21.1,19,19,0,fabric
-2026-08-15,modrinth,Dirigo,dirigo,OnHgpEhW,dirigo-fabric-1.21.1-1.3.0.jar,1.21.1-1.3.0,1.3.0,fabric,1.21.1,217,216,1,fabric
+2026-08-15,modrinth,Dirigo,dirigo,OnHgpEhW,dirigo-fabric-1.21.1-1.3.0.jar,1.21.1-1.3.0,1.3.0,fabric,1.21.1,218,216,2,fabric
 2026-08-15,modrinth,Dirigo,dirigo,95beyHOF,dirigo-fabric-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,fabric,1.21.11,11,11,0,fabric
 2026-08-15,modrinth,Dirigo,dirigo,wG9hzu1P,dirigo-fabric-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,fabric,1.21.11,116,114,2,fabric
 2026-08-15,modrinth,Dirigo,dirigo,36KhNytn,dirigo-fabric-1.21.11-1.2.0.jar,1.21.11-1.2.0,1.2.0,fabric,1.21.11,25,25,0,fabric
@@ -18591,7 +18591,7 @@ snapshot_date,platform,project_name,project_platform_id,item_id,item_name,versio
 2026-08-15,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.0 (Fabric),HearthGuard 1.21.1-1.1.0 (Fabric),HearthGuard 1.21.1-1.1.0 (Fabric),1.1.0,Fabric,1.21.1,66,66,0,fabric
 2026-08-15,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.0 (NeoForge),HearthGuard 1.21.1-1.1.0 (NeoForge),HearthGuard 1.21.1-1.1.0 (NeoForge),1.1.0,NeoForge,1.21.1,163,163,0,neoforge
 2026-08-15,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.1 (Fabric),HearthGuard 1.21.1-1.1.1 (Fabric),HearthGuard 1.21.1-1.1.1 (Fabric),1.1.1,Fabric,1.21.1,469,466,3,fabric
-2026-08-15,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.1 (NeoForge),HearthGuard 1.21.1-1.1.1 (NeoForge),HearthGuard 1.21.1-1.1.1 (NeoForge),1.1.1,NeoForge,1.21.1,1930,1910,20,neoforge
+2026-08-15,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.1-1.1.1 (NeoForge),HearthGuard 1.21.1-1.1.1 (NeoForge),HearthGuard 1.21.1-1.1.1 (NeoForge),1.1.1,NeoForge,1.21.1,1931,1910,21,neoforge
 2026-08-15,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.0 (Fabric),HearthGuard 1.21.11-1.0.0 (Fabric),HearthGuard 1.21.11-1.0.0 (Fabric),1.0.0,Fabric,1.21.11,158,158,0,fabric
 2026-08-15,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.0 (NeoForge),HearthGuard 1.21.11-1.0.0 (NeoForge),HearthGuard 1.21.11-1.0.0 (NeoForge),1.0.0,NeoForge,1.21.11,61,61,0,neoforge
 2026-08-15,curseforge,HearthGuard,hearthguard,hearthguard:HearthGuard 1.21.11-1.0.1 (Fabric),HearthGuard 1.21.11-1.0.1 (Fabric),HearthGuard 1.21.11-1.0.1 (Fabric),1.0.1,Fabric,1.21.11,228,228,0,fabric
@@ -18630,7 +18630,7 @@ snapshot_date,platform,project_name,project_platform_id,item_id,item_name,versio
 2026-08-15,modrinth,HearthGuard,hearthguard,fbe73rXR,hearthguard-neoforge-1.21.1-1.0.1.jar,1.21.1-1.0.1,1.0.1,neoforge,1.21.1,53,53,0,neoforge
 2026-08-15,modrinth,HearthGuard,hearthguard,iub5wqUR,hearthguard-neoforge-1.21.1-1.0.3.jar,1.21.1-1.0.3,1.0.3,neoforge,1.21.1,64,64,0,neoforge
 2026-08-15,modrinth,HearthGuard,hearthguard,JIByjxkH,hearthguard-neoforge-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,neoforge,1.21.1,35,35,0,neoforge
-2026-08-15,modrinth,HearthGuard,hearthguard,OHdAp1h2,hearthguard-neoforge-1.21.1-1.1.1.jar,1.21.1-1.1.1,1.1.1,neoforge,1.21.1,676,674,2,neoforge
+2026-08-15,modrinth,HearthGuard,hearthguard,OHdAp1h2,hearthguard-neoforge-1.21.1-1.1.1.jar,1.21.1-1.1.1,1.1.1,neoforge,1.21.1,677,674,3,neoforge
 2026-08-15,modrinth,HearthGuard,hearthguard,dFWb9IFH,hearthguard-neoforge-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,neoforge,1.21.11,20,20,0,neoforge
 2026-08-15,modrinth,HearthGuard,hearthguard,OQyeKKQM,hearthguard-neoforge-1.21.11-1.0.1.jar,1.21.11-1.0.1,1.0.1,neoforge,1.21.11,23,23,0,neoforge
 2026-08-15,modrinth,HearthGuard,hearthguard,EzCGv7l8,hearthguard-neoforge-1.21.11-1.0.3.jar,1.21.11-1.0.3,1.0.3,neoforge,1.21.11,18,18,0,neoforge
@@ -18668,7 +18668,7 @@ snapshot_date,platform,project_name,project_platform_id,item_id,item_name,versio
 2026-08-15,modrinth,Smart Feeding Troughs,smart-feeding-troughs,VDkxzzil,smartfeedingtroughs-fabric-1.21.1-1.0.0.jar,1.21.1-1.0.0,1.0.0,fabric,1.21.1,18,18,0,fabric
 2026-08-15,modrinth,Smart Feeding Troughs,smart-feeding-troughs,CAfZRofY,smartfeedingtroughs-fabric-1.21.1-1.1.0.jar,1.21.1-1.1.0,1.1.0,fabric,1.21.1,67,67,0,fabric
 2026-08-15,modrinth,Smart Feeding Troughs,smart-feeding-troughs,2RFuZF1I,smartfeedingtroughs-fabric-1.21.1-1.1.1.jar,1.21.1-1.1.1,1.1.1,fabric,1.21.1,23,23,0,fabric
-2026-08-15,modrinth,Smart Feeding Troughs,smart-feeding-troughs,SPv7haDM,smartfeedingtroughs-fabric-1.21.1-1.2.0.jar,1.21.1-1.2.0,1.2.0,fabric,1.21.1,145,144,1,fabric
+2026-08-15,modrinth,Smart Feeding Troughs,smart-feeding-troughs,SPv7haDM,smartfeedingtroughs-fabric-1.21.1-1.2.0.jar,1.21.1-1.2.0,1.2.0,fabric,1.21.1,146,144,2,fabric
 2026-08-15,modrinth,Smart Feeding Troughs,smart-feeding-troughs,axl7Ilx7,smartfeedingtroughs-fabric-1.21.11-1.0.0.jar,1.21.11-1.0.0,1.0.0,fabric,1.21.11,16,16,0,fabric
 2026-08-15,modrinth,Smart Feeding Troughs,smart-feeding-troughs,RH9d4ha7,smartfeedingtroughs-fabric-1.21.11-1.1.0.jar,1.21.11-1.1.0,1.1.0,fabric,1.21.11,18,18,0,fabric
 2026-08-15,modrinth,Smart Feeding Troughs,smart-feeding-troughs,9UO6u1d5,smartfeedingtroughs-fabric-1.21.11-1.1.1.jar,1.21.11-1.1.1,1.1.1,fabric,1.21.11,19,19,0,fabric
