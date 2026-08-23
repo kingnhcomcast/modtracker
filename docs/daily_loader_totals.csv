@@ -608,7 +608,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-08-19,Dirigo,curseforge,fabric,26,11.142857142857142
 2026-08-20,Dirigo,curseforge,fabric,7,13.285714285714286
 2026-08-21,Dirigo,curseforge,fabric,19,13.142857142857142
-2026-08-22,Dirigo,curseforge,fabric,14,14.428571428571429
+2026-08-22,Dirigo,curseforge,fabric,15,14.428571428571429
 2026-04-17,Dirigo,curseforge,neoforge,24,
 2026-04-18,Dirigo,curseforge,neoforge,7,24.0
 2026-04-19,Dirigo,curseforge,neoforge,3,15.5
@@ -962,7 +962,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-08-19,Dirigo,modrinth,neoforge,1,8.857142857142858
 2026-08-20,Dirigo,modrinth,neoforge,6,7.714285714285714
 2026-08-21,Dirigo,modrinth,neoforge,10,6.714285714285714
-2026-08-22,Dirigo,modrinth,neoforge,23,6.0
+2026-08-22,Dirigo,modrinth,neoforge,24,6.0
 2026-04-11,HearthGuard,curseforge,fabric,55,
 2026-04-12,HearthGuard,curseforge,fabric,41,55.0
 2026-04-13,HearthGuard,curseforge,fabric,42,48.0
@@ -1364,7 +1364,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-08-19,HearthGuard,modrinth,fabric,2,8.0
 2026-08-20,HearthGuard,modrinth,fabric,12,6.714285714285714
 2026-08-21,HearthGuard,modrinth,fabric,5,7.571428571428571
-2026-08-22,HearthGuard,modrinth,fabric,1,6.142857142857143
+2026-08-22,HearthGuard,modrinth,fabric,2,6.142857142857143
 2026-04-11,HearthGuard,modrinth,neoforge,10,
 2026-04-12,HearthGuard,modrinth,neoforge,1,10.0
 2026-04-13,HearthGuard,modrinth,neoforge,7,5.5
@@ -1598,7 +1598,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-08-19,Smart Feeding Troughs,curseforge,fabric,9,5.571428571428571
 2026-08-20,Smart Feeding Troughs,curseforge,fabric,3,6.571428571428571
 2026-08-21,Smart Feeding Troughs,curseforge,fabric,11,6.714285714285714
-2026-08-22,Smart Feeding Troughs,curseforge,fabric,5,7.285714285714286
+2026-08-22,Smart Feeding Troughs,curseforge,fabric,6,7.285714285714286
 2026-05-15,Smart Feeding Troughs,curseforge,neoforge,42,
 2026-05-16,Smart Feeding Troughs,curseforge,neoforge,21,42.0
 2026-05-17,Smart Feeding Troughs,curseforge,neoforge,45,31.5
@@ -1894,7 +1894,7 @@ snapshot_date,project_name,platform,loader_group,daily_downloads,rolling_avg_7d
 2026-08-19,Smart Feeding Troughs,modrinth,neoforge,2,8.0
 2026-08-20,Smart Feeding Troughs,modrinth,neoforge,7,7.571428571428571
 2026-08-21,Smart Feeding Troughs,modrinth,neoforge,3,6.714285714285714
-2026-08-22,Smart Feeding Troughs,modrinth,neoforge,13,5.142857142857143
+2026-08-22,Smart Feeding Troughs,modrinth,neoforge,14,5.142857142857143
 2026-03-27,hearthguard,curseforge,fabric,51,
 2026-03-28,hearthguard,curseforge,fabric,37,51.0
 2026-03-29,hearthguard,curseforge,fabric,30,44.0
