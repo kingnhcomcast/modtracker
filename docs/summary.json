@@ -51,27 +51,27 @@
   "latest_platform_totals": [
     {
       "platform": "curseforge",
-      "total_downloads": 16937
+      "total_downloads": 16938
     },
     {
       "platform": "modrinth",
-      "total_downloads": 8504
+      "total_downloads": 8505
     }
   ],
   "latest_loader_totals": [
     {
       "loader_group": "fabric",
-      "total_downloads": 14397
+      "total_downloads": 14398
     },
     {
       "loader_group": "neoforge",
-      "total_downloads": 11044
+      "total_downloads": 11045
     }
   ],
   "latest_mc_totals": [
     {
       "mc_version": "1.21.1",
-      "total_downloads": 10080
+      "total_downloads": 10081
     },
     {
       "mc_version": "26.1.2",
@@ -79,7 +79,7 @@
     },
     {
       "mc_version": "1.21.11",
-      "total_downloads": 4754
+      "total_downloads": 4755
     },
     {
       "mc_version": "26.1",
@@ -93,7 +93,7 @@
   "latest_mod_totals": [
     {
       "mod_version": "1.1.1",
-      "total_downloads": 6652
+      "total_downloads": 6654
     },
     {
       "mod_version": "1.3.0",
@@ -127,31 +127,31 @@
   "latest_platform_breakdown": [
     {
       "platform": "curseforge",
-      "daily_downloads": 154
+      "daily_downloads": 155
     },
     {
       "platform": "modrinth",
-      "daily_downloads": 86
+      "daily_downloads": 87
     }
   ],
   "latest_loader_breakdown": [
     {
       "loader_group": "fabric",
-      "daily_downloads": 137
+      "daily_downloads": 138
     },
     {
       "loader_group": "neoforge",
-      "daily_downloads": 103
+      "daily_downloads": 104
     }
   ],
   "latest_mc_breakdown": [
     {
       "mc_version": "1.21.1",
-      "daily_downloads": 104
+      "daily_downloads": 105
     },
     {
       "mc_version": "1.21.11",
-      "daily_downloads": 68
+      "daily_downloads": 69
     },
     {
       "mc_version": "26.1",
@@ -189,7 +189,7 @@
     },
     {
       "mod_version": "1.1.1",
-      "daily_downloads": 70
+      "daily_downloads": 72
     },
     {
       "mod_version": "1.2.0",
